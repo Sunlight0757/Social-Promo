@@ -1,0 +1,37 @@
+[
+    {
+        "id": "question1",
+        "question": "What service are you interested in?",
+        "image": "src/img/rush/banner2.jpg",
+        "options": [
+            "1. Styling Services (cut, blowdry etc); Promo",
+            "2. Colour Services (highlights, toner, etc); PROMO",
+            "3. Hair Extension; PROMO",
+            "4. Hair Health; PROMO",
+            "5. Texture; PROMO",
+            "6. Beauty (facials, massage, manicures, etc); PROMO"
+        ]
+    },
+    {
+        "id": "question2",
+        "question": "What area do you live in?",
+        "image": "src/img/rush/banner3.jpg",
+        "options": [
+            "1. Berkshire",
+            "2. Buckinghamshire",
+            "3. Cambridgeshire", 
+            "4. Essex",
+            "5. Hampshire", 
+            "6. Hertfordshire",
+            "7. Kent",
+            "8. Leicestershire",
+            "9. Greater Manchester",
+            "10. Middlesex",
+            "11. Nottinghamshire",
+            "12. Suffolk",
+            "13. Surrey",
+            "14. Sussex"		
+        ]
+        
+    }
+]
