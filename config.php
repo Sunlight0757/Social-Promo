@@ -6,7 +6,8 @@ require 'search/getSearchData.php';
 header('Access-Control-Allow-Origin: *');
 
 // Domain
-define("domain", 'https://socialpromo.biz/test/');
+// define("domain", 'https://socialpromo.biz/test/');
+define("domain", '/');
 define("SEARCH_BASE_URL", 'https://suite.social/search/');
 
 // Max Search URL's

@@ -27,6 +27,9 @@ $data =json_decode($data,true);
 
   $bookingdata = file_get_contents('db/services.json');
   $books = json_decode($bookingdata, true);
+
+  $categorydata = file_get_contents('db/categories.json');
+  $categories = json_decode($categorydata, true);
  
 ?>
 
@@ -628,7 +631,7 @@ const nbquestion = <?=$nbq?>;
 
 			<div id="search_settings" class="collapse">
 
-              <form method="POST" id="search_url_form">
+              <form method="POST" id="category_create_form">
 			  
                 <div class="form-group">
                    <label for="search_type">1. Category</label>
@@ -641,16 +644,20 @@ const nbquestion = <?=$nbq?>;
                     </span>
                   </div>
 			  </div>			   
-				   
+              </form>
+
+              <form method="DELETE" id="category_delete_form">
                   <p><select class="form-control" id="search_category_select" name="search_category_select">
-                    <option>CATEGORY 1</option>
-                    <option>CATEGORY 2</option>
-                    <option>CATEGORY 3</option>
-					<option>CATEGORY 4</option>				
+                    <?php foreach ($categories as $key => $category): ?>
+                      <option value="<?= $category ?>"><?= $category ?></option>
+                    <?php endforeach; ?>
                   </select></p>
-				  <p><button type="button" class="btn btn-secondary btn-xs search_category_delete">Delete selected category?</button></p>
+				  <p><button type="button" id="category_delete_btn" class="btn btn-secondary btn-xs search_category_delete">Delete selected category?</button></p>
                 </div>
                 <!-- /.form-group -->			  
+              </form>
+
+              <form method="POST" id="search_url_form">
 
                 <div class="form-group">
                    <label for="search_type">2. Type</label>
@@ -4461,6 +4468,103 @@ function calculateGrandTotal() {
     $("#grandtotal").text(grandTotal.toFixed(2));
 }
 
+</script>
+
+<script>
+const createForm = document.getElementById("category_create_form");
+createForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const submitBtn = $(e.currentTarget).find("button[type=submit]");
+  toggleLoader("show");
+  $(submitBtn).attr("disabled", true);
+  await savingCategory(createForm, createForm, "POST");
+});
+const deleteForm = document.getElementById("category_delete_form");
+$("#category_delete_btn").click(function() {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      toggleLoader("show");
+      $(this).attr("disabled", true);
+      savingCategory(deleteForm, this, "DELET");
+    }
+  });
+});
+async function savingCategory(form, submitBtn, method) {
+  try {
+    var responseCategories = await saveCategory(form, method);
+    if (responseCategories == 'Success') {
+      toggleLoader("hide");
+      $(submitBtn).removeAttr("disabled");
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Updated Successfully!',
+        html: 'The Category has been updated successfully',
+        timer: 3000,
+        timerProgressBar: true
+      });
+    }
+  } catch (error) {
+    toggleLoader("hide");
+    $(submitBtn).removeAttr("disabled");
+
+    const { title, errorMessage } = error;
+    Swal.fire({
+      icon: 'error',
+      title: title,
+      html: errorMessage,
+    });
+  }
+}
+function saveCategory(form, method) {
+  const formData = new FormData(form);
+  formData.append("method", method);
+  return new Promise(function (resolve, reject) {
+    $.ajax({
+      url: "savecategories.php",
+      type: "POST",
+      data: formData,
+      dataType: "json",
+      processData: false,
+      contentType: false,
+      success: function (xhr) {
+        // Append Categories
+        var category = xhr.category;
+        var categorySelectItems ="";
+        for(var i=0;i<category.length;i++){
+          categorySelectItems+= `<option value="${category[i]}">${category[i]}</option>`;
+        }
+        $('#search_category_select').html(categorySelectItems);
+
+        resolve(xhr.message);
+      },
+      error: function (xhr) {
+        const response = xhr.responseJSON;
+        var title = '';
+        var errorMessage = '';
+
+        if (response && response.errors) {
+          var errors = response.errors;
+          title = 'Error!';
+          errorMessage = errors.join('<br>');
+        } else {
+          title = 'Unexpected Error';
+          errorMessage = 'An unexpected error occurred.';
+        }
+
+        reject({ message: response?.message ?? 'Error', title: title, errorMessage: errorMessage });
+      }
+    });
+  });
+}
 </script>
 
 </body>
