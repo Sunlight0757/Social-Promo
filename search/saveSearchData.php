@@ -210,12 +210,47 @@ function saveManualSearchData()
     }
 }
 
+function saveCategoryInFile($data)
+{
+    $filePath = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'db' . DIRECTORY_SEPARATOR . 'categories.json';
+
+    // Check if the file already exists
+    if (file_exists($filePath)) {
+        $jsonData = file_get_contents($filePath);
+        $existingData = $jsonData ? json_decode($jsonData, true) : [];
+        array_push($existingData, $data);
+    }
+
+    $jsonData = json_encode($existingData, JSON_PRETTY_PRINT);
+
+    file_put_contents($filePath, $jsonData);
+    return $existingData;
+}
+
+function saveCategory()
+{
+    $category = htmlspecialchars($_POST["search_category"], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    
+    $result = saveCategoryInFile($category);
+
+    http_response_code(200);
+    $response = array(
+        'message' => 'Success',
+        'category' => $result
+    );
+    echo json_encode($response);
+}
+
 // Handle the request based on the request method
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $action = isset($_POST['action']) ? $_POST['action'] : '';
-    if ($action == 'manual') {
-        saveManualSearchData();
+    if($_POST['method']==='new'){
+        saveCategory();
     } else {
-        saveSearchData();
+        $action = isset($_POST['action']) ? $_POST['action'] : '';
+        if ($action == 'manual') {
+            saveManualSearchData();
+        } else {
+            saveSearchData();
+        }
     }
 }

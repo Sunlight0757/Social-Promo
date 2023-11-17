@@ -4094,3 +4094,95 @@ setInterval(() => {
   }
 }, 10000);
 
+$("#category_create_btn").click(function() {
+  toggleLoader("show");
+  $(this).attr("disabled", true);
+  savingCategory(this, "new");
+})
+$("#category_delete_btn").click(function() {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      toggleLoader("show");
+      $(this).attr("disabled", true);
+      savingCategory(this, "delete");
+    }
+  });
+});
+async function savingCategory(submitBtn, method) {
+  try {
+    var responseCategories = await saveCategory(method);
+    if (responseCategories == 'Success') {
+      toggleLoader("hide");
+      $(submitBtn).removeAttr("disabled");
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Updated Successfully!',
+        html: 'The Category has been updated successfully',
+        timer: 3000,
+        timerProgressBar: true
+      });
+    }
+  } catch (error) {
+    toggleLoader("hide");
+    $(submitBtn).removeAttr("disabled");
+
+    const { title, errorMessage } = error;
+    Swal.fire({
+      icon: 'error',
+      title: title,
+      html: errorMessage,
+    });
+  }
+}
+function saveCategory(method) {
+  const createForm = document.getElementById("category_create_form");
+  const deleteForm = document.getElementById("category_delete_form");
+  const formData = new FormData(method==="new"?createForm:deleteForm);
+  formData.append("method", method);
+  return new Promise(function (resolve, reject) {
+    $.ajax({
+      url: domain + `search/${method==="new"?"saveSearchData":"deleteSearchData"}.php`,
+      type: "POST",
+      data: formData,
+      dataType: "json",
+      processData: false,
+      contentType: false,
+      success: function (xhr) {
+        // Append Categories
+        var category = xhr.category;
+        var categorySelectItems ="";
+        for(var i=0;i<category.length;i++){
+          categorySelectItems+= `<option value="${category[i]}">${category[i]}</option>`;
+        }
+        $('#search_category_select').html(categorySelectItems);
+
+        resolve(xhr.message);
+      },
+      error: function (xhr) {
+        const response = xhr.responseJSON;
+        var title = '';
+        var errorMessage = '';
+
+        if (response && response.errors) {
+          var errors = response.errors;
+          title = 'Error!';
+          errorMessage = errors.join('<br>');
+        } else {
+          title = 'Unexpected Error';
+          errorMessage = 'An unexpected error occurred.';
+        }
+
+        reject({ message: response?.message ?? 'Error', title: title, errorMessage: errorMessage });
+      }
+    });
+  });
+}
