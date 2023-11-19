@@ -4159,11 +4159,13 @@ function saveCategory(method) {
       success: function (xhr) {
         // Append Categories
         var category = xhr.category;
+        var data = xhr.data;
         var categorySelectItems ="";
         for(var i=0;i<category.length;i++){
           categorySelectItems+= `<option value="${category[i]}">${category[i]}</option>`;
         }
         $('#search_category_select').html(categorySelectItems);
+        loadSearchData(data)
 
         resolve(xhr.message);
       },
@@ -4186,3 +4188,49 @@ function saveCategory(method) {
     });
   });
 }
+function loadSearchData(data) {
+  var result = ""
+  var colors = {
+    Pending: 'bg-primary',
+    Contacted: 'bg-secondary',
+    Replied: 'bg-success',
+    Rejected: 'bg-warning'
+  };
+
+  for(var i=0;i<data.length;i++){
+    result += `<tr data-widget="expandable-table" aria-expanded="true" data-id="${data[i]['id']}" data-link="${data[i]['link']}">
+                <td><input type="checkbox" class="search-url-table-select-row"></td>
+                <td>${i + 1}</td>
+                <td class="search-url-table-image"><img width="100px" src="${data[i]['imageUrl']}"></td>
+                <td class="search-url-table-title">${data[i]['title']}</td>
+                <td><b>Type:</b> ${data[i]['type']}<br><b>Network:</b> ${data[i]['network']}<br><b>Keyword:</b> ${data[i]['keyword']}</td>
+                <td>${data[i]['date']}</td>
+                <td><button style="cursor:pointer;" data-color="bg-primary" class="badge btn ${colors[data[i]['status']]} search-url-table-status">${data[i]['status']}</button></td>
+                <td>
+                    <a href="javascript:void(0);" class="m-1 btn btn-block btn-success btn-sm search-url-table-link"
+                        onClick="popupSocial('${data[i]['link']}')"><i class="fas fa-envelope"></i> Contact</a>
+                    <button class="m-1 btn btn-block btn btn-info btn-sm search-item-edit-btn"><i
+                            class="fas fa-pencil-alt"></i> Edit</button>
+                    <button class="m-1 btn btn-block btn btn-danger btn-sm delete-search-item"><i class="fas fa-trash"></i> Delete</button>
+                </td>
+              </tr>
+              <tr class="expandable-body search-url-table-expandable">
+                <td colspan="8">
+                  <p style="display: none;" class="search-url-table-description">${data[i]['description']}</p>
+                  <h5 class="search-url-table-notes-label" style="display: none;">Notes:</h5>
+                  <p style="display: none;" class="search-url-table-notes text-muted">${data[i]['notes']}</p>
+                </td>
+              </tr>`;
+  }
+  $("#data-table").html(result)
+}
+$('#search_category_select').change(function(){
+  var category=$(this).val()
+  var arr=[]
+  for(var i=0;i<search_data.length;i++){
+    if(search_data[i].category==category){
+      arr.push(search_data[i])
+    }
+  }
+  loadSearchData(arr)
+})

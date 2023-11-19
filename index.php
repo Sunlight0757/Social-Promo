@@ -28,7 +28,7 @@ $data =json_decode($data,true);
   $bookingdata = file_get_contents('db/services.json');
   $books = json_decode($bookingdata, true);
 
-  $categorydata = file_get_contents('db/categories.json');
+  $categorydata = file_get_contents('db/search_categories.json');
   $categories = json_decode($categorydata, true);
  
 ?>
@@ -174,6 +174,7 @@ h5.search-url-table-notes-label{
 <script>
 const domain = '<?=domain?>';
 const nbquestion = <?=$nbq?>;
+const search_data = <?=json_encode($search_data)?>
 </script>
 
 <body class="hold-transition layout-top-nav">
@@ -671,17 +672,6 @@ const nbquestion = <?=$nbq?>;
                 </div>
                 <!-- /.form-group -->
 				
-			  <div class="input-group mb-3">
-			   <label for="search_rss">Enter RSS feed</label>
-                  <div class="input-group">
-                    <input id="search_rss" name="search_rss" type="url" class="form-control" placeholder="Enter valid RSS feed">
-                    <span class="input-group-append">
-					  <button class="btn btn-success btn-flat" type="submit">SUBMIT</button>
-                    </span>
-                  </div>
-
-			</div>
-				
                 <div class="form-group">
                    <label for="search_network">3. Network</label>
                   <select class="form-control" id="search_network" name="search_network">
@@ -748,7 +738,7 @@ const nbquestion = <?=$nbq?>;
 					  <th>Actions</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="data-table">
                     <?php 
                       if(count($search_data)){
                         foreach ($search_data as $key => $data) {

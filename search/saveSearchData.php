@@ -212,7 +212,7 @@ function saveManualSearchData()
 
 function saveCategoryInFile($data)
 {
-    $filePath = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'db' . DIRECTORY_SEPARATOR . 'categories.json';
+    $filePath = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'db' . DIRECTORY_SEPARATOR . 'search_categories.json';
 
     // Check if the file already exists
     if (file_exists($filePath)) {

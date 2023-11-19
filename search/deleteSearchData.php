@@ -73,7 +73,7 @@ function deleteSearchDataByCategory($category)
 
 function deleteCategoryInFile($data)
 {
-    $filePath = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'db' . DIRECTORY_SEPARATOR . 'categories.json';
+    $filePath = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'db' . DIRECTORY_SEPARATOR . 'search_categories.json';
 
     // Check if the file already exists
     if (file_exists($filePath)) {
@@ -93,12 +93,13 @@ function deleteCategory()
     $id = htmlspecialchars($_POST["search_category_select"], ENT_QUOTES | ENT_HTML5, 'UTF-8');
     
     $result1 = deleteCategoryInFile($id);
-    deleteSearchDataByCategory($id);
+    $result2 = deleteSearchDataByCategory($id);
 
     http_response_code(200);
     $response = array(
         'message' => 'Success',
         'category' => $result1,
+        'data' => $result2
     );
     echo json_encode($response);
 }

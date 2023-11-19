@@ -27,7 +27,7 @@ define('phrase7', 'Trying to find a');
 // <option>Tiktok</option>
 
 // Search API Key
-define("SEARCH_API_KEY", 'hezm9fdhgF5Xv02YfWF2fpfgJUWDYHsR');
+define("SEARCH_API_KEY", 'DfbocUOh1x76d9Lt1hfLf5ia1Ugs6Zqu');
 
 // location API Key  https://api.ipdata
 define("api_location", '');
