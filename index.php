@@ -672,6 +672,17 @@ const search_data = <?=json_encode($search_data)?>
                 </div>
                 <!-- /.form-group -->
 				
+			  <div class="input-group mb-3">
+			   <label for="search_rss">Enter RSS feed</label>
+                  <div class="input-group">
+                    <input id="search_rss" name="search_rss" type="url" class="form-control" placeholder="Enter valid RSS feed">
+                    <span class="input-group-append">
+					  <button class="btn btn-success btn-flat" type="submit">SUBMIT</button>
+                    </span>
+                  </div>
+
+			</div>
+				
                 <div class="form-group">
                    <label for="search_network">3. Network</label>
                   <select class="form-control" id="search_network" name="search_network">

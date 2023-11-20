@@ -4165,7 +4165,7 @@ function saveCategory(method) {
           categorySelectItems+= `<option value="${category[i]}">${category[i]}</option>`;
         }
         $('#search_category_select').html(categorySelectItems);
-        loadSearchData(data)
+        data&&loadSearchData(data)
 
         resolve(xhr.message);
       },
