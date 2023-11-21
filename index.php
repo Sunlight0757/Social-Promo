@@ -632,6 +632,8 @@ const search_data = <?=json_encode($search_data)?>
 
 			<div id="search_settings" class="collapse">
 
+              <form method="POST" id="search_url_form">
+
               <form method="POST" id="category_create_form">
 			  
                 <div class="form-group">
@@ -654,11 +656,9 @@ const search_data = <?=json_encode($search_data)?>
                     <?php endforeach; ?>
                   </select></p>
 				  <p><button type="button" id="category_delete_btn" class="btn btn-secondary btn-xs search_category_delete">Delete selected category?</button></p>
+        </form>
                 </div>
                 <!-- /.form-group -->			  
-              </form>
-
-              <form method="POST" id="search_url_form">
 
                 <div class="form-group">
                    <label for="search_type">2. Type</label>
@@ -677,7 +677,7 @@ const search_data = <?=json_encode($search_data)?>
                   <div class="input-group">
                     <input id="search_rss" name="search_rss" type="url" class="form-control" placeholder="Enter valid RSS feed">
                     <span class="input-group-append">
-					  <button class="btn btn-success btn-flat" type="submit">SUBMIT</button>
+					  <button class="btn btn-success btn-flat">SUBMIT</button>
                     </span>
                   </div>
 
@@ -699,7 +699,7 @@ const search_data = <?=json_encode($search_data)?>
                   <div class="input-group">
                     <input id="search_keyword" name="search_keyword" type="text" class="form-control" placeholder="Enter business name, competitor or product keyword">
                     <span class="input-group-append">
-					  <button class="btn btn-success btn-flat" type="submit">SUBMIT</button>
+					  <button class="btn btn-success btn-flat" id="search_param_button">SUBMIT</button>
                     </span>
                   </div>
 
@@ -716,13 +716,14 @@ const search_data = <?=json_encode($search_data)?>
                   if(!empty($search_params)){
                     foreach ($search_params as $search_param) {
                       $search_param_id = $search_param['id'];
+                      $search_category = $search_param['category'];
                       $search_type = $search_param['type'];
                       $search_network = $search_param['network'];
                       $search_keyword = $search_param['keyword'];
                   ?>
                       <li class="nav-item" data-searchParamId="<?php echo $search_param_id; ?>">
                           <a href="#" class="nav-link">
-                            <?php echo "{$search_keyword} ({$search_type}, {$search_network})"; ?>
+                            <?php echo "{$search_category} {$search_keyword} ({$search_type}, {$search_network})"; ?>
                             <span class="float-right btn btn-sm btn-danger btn-flat search-param-item">Delete</span>
                           </a>
                     </li>
