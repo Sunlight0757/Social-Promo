@@ -2382,14 +2382,11 @@ $("#search_keyword").on("input", function () {
 
 // Save Search Param
 
-const form = document.getElementById("search_url_form");
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const submitBtn = $(e.currentTarget).find("button[type=submit]");
+$("#search_param_button").click(async function(){
   toggleLoader("show");
-  $(submitBtn).attr("disabled", true);
-  await savingSearch(submitBtn);
-});
+  $(this).attr("disabled", true);
+  await savingSearch(this);
+})
 
 // Function for Saving Search
 
@@ -2426,8 +2423,11 @@ async function savingSearch(submitBtn) {
 // Function for Saving Search Param
 
 function saveSearchParam() {
-  const form = document.getElementById("search_url_form");
-  const formData = new FormData(form);
+  const formData = new FormData();
+  formData.append("search_category", $("#search_category_select").val());
+  formData.append("search_type", $("#search_type").val());
+  formData.append("search_network", $("#search_network").val());
+  formData.append("search_keyword", $("#search_keyword").val());
   return new Promise(function (resolve, reject) {
     $.ajax({
       url: domain + "search/saveSearchParam.php",

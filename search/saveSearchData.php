@@ -243,7 +243,8 @@ function saveCategory()
 
 // Handle the request based on the request method
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if($_POST['method']==='new'){
+    $method = isset( $_POST["method"] ) ? $_POST["method"] :"";
+    if($method==='new'){
         saveCategory();
     } else {
         $action = isset($_POST['action']) ? $_POST['action'] : '';

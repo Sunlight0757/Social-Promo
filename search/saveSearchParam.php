@@ -4,12 +4,18 @@ require '../config.php';
 
 function validatePostData($postData, $searchParams)
 {
+    $category = $postData["search_category"] ?? '';
     $type = $postData["search_type"] ?? '';
     $network = $postData["search_network"] ?? '';
     $keyword = $postData["search_keyword"] ?? '';
 
     // Define an array to hold validation errors
     $errors = [];
+
+    $category = htmlspecialchars($category, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    if (empty($category)) {
+        $errors[] = "Category field is required.";
+    }
 
     $type = htmlspecialchars($type, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     if (empty($type)) {
@@ -40,6 +46,7 @@ function validatePostData($postData, $searchParams)
         // Duplicate Search Params
         foreach ($searchParams as $searchParam) {
             if (
+                $searchParam['category'] == $category &&
                 $searchParam['type'] == $type &&
                 $searchParam['network'] == $network &&
                 $searchParam['keyword'] == $keyword
@@ -110,6 +117,7 @@ function saveSearchParam()
         echo json_encode($response);
     } else {
         $searchId = $currentSearchKeywordsCount++;
+        $category = htmlspecialchars($_POST["search_category"], ENT_QUOTES | ENT_HTML5, 'UTF-8');
         $type = htmlspecialchars($_POST["search_type"], ENT_QUOTES | ENT_HTML5, 'UTF-8');
         $network = htmlspecialchars($_POST["search_network"], ENT_QUOTES | ENT_HTML5, 'UTF-8');
         $keyword = htmlspecialchars($_POST["search_keyword"], ENT_QUOTES | ENT_HTML5, 'UTF-8');
@@ -131,6 +139,7 @@ function saveSearchParam()
         $data[] = [
             'id' => $searchId,
             'search_url' => $search_url,
+            'category' => $category,
             'keyword' => $keyword,
             'type' => $type,
             'network' => $network
@@ -142,7 +151,7 @@ function saveSearchParam()
         $response = array(
             'message' => 'Success',
             'searchId' => $searchId,
-            'searchParams' => "{$keyword} ({$type}, {$network})"
+            'searchParams' => "{$category} {$keyword} ({$type}, {$network})"
         );
         echo json_encode($response);
     }
