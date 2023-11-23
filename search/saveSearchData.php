@@ -25,8 +25,22 @@ function convertRSSFeedInArray($rssFeed)
             foreach ($rss->channel->item as $item) {
                 $title = (string) $item->title;
                 $link = (string) $item->link;
-                $imageUrl = (string) $item->image->url;
                 $description = (string) $item->description;
+                
+                if(isset($item->image)) {
+                    $imageUrl = (string) $item->image->url;
+                } else {
+                    $dom = new DOMDocument();
+                    $dom->loadHTML($description);
+                    
+                    // Find the img tag and retrieve the src attribute
+                    $image = $dom->getElementsByTagName('img')->item(0);
+                    if ($image) {
+                        $imageUrl = $image->getAttribute('src');
+                    } else {
+                        $imageUrl = 'src/img/default.jpg';
+                    }
+                }
 
                 // Add the data to the array
                 $data[] = [

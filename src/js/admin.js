@@ -4241,6 +4241,6 @@ $('#search_type').change(function(){
     $("#RSS_feed_field").show();
   } else {
     $("#RSS_feed_field").hide();
-    $("#search_rss").val();
+    $("#search_rss").val("");
   }
 })
