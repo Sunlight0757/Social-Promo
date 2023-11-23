@@ -2382,11 +2382,14 @@ $("#search_keyword").on("input", function () {
 
 // Save Search Param
 
-$("#search_param_button").click(async function(){
+const form = document.getElementById("search_url_form");
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const submitBtn = $(e.currentTarget).find("button[type=submit]");
   toggleLoader("show");
-  $(this).attr("disabled", true);
-  await savingSearch(this);
-})
+  $(submitBtn).attr("disabled", true);
+  await savingSearch(submitBtn);
+});
 
 // Function for Saving Search
 
@@ -2423,11 +2426,9 @@ async function savingSearch(submitBtn) {
 // Function for Saving Search Param
 
 function saveSearchParam() {
-  const formData = new FormData();
+  const form = document.getElementById("search_url_form");
+  const formData = new FormData(form);
   formData.append("search_category", $("#search_category_select").val());
-  formData.append("search_type", $("#search_type").val());
-  formData.append("search_network", $("#search_network").val());
-  formData.append("search_keyword", $("#search_keyword").val());
   return new Promise(function (resolve, reject) {
     $.ajax({
       url: domain + "search/saveSearchParam.php",
@@ -4233,4 +4234,13 @@ $('#search_category_select').change(function(){
     }
   }
   loadSearchData(arr)
+})
+$("#RSS_feed_field").hide();
+$('#search_type').change(function(){
+  if($(this).val()=="rss"){
+    $("#RSS_feed_field").show();
+  } else {
+    $("#RSS_feed_field").hide();
+    $("#search_rss").val();
+  }
 })

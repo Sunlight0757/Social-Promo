@@ -654,25 +654,25 @@ const search_data = <?=json_encode($search_data)?>
                     <?php endforeach; ?>
                   </select></p>
 				  <p><button type="button" id="category_delete_btn" class="btn btn-secondary btn-xs search_category_delete">Delete selected category?</button></p>
+        </form>
                 </div>
                 <!-- /.form-group -->			  
-              </form>
 
               <form method="POST" id="search_url_form">
 
                 <div class="form-group">
                    <label for="search_type">2. Type</label>
                   <select class="form-control" id="search_type" name="search_type">
-                    <option>Business name</option>
-                    <option>Competitor</option>
-                    <option>Product</option>
-					<option>Keyword</option>
-					<option>RSS</option>	
+                    <option value="business">Business name</option>
+                    <option value="competitor">Competitor</option>
+                    <option value="product">Product</option>
+					<option value="keyword">Keyword</option>
+					<option value="rss">RSS</option>	
                   </select>
                 </div>
                 <!-- /.form-group -->
 				
-			  <div class="input-group mb-3">
+			  <div class="input-group mb-3" id="RSS_feed_field">
 			   <label for="search_rss">Enter RSS feed</label>
                   <div class="input-group">
                     <input id="search_rss" name="search_rss" type="url" class="form-control" placeholder="Enter valid RSS feed">
@@ -716,13 +716,14 @@ const search_data = <?=json_encode($search_data)?>
                   if(!empty($search_params)){
                     foreach ($search_params as $search_param) {
                       $search_param_id = $search_param['id'];
-                      $search_type = $search_param['type'];
-                      $search_network = $search_param['network'];
-                      $search_keyword = $search_param['keyword'];
+                      $search_url = $search_param['search_url'];
+                      $search_type = isset($search_param['type'])?$search_param['type']:"";
+                      $search_network = isset($search_param['network'])?$search_param['network']:"";
+                      $search_keyword = isset($search_param['keyword'])?$search_param['keyword']:"";
                   ?>
                       <li class="nav-item" data-searchParamId="<?php echo $search_param_id; ?>">
                           <a href="#" class="nav-link">
-                            <?php echo "{$search_keyword} ({$search_type}, {$search_network})"; ?>
+                            <?php echo $search_keyword=="" ? "{$search_url}" : "{$search_keyword} ({$search_type}, {$search_network})"; ?>
                             <span class="float-right btn btn-sm btn-danger btn-flat search-param-item">Delete</span>
                           </a>
                     </li>
