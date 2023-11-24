@@ -4239,8 +4239,12 @@ $("#RSS_feed_field").hide();
 $('#search_type').change(function(){
   if($(this).val()=="rss"){
     $("#RSS_feed_field").show();
+    $("#network_field").hide();
+    $("#keyword_field").hide();
   } else {
     $("#RSS_feed_field").hide();
+    $("#network_field").show();
+    $("#keyword_field").show();
     $("#search_rss").val("");
   }
 })

@@ -683,7 +683,7 @@ const search_data = <?=json_encode($search_data)?>
 
 			</div>
 				
-                <div class="form-group">
+                <div class="form-group" id="network_field">
                    <label for="search_network">3. Network</label>
                   <select class="form-control" id="search_network" name="search_network">
                     <option>Facebook-Leads</option>
@@ -694,7 +694,7 @@ const search_data = <?=json_encode($search_data)?>
                 </div>
                 <!-- /.form-group -->
 			  
-			  <div class="input-group mb-3">
+			  <div class="input-group mb-3" id="keyword_field">
 			   <label for="search_keyword">4. Keyword</label>
                   <div class="input-group">
                     <input id="search_keyword" name="search_keyword" type="text" class="form-control" placeholder="Enter business name, competitor or product keyword">
