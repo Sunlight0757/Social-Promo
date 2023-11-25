@@ -736,7 +736,7 @@ const search_data = <?=json_encode($search_data)?>
               </div>
 
               <button class="m-3 btn btn btn-danger float-right" id="search-data-table-delete"><i class="fa-solid fa-trash"></i> Delete</button>
-			
+              <div class="overflow-auto w-100">
                 <table class="table table-bordered table-hover search-data-table">
                   <thead>
                     <tr>
@@ -800,7 +800,7 @@ const search_data = <?=json_encode($search_data)?>
                     ?>
                   </tbody>
                 </table>
-					
+                  </div>
               </div>
 		  </div>
 		  <!-- /.card -->

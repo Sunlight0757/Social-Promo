@@ -31,7 +31,7 @@ function convertRSSFeedInArray($rssFeed)
                     $imageUrl = (string) $item->image->url;
                 } else {
                     $dom = new DOMDocument();
-                    $dom->loadHTML($description);
+                    $dom->loadHTML(str_replace('&', '&amp;', $description));
                     
                     // Find the img tag and retrieve the src attribute
                     $image = $dom->getElementsByTagName('img')->item(0);
