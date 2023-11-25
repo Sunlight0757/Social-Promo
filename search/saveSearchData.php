@@ -1,6 +1,7 @@
 <?php
 
 require '../config.php';
+require '../processImage.php';
 
 function getRSSFeed($search_url)
 {
@@ -40,6 +41,7 @@ function convertRSSFeedInArray($rssFeed)
                     } else {
                         $imageUrl = 'src/img/default.jpg';
                     }
+                    $imageUrl = processImage($imageUrl, 'instagram');
                 }
 
                 // Add the data to the array
