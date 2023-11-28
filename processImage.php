@@ -78,7 +78,7 @@ function processImage($imageURL, $site)
         return 'Error: No image URL provided.';
     }
 
-    $saveAs = './img/' . uniqid() . '.jpg';
+    $saveAs = '../src/img/instagram/' . uniqid() . '.jpg';
 
     try {
         $imageSrc = extractImage($imageURL, $site);
@@ -96,10 +96,7 @@ function processImage($imageURL, $site)
 
         saveImageToFile($rawData, $saveAs);
 
-        // Return the full path of the saved image
-        $indexDir = dirname($_SERVER['PHP_SELF']);
-        $serverImageLink = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $indexDir . '/img/' . basename($saveAs);
-        return $serverImageLink;
+        return $saveAs;
     } catch(Exception $e) {
         $errorMessage = 'Error: ' . $e->getMessage();
         return [$errorMessage];

@@ -27,21 +27,41 @@ function convertRSSFeedInArray($rssFeed)
                 $title = (string) $item->title;
                 $link = (string) $item->link;
                 $description = (string) $item->description;
+                $imageUrl = "";
                 
                 if(isset($item->image)) {
                     $imageUrl = (string) $item->image->url;
                 } else {
-                    $dom = new DOMDocument();
-                    $dom->loadHTML(str_replace('&', '&amp;', $description));
-                    
-                    // Find the img tag and retrieve the src attribute
-                    $image = $dom->getElementsByTagName('img')->item(0);
-                    if ($image) {
-                        $imageUrl = $image->getAttribute('src');
+                    if (strpos($item->link, "instagram")){
+                        $mediaUrl = $item->link . '/embed';
+                        $result = processImage($mediaUrl, 'instagram');
+
+                        if(!is_array($result)){
+                            $imageUrl = $result;
+                        }
+
+                        $dom = new DOMDocument();
+                        $dom->loadHTML(str_replace('&', '&amp;', $description));
+                        
+                        // Find the img tag and retrieve the src attribute
+                        $image = $dom->getElementsByTagName('img')->item(0);
+                        
+                        if ($image) {
+                            $image->setAttribute('src', $imageUrl); // Change src attribute
+                        }
+                        $description = $dom->saveHTML();
                     } else {
-                        $imageUrl = 'src/img/default.jpg';
+                        $dom = new DOMDocument();
+                        $dom->loadHTML(str_replace('&', '&amp;', $description));
+                        
+                        // Find the img tag and retrieve the src attribute
+                        $image = $dom->getElementsByTagName('img')->item(0);
+                        if ($image) {
+                            $imageUrl = $image->getAttribute('src');
+                        } else {
+                            $imageUrl = 'src/img/default.jpg';
+                        }
                     }
-                    $imageUrl = processImage($imageUrl, 'instagram');
                 }
 
                 // Add the data to the array
