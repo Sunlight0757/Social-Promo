@@ -1,7 +1,7 @@
 <?php
 
 require '../config.php';
-require '../processImage.php';
+require './getSearchImage.php';
 
 function getRSSFeed($search_url)
 {
