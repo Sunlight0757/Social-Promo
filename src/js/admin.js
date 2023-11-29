@@ -2533,6 +2533,7 @@ function updateSearchDataTable(searchData) {
               <button class="m-1 btn btn-block btn btn-info btn-sm search-item-edit-btn"><i
                       class="fas fa-pencil-alt"></i> Edit</button>
               <button class="m-1 btn btn-block btn btn-danger btn-sm delete-search-item"><i class="fas fa-trash"></i> Delete</button>
+              <button data-toggle="modal" data-target="#modal-switch" class="m-1 btn btn-block btn btn-primary btn-sm add-search-item"><i class="fas fa-add"></i> Add</button>
           </td>
         </tr>
         <tr class="expandable-body search-url-table-expandable">
@@ -2719,6 +2720,20 @@ function deleteSearchItem(e) {
       });
     }
   });
+}
+
+// Add Post to Template
+
+$(document).on("click", ".add-search-item", addSearchItem);
+
+function addSearchItem(e) {
+  e.preventDefault();
+
+  const target = $(e.currentTarget);
+
+  const searchItem = $(target).closest("tr")[0];
+  const id = $(searchItem).data("id");
+  $("#post_id").val(id);
 }
 
 
@@ -4213,6 +4228,7 @@ function loadSearchData(data) {
                     <button class="m-1 btn btn-block btn btn-info btn-sm search-item-edit-btn"><i
                             class="fas fa-pencil-alt"></i> Edit</button>
                     <button class="m-1 btn btn-block btn btn-danger btn-sm delete-search-item"><i class="fas fa-trash"></i> Delete</button>
+                    <button data-toggle="modal" data-target="#modal-switch" class="m-1 btn btn-block btn btn-primary btn-sm add-search-item"><i class="fas fa-add"></i> Add</button>
                 </td>
               </tr>
               <tr class="expandable-body search-url-table-expandable">
@@ -4248,3 +4264,61 @@ $('#search_type').change(function(){
     $("#search_rss").val("");
   }
 })
+$("#select_template_btn").click(function() {
+  toggleLoader("show");
+  $(this).attr("disabled", true);
+  saveTemplate();
+})
+function saveTemplate() {
+  $.ajax({
+    url: domain + "search/getSearchData.php",
+    type: "GET",
+    success: function (xhr) {
+      var result = JSON.parse(xhr);
+      if (result.data) {
+        var searchData = result.data;
+        var post = searchData.filter(item=>item.id===$("#post_id").val())[0];
+
+        const date = new Date();
+        const formattedDate = date.toLocaleDateString() + ' / ' + date.getHours() + ':' + date.getMinutes();
+        const formData = {
+          id: templates.length + 1,
+          group: $("#template_group").val(),
+          image: post.imageUrl,
+          title: post.title,
+          content: post.description,
+          url: post.link,
+          sendemail: false,
+          sendsms: false,
+          sendpush: false,
+          date: formattedDate
+        };
+        
+        $.ajax({
+          url: domain + `save.php`,
+          type: "POST",
+          data: { template: JSON.stringify(formData) },
+          success: function (response) {
+            updateTempate();
+            Swal.fire({
+              icon: 'success',
+              title: 'Congratulation',
+              text: 'Template added',
+            });
+    
+            // Call the function 
+            updateSelectOptions();
+    
+            toggleLoader("hide");
+            $(submitBtn).removeAttr("disabled");
+          },
+          error: function () {
+            console.error('Error issue');
+            toggleLoader("hide");
+            $(submitBtn).removeAttr("disabled");
+          }
+        });
+      }
+    }
+  });
+}

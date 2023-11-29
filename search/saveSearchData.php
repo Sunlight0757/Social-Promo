@@ -31,6 +31,7 @@ function convertRSSFeedInArray($rssFeed)
                 
                 if(isset($item->image)) {
                     $imageUrl = (string) $item->image->url;
+                    $imageUrl = $imageUrl=="" ? domain . 'src/img/default.jpg' : $imageUrl;
                 } else {
                     if (strpos($item->link, "instagram")){
                         $mediaUrl = $item->link . '/embed';
@@ -59,7 +60,7 @@ function convertRSSFeedInArray($rssFeed)
                         if ($image) {
                             $imageUrl = $image->getAttribute('src');
                         } else {
-                            $imageUrl = 'src/img/default.jpg';
+                            $imageUrl = domain . 'src/img/default.jpg';
                         }
                     }
                 }

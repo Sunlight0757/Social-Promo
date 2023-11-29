@@ -1,10 +1,10 @@
 [
     {
         "id": 0,
-        "search_url": "https:\/\/suite.social\/search\/search-result.php?q=he&site=Facebook-Leads&rss&apikey=Z9ThtVx007BvjAjdK7jnVLhimck8zx1P",
-        "category": "Starbucks",
-        "keyword": "he",
-        "type": "Business name",
-        "network": "Facebook-Leads"
+        "search_url": "https:\/\/suite.social\/search\/search-result.php?q=starbucks&site=Tiktok&rss&apikey=DfbocUOh1x76d9Lt1hfLf5ia1Ugs6Zqu",
+        "category": "Category 1",
+        "keyword": "starbucks",
+        "type": "keyword",
+        "network": "Tiktok"
     }
 ]

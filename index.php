@@ -778,6 +778,7 @@ const search_data = <?=json_encode($search_data)?>
                                   <button class="m-1 btn btn-block btn btn-info btn-sm search-item-edit-btn"><i
                                           class="fas fa-pencil-alt"></i> Edit</button>
                                   <button class="m-1 btn btn-block btn btn-danger btn-sm delete-search-item"><i class="fas fa-trash"></i> Delete</button>
+                                  <button data-toggle="modal" data-target="#modal-switch" class="m-1 btn btn-block btn btn-primary btn-sm add-search-item"><i class="fas fa-add"></i> Add</button>
                               </td>
 
                           </tr>
@@ -800,6 +801,31 @@ const search_data = <?=json_encode($search_data)?>
                     ?>
                   </tbody>
                 </table>
+                <div id="modal-switch" tabindex="-1" role="dialog" aria-labelledby="modal-switch-label" class="modal fade">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <form method="POST" id="select_template_form">
+                        <input type="hidden" id="post_id" />
+                        <div class="modal-header">
+                          <div id="modal-switch-label" class="modal-title">Template</div>
+                          <button type="button" data-dismiss="modal" class="close">
+                            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <select class="form-control select2" style="width: 100%;" id="template_group" name="template_group">
+                            <?php foreach ($groups as $key => $group):?>
+                              <option value="<?=$group?>"><?=$group?></option>
+                            <?php endforeach;?> 
+                          </select>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-primary" id="select_template_btn">Submit</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
                   </div>
               </div>
 		  </div>

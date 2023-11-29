@@ -78,7 +78,7 @@ function processImage($imageURL, $site)
         return 'Error: No image URL provided.';
     }
 
-    $saveAs = '../src/img/instagram/' . uniqid() . '.jpg';
+    $saveAs = domain . 'src/img/instagram/' . uniqid() . '.jpg';
 
     try {
         $imageSrc = extractImage($imageURL, $site);
