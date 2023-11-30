@@ -14,10 +14,7 @@ function getSearchData()
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    $response = array(
-        'data' => getSearchData()
-    );
-    echo json_encode($response);
+    getSearchData();
 }elseif($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cron'])){
     http_response_code(200);
     $response = array(

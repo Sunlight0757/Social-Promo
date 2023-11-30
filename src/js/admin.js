@@ -4270,13 +4270,18 @@ $("#select_template_btn").click(function() {
   saveTemplate();
 })
 function saveTemplate() {
+  const formData1 = new FormData;
+  formData1.append("cron", true);
   $.ajax({
     url: domain + "search/getSearchData.php",
-    type: "GET",
+    type: "POST",
+    data: formData1,
+    dataType: "json",
+    processData: false,
+    contentType: false,
     success: function (xhr) {
-      var result = JSON.parse(xhr);
-      if (result.data) {
-        var searchData = result.data;
+      if (xhr.data) {
+        var searchData = xhr.data;
         var post = searchData.filter(item=>item.id===$("#post_id").val())[0];
 
         const date = new Date();

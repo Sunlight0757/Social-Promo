@@ -182,7 +182,7 @@ const search_data = <?=json_encode($search_data)?>
 
 <div class="wrapper">
 	
-  <!-- Preloader --
+  <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__wobble" src="https://socialpromo.biz/images/favicon/icon_100px.png" alt="Logo" height="100" width="100">
   </div>
