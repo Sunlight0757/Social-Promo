@@ -148,5 +148,5 @@ imagejpeg($image, $waterMarkName, $quality);
 // Clear Memory
 imagedestroy($image);
 imagedestroy($watermark);
-echo  $_SERVER['HTTP_REFERER']."/".$waterMarkName;exit;
+echo  $_SERVER['HTTP_REFERER']."/plugins/watermark/".$waterMarkName;exit;
 ?>

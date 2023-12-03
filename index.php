@@ -4229,8 +4229,6 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
 					</p>
 
 					<div id="watermark" class="collapse">
-					
-      <form action="#" method="post">
 	  
 		<div class="form-group">
 		<p><label>1.Select logo</label></p>
@@ -4255,12 +4253,7 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
 		  <option value="BOTTOM_RIGHT">Bottom right</option>
 		  <option value="BOTTOM_LEFT">Bottom left</option>
 		</select>
-	  </div> 
-	  
-		<div class="form-group">
-		<label>3. Enter image URL</label>
-		<input type="text" class="form-control" placeholder="Image URL" id="image_url">
-	  </div> 
+	  </div>
     <button class="btn btn-block btn-primary generateWatermark" type="button">SUBMIT</button>
     <br>
     <div id="resultWrap">
@@ -4269,8 +4262,6 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
       <br>
       <button class="btn btn-block btn-primary updateImageUrl" type="button">Update</button>
     </div>
-      </form>
-
 					</div>	
 					
 					<div id="gallery2" class="collapse">
@@ -4671,7 +4662,7 @@ document.body.addEventListener('click', function(e) {
 
 document.addEventListener( 'click',function(e) {
   if (e.target.matches('.updateImageUrl')) {
-    document.querySelector('#image_url').value = document.querySelector('#watermarkImage').value;
+    document.querySelector('#editTemplateImage').value = document.querySelector('#watermarkImage').value;
     toggleSideNav();
   }
 });
@@ -4680,7 +4671,7 @@ document.addEventListener( 'click',function(e) {
   if (e.target.matches('.generateWatermark')) {
     var logoImage = document.querySelector('#js-ddInput img.img-fluid').src;
     var position = document.querySelector('#position').value;
-    var image_url = document.querySelector('#image_url').value;
+    var image_url = document.querySelector('#editTemplateImage').value;
 
     var watermarkSrc = "plugins/watermark/watermark.php?image="+image_url+"&watermark="+logoImage+"&is_ready=true&place="+position;
 
