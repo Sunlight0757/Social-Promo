@@ -4146,7 +4146,7 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
 
 					<div id="watermark" class="collapse">
 					
-					CODE HERE
+					<?php include('watermark/index.php')?>
 
 					</div>	
 					
