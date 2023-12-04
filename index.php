@@ -1123,7 +1123,7 @@ const search_data = <?=json_encode($search_data)?>
 			<div class="card direct-chat direct-chat-primary">
               <div class="card-body"> 
                 <!-- Conversations are loaded here -->
-                <div class="direct-chat-messages">
+                <div class="direct-chat-messages" style="overflow:hidden">
 
                 <p><iframe src="plugins/gallery/" style="border: 0" width="100%" height="550px" scrolling="auto" frameborder="0">Your browser does not support iFrame</iframe></p>
 
