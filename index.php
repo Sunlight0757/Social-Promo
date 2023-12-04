@@ -4730,5 +4730,22 @@ document.addEventListener( 'click',function(e) {
 
 </script>
 
+<script>
+  // Function to handle messages received from the iframe
+  function handleMessage(event) {
+    // Check data for security
+    if (typeof event.data !== 'string') return;
+
+    // Assuming the data passed is a value to update
+    const valueToUpdate = event.data;
+
+    // Update the value outside the iframe
+    document.getElementById('editTemplateImage').value = valueToUpdate;
+  }
+
+  // Event listener for messages sent from the iframe
+  window.addEventListener('message', handleMessage);
+</script>
+
 </body>
 </html>

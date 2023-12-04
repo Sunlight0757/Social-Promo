@@ -71,9 +71,9 @@ async function searchPhotos() {
             if (data.results != 0) {
                 imgResultsUnsplash.insertAdjacentHTML("beforebegin", '<h5>Unsplash Results</h5>')
                 data.results.forEach(imageJson => {
-                    // image = `<img src = "${imageJson.urls.small}" class="img-thumbnail" onclick="downloadPhoto(this)">`
+                    // image = `<img src = "${imageJson.urls.small}" class="img-thumbnail" onclick="updatePhotoURL(this)">`
                     let image = `<img src = "${imageJson.urls.small}" class="img-thumbnail" 
-                              onclick="downloadPhoto('${imageJson.urls.full}', '${imageJson.id}')">`
+                              onclick="updatePhotoURL('${imageJson.urls.full}', '${imageJson.id}')">`
                     imgResultsUnsplash.insertAdjacentHTML("beforeend", image)
                 })
             } else {
@@ -95,7 +95,7 @@ async function searchPhotos() {
                 imgResultsPixabay.insertAdjacentHTML("beforebegin", '<h5>Pixabay Results</h5>')
                 data.hits.forEach(hit => {
                     let image = `<img src = "${hit.previewURL}" class="img-thumbnail" 
-                        onclick="downloadPhoto('${hit.webformatURL}', '${hit.id}')">`
+                        onclick="updatePhotoURL('${hit.webformatURL}', '${hit.id}')">`
                     imgResultsPixabay.insertAdjacentHTML("beforeend", image)
                 })
             } else {
@@ -129,7 +129,7 @@ async function searchPhotos() {
                 imgResultsPexels.insertAdjacentHTML("beforebegin", '<h5>Pexels Results</h5>')
                 data.photos.forEach(photo => {
                     let image = `<img src = "${photo.src.medium}" class="img-thumbnail" 
-			            onclick="downloadPhoto('${photo.src.original}', '${photo.id}')">`
+			            onclick="updatePhotoURL('${photo.src.original}', '${photo.id}')">`
                     imgResultsPexels.insertAdjacentHTML("beforeend", image)
                 });
             } else {
@@ -152,12 +152,8 @@ async function searchPhotos() {
         });
 }
 
-function downloadPhoto(url, id) {
-    let imgPath = url + "?&w=1080&fit=crop";
-    console.log(imgPath);
-
-    let filename = category + '-' + id + '-1080.jpg';
-    saveAs(imgPath, filename);
+function updatePhotoURL(url) {
+    window.parent.postMessage(url, '/');
 }
 
 function pressEnter() {
