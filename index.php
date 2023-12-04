@@ -4740,6 +4740,7 @@ document.addEventListener( 'click',function(e) {
     const valueToUpdate = event.data;
 
     // Update the value outside the iframe
+    document.getElementById('templateImage').value = valueToUpdate;
     document.getElementById('editTemplateImage').value = valueToUpdate;
   }
 
