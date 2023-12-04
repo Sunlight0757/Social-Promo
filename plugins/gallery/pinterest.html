@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+ 
+<head>
+    <style>
+            #selectable img {
+                max-width: 150px;
+                max-height: 150px;
+            }
+            #selectable .ui-selecting {
+            border: 2px dashed #ff0000;
+            }
+
+            #selectable .ui-selected {
+            border: 2px solid #ff0000;
+            -webkit-box-shadow: 0px 0px 8px 0px rgba(255, 0, 0, 1);
+            -moz-box-shadow: 0px 0px 8px 0px rgba(255, 0, 0, 1);
+            box-shadow: 0px 0px 8px 0px rgba(255, 0, 0, 1);
+            }
+
+            #selectable img {
+            margin: 5px;
+            padding: 5px;
+            border: 2px solid #ffffff;
+            }
+            .selected-items {
+            border: 2px solid #ff0000;
+            line-height: 32px;
+            }
+            .loading-icon {
+            display: none;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        $(function() {
+            $("#selectable").selectable({
+                selected: function() {
+                var selectedItemList = $("#selected-item-list").empty();
+                     $(".ui-selected", this).each(function() {
+                        var src = $(this).attr('src');
+                        selectedItemList.append("<img src='" + src + "'/>");
+                    });
+                }
+            });
+        });
+    </script>
+    
+    </head>
+
+
+<body>
+    <label for="inputValue">Enter a value:</label>
+    <input type="text" id="inputValue" />
+    <button id="callApiButton">Get Photos</button>
+    <div class="loading-icon">Loading...</div>
+    <div id="selectable">
+    </div>
+    
+    <p class="selected-items">Embed code from Selected image: <span id="selected-item-list"></span></p>
+    <button onclick="ClickBoard()">Copy</button>
+
+<p id="demo"></p>
+<script>
+    // Function to make the API call
+    function ClickBoard() {
+            var selectedItemsContent = $("#selected-item-list").html();
+            var tempInput = $("<input>");
+            $("body").append(tempInput);
+            tempInput.val(selectedItemsContent).select();
+            document.execCommand("copy");
+            tempInput.remove();
+            alert("Content copied to clipboard!");
+    }
+
+    function callApi(inputValue) {
+        // Replace 'your-api-endpoint' with the actual API endpoint URL
+        
+        const apiUrl = 'https://suite.social/search/search-result.php?q='+inputValue+'&site=Pinterest-Images&rss';
+
+        // Use fetch or other AJAX methods to call the API
+        $('.loading-icon').show()
+        fetch(apiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text(); // Use response.text() to handle XML data
+            })
+            .then(xmlData => {
+                // Parse the XML data
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlData, 'text/xml');
+
+                // Now you can work with the xmlDoc, which contains the parsed XML data
+                console.log(xmlDoc);
+                $('.loading-icon').hide()
+                const imageElements = xmlDoc.getElementsByTagName('image');
+                const imageUrls = [];
+                for (let i = 0; i < imageElements.length; i++) {
+                    const urlElement = imageElements[i].getElementsByTagName('url')[0];
+                    if (urlElement) {
+                        const imageUrl = urlElement.textContent;
+                        imageUrls.push(imageUrl);
+                    }
+                }
+
+                console.log('Image URLs:', imageUrls);
+                const imageGalleryDiv = document.getElementById('selectable');
+                imageUrls.forEach(imageUrl => {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = imageUrl;
+                    imgElement.alt = 'Image';
+                    imageGalleryDiv.appendChild(imgElement);
+                });
+                
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }
+
+    // Add event listener to the input element
+    function handleButtonClick() {
+            // Get the input value
+            const inputValue = document.getElementById('inputValue').value;
+
+            // Call the API with the input value
+            callApi(inputValue);
+        }
+
+        // Add event listener for the button click
+        const callApiButton = document.getElementById('callApiButton');
+        callApiButton.addEventListener('click', handleButtonClick);
+</script>
+
+
+</body>
+</html> 

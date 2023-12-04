@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Search</title>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+<style>
+a {
+	cursor: pointer;
+}
+
+hr {
+	border: none;
+	display: block;
+	height: 3px;
+	border-radius: 5px;
+	background-color: #f1f1f1;
+}
+
+.d-flex img {
+	width: 200px;
+	height: 200px !important;
+	margin: 0px 10px;
+	margin-bottom: 20px;
+	object-fit: cover;
+	transition: all 200ms ease-in-out;
+}
+
+.d-flex img:hover {
+	filter: brightness(0.85);
+	cursor: pointer;
+	box-shadow: 0 5px 20px #6161613d;
+}
+
+.btn-primary {
+	background-color: #81D2E5;
+	border-color: #81D2E5;
+}
+
+.btn-primary:hover {
+	border-color: #81D2E5;
+	border-color: #81D2E5;
+	background-color: rgb(87, 183, 204);
+}
+
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary:not(:disabled):not(.disabled).active,
+.btn-primary:not(:disabled):not(.disabled):active {
+	border-color: #81D2E5;
+	border-color: #81D2E5;
+	background-color: rgb(87, 183, 204);
+	box-shadow: 0 0 0 0.2rem rgba(129, 211, 229, 0.356);
+}
+
+.form-control:focus {
+	box-shadow: 0 0 0 0.2rem rgba(129, 211, 229, 0.356);
+	border-color: #81D2E5;
+}
+
+div > h5{
+	margin-left: 20px;
+}
+</style>
+</head>
+
+<body>
+		<div class="row">
+			<div class="col-12">
+				<div class="input-group mb-3">
+					<input type="text" id="search" class="form-control" placeholder="Search for images..."
+						onchange="page = 1" onkeydown="pressEnter(this)" autocomplete="off">
+					<div class="input-group-append">
+						<button class="btn btn-primary " type="button" id="search-btn" onclick="searchPhotos(this)">
+							<svg class="text-center mx-4 mb-1" width="1em" height="1em" viewBox="0 0 16 16"
+								class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+								<path fill-rule="evenodd"
+									d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z" />
+								<path fill-rule="evenodd"
+									d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z" />
+							</svg>
+						</button>
+					</div>
+				</div>
+				<!-- </form> -->
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12">
+				<p class="pl-2 pt-0 text-muted" id="num-results"></p>
+				<div class="text-xs-center mx-auto" id="pagination"></div>
+				<div id="unsplash">	
+					<div class="d-flex flex-wrap align-items-start mb-5" id="img-results-unsplash">
+					</div>
+				</div>
+				<div id="pixabay">
+					<div class="d-flex flex-wrap align-items-start mb-5" id="img-results-pixabay">
+					</div>
+				</div>
+				<div id="pexels">
+					<div class="d-flex flex-wrap align-items-start mb-5" id="img-results-pexels">
+					</div>
+				</div>
+				<div class="text-xs-center mx-auto" style="margin-bottom: 100px !important;">
+					<ul class="pagination text-center mx-auto">
+						<li class="page-item"><a class="page-link" onclick="prevPage()">Previous</a></li>
+						<li class="page-item"><a class="page-link" onclick="nextPage()">Next</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+</body>
+<script src="FileSaver.min.js"></script>
+<script src="photo-search.js"></script>
+
+</html>

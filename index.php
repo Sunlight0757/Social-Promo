@@ -251,6 +251,12 @@ h5.search-url-table-notes-label{
   pointer-events: none;
 }
 
+/**************************************** GALLERY ****************************************/
+
+.direct-chat-messages {
+    height: 500px;
+}
+
 </style>
 
 </head>
@@ -1112,9 +1118,21 @@ const search_data = <?=json_encode($search_data)?>
 					
 					<p><a href="#gallery" data-toggle="collapse" class="btn btn-success"><i class="fas fa-images"></i> FIND IMAGE</a></p>					
 
-					<div id="gallery" class="collapse">
+					<div id="gallery" class="collapse">					
 					
-					CODE HERE
+			<div class="card direct-chat direct-chat-primary">
+              <div class="card-body"> 
+                <!-- Conversations are loaded here -->
+                <div class="direct-chat-messages">
+
+                <p><iframe src="plugins/gallery/" style="border: 0" width="100%" height="550px" scrolling="auto" frameborder="0">Your browser does not support iFrame</iframe></p>
+
+                </div>
+                <!--/.direct-chat-messages-->
+				
+              </div>
+              <!-- /.card-body -->
+            </div>
 
 					</div>
 					
@@ -4257,16 +4275,27 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
     <button class="btn btn-block btn-primary generateWatermark" type="button">SUBMIT</button>
     <br>
     <div id="resultWrap">
-      <img src="" id="resultImg" height="200" width="320"/>
+      <p><img src="" id="resultImg" height="200" width="320"/></p>
       <input type="hidden" id="watermarkImage" value=""/>
-      <br>
-      <button class="btn btn-block btn-primary updateImageUrl" type="button">Update</button>
+      <p><button class="btn btn-lg btn-success updateImageUrl" type="button">Update Image</button></p>
     </div>
 					</div>	
 					
 					<div id="gallery2" class="collapse">
 					
-					CODE HERE
+			<div class="card direct-chat direct-chat-primary">
+              <div class="card-body"> 
+                <!-- Conversations are loaded here -->
+                <div class="direct-chat-messages" style="overflow:hidden">
+
+                <p><iframe src="plugins/gallery/" style="border: 0" width="100%" height="550px" scrolling="auto" frameborder="0">Your browser does not support iFrame</iframe></p>
+
+                </div>
+                <!--/.direct-chat-messages-->
+				
+              </div>
+              <!-- /.card-body -->
+            </div>
 
 					</div>
 					
