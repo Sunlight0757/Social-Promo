@@ -78,7 +78,7 @@ function processImage($imageURL, $site)
         return 'Error: No image URL provided.';
     }
 
-    $saveAs = domain . 'src/img/instagram/' . uniqid() . '.jpg';
+    $url = 'src/img/instagram/' . uniqid() . '.jpg';
 
     try {
         $imageSrc = extractImage($imageURL, $site);
@@ -94,9 +94,9 @@ function processImage($imageURL, $site)
             throw new Exception('HTTP request failed with status code ' . $httpCode);
         }
 
-        saveImageToFile($rawData, $saveAs);
+        saveImageToFile($rawData, '../' . $url);
 
-        return $saveAs;
+        return domain . $url;
     } catch(Exception $e) {
         $errorMessage = 'Error: ' . $e->getMessage();
         return [$errorMessage];
