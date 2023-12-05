@@ -2537,7 +2537,7 @@ function updateSearchDataTable(searchData) {
           </td>
         </tr>
         <tr class="expandable-body search-url-table-expandable">
-          <td colspan="7">
+          <td colspan="8">
             <p class="search-url-table-description" style="display: none;">${data['description']}</p>
             <h5 class="search-url-table-notes-label" style="display: none;">Notes:</h5>
             <p class="search-url-table-notes" style="display: none;">${data['notes']}</p>
