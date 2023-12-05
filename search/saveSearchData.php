@@ -45,10 +45,13 @@ function convertRSSFeedInArray($rssFeed)
                         $dom->loadHTML(str_replace('&', '&amp;', $description));
                         
                         // Find the img tag and retrieve the src attribute
+                        $div = $dom->getElementsByTagName('div')->item(1);
+                        $div->setAttribute('style', "word-break: break-all;");
                         $image = $dom->getElementsByTagName('img')->item(0);
-                        
+
                         if ($image) {
                             $image->setAttribute('src', $imageUrl); // Change src attribute
+                            $image->setAttribute('style', ""); // Change src attribute
                         }
                         $description = $dom->saveHTML();
                     } else {

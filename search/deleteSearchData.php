@@ -37,6 +37,9 @@ function deleteSearchData($link)
     foreach ($data as $index => $item) {
         if ($item['link'] == $link) {
             unset($data[$index]);
+            if(strpos($item['imageUrl'], '/src/img/instagram')!==false){
+                unlink('..' . strstr($item['imageUrl'], '/src/img/instagram'));
+            }
             break;
         }
     }

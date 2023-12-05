@@ -25,6 +25,9 @@ function deleteIds($ids)
     foreach ($data as $index => $item) {
         if (in_array($item['id'], $ids)) {
             unset($data[$index]);
+            if(strpos($item['imageUrl'], '/src/img/instagram')!==false){
+                unlink('..' . strstr($item['imageUrl'], '/src/img/instagram'));
+            }
             $deletedLinks[] = $item['link'];
         }
     }
