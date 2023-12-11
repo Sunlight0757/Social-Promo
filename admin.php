@@ -744,7 +744,7 @@ const search_data = <?=json_encode($search_data)?>
                     <?php endforeach; ?>
                   </select></p>
 				  <p><button type="button" id="category_delete_btn" class="btn btn-secondary btn-xs search_category_delete">Delete selected category?</button></p>
-        </form>
+               </form>
                 </div>
                 <!-- /.form-group -->			  
 
@@ -3989,7 +3989,7 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
   </div>
 
 
-              <div class="form-group" id="slot">
+    <div class="form-group" id="slot">
 	<label>Select slot</label>
 	<select id="slot_booking" class="form-control">
 	  <option value="00:15">15 mins</option>
