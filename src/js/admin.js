@@ -111,7 +111,10 @@ function displayelemnt(json) {
   //var data = JSON.parse(json);
   var tbody = document.querySelector('tbody');
   var tr = '';
+  var StatusBtnVal = '';
   json.forEach((Element, index) => {
+    var a = '';
+    var StatusArr = [];
     const age = calculateAge(Element.birthday);
     let existe = 0;
     if (index == 0) {
@@ -140,15 +143,26 @@ function displayelemnt(json) {
         const statusObj = sts[i];
         const statusKey = Object.keys(statusObj)[0];
         const statusValue = statusObj[statusKey];
-
-        if (Element.status === statusKey) {
-          tr += '<td><span style="cursor:pointer;" onclick="togglestatut(' + index + ')" class="badge bg-' + statusValue + ' st' + (index + 1) + '">' + Element.status + '</span></td>';
-          existe++;
-          break;
-        }
+        StatusArr[statusKey] = statusValue;
+        a += '<a class="dropdown-item bg-' + statusValue + '" onclick="togglestatut(' + index + ', \'' + statusKey + '\')">'+statusKey+'</a>';
+        //if (Element.status === statusKey) {
+          //tr += '<td><span style="cursor:pointer;" onclick="togglestatut(' + index + ')" class="badge bg-' + statusValue + ' st' + (index + 1) + '">' + Element.status + '</span></td>';
+          //existe++;
+          //break;
+        //}
       }
 
+      StatusBtnVal = StatusArr[Element.status];
+      tr += '<td>' +
+            '<div class="btn-group">' +
+              '<button type="button" class="btn btn-'+StatusBtnVal+'">'+Element.status+'</button><button type="button" class="btn btn-'+StatusBtnVal+' dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>' +
+              '<div class="dropdown-menu" role="menu" style="">' +
+                a +
+              '</div>' +
+            '</div>' +
+          '</td>';
     }
+/*
     if (existe == 0) {
       const firstStatus = sts[0];
       const firstStatusKey = Object.keys(firstStatus)[0];
@@ -156,6 +170,7 @@ function displayelemnt(json) {
 
       tr += '<td><span style="cursor:pointer;" onclick="togglestatut(' + index + ')" class="badge bg-' + firstStatusValue + ' st' + (index + 1) + '">' + firstStatusKey + '</span></td>';
     }
+*/
 
     tr += '<td> <button class="m-1 btn btn-block btn-info btn-sm" onclick="edit(' + index + ')" data-toggle="modal" data-target="#edit"><i class="fas fa-pencil-alt"></i> Edit</button><button onclick="deleteit(' + index + ')" class="m-1 btn btn-block btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button> <button data-toggle="modal" data-target="#message" class="m-1 btn btn-block btn-success btn-sm"><i class="fas fa-envelope"></i> Message</button></td>';
     tr += '</tr>';
@@ -351,9 +366,10 @@ function edit(id) {
 }
 
 // console.log(statut);
-function togglestatut(id) {
-  let st = '';
+function togglestatut(id,st) {
+  //let st = '';
   var surveyt = json[id];
+/*
   let lastst = surveyt.status;
 
   var btnstatu = document.querySelector('.st' + (id + 1));
@@ -398,6 +414,7 @@ function togglestatut(id) {
     }
 
   }
+*/
 
   surveyt.status = st;
   json[id] = surveyt;
@@ -1457,7 +1474,15 @@ function displayCampaign(campaigns) {
     }
 
     else {
-      tr += '<td>' + Element.days.toString() + '</td><td>' + Element.time + '</td>';
+      if(Element.days.toString() == 'Bookings'){
+        if(Element.time<60){
+          tr += '<td>' + Element.days.toString() + '</td><td>' + Element.time + ' mins Before</td>';
+        }else {
+          tr += '<td>' + Element.days.toString() + '</td><td>' + Element.time/60 + ' hours Before</td>';
+        }
+      }else {
+        tr += '<td>' + Element.days.toString() + '</td><td>' + Element.time + '</td>';
+      }
     }
     tr += '<td>' + Element.group + '</td>';
 
@@ -1501,6 +1526,9 @@ function updateSelectOptions() {
       var birthSelectContainer = document.getElementById('birth-selectContainer');
       birthSelectContainer.innerHTML = '  <label for="InputGroup">Select Group</label> <select class="duallistbox" multiple="multiple">'
       var duallistbox1 = document.querySelector('#birth-selectContainer .duallistbox'); var options = '';
+      var Booking_selectContainer = document.getElementById('Booking_selectContainer');
+      Booking_selectContainer.innerHTML = '  <label for="InputGroup">Select Group</label> <select class="duallistbox" multiple="multiple">'
+      var duallistbox3 = document.querySelector('#Booking_selectContainer .duallistbox'); var options = '';
       response.forEach(function (group) {
         $('#selectContainer .duallistbox').append('<option>' + group + '</option>');
         $('#filtertemplategroup').append('<option value="' + group + '">' + group + '</option>');
@@ -1512,10 +1540,14 @@ function updateSelectOptions() {
       });
       duallistbox.innerHTML = options;
       duallistbox1.innerHTML = options;
+      duallistbox3.innerHTML = options;
       $('#selectContainer .duallistbox').bootstrapDualListbox({
         // selectorMinimalHeight: 160
       });
       $('#birth-selectContainer .duallistbox').bootstrapDualListbox({
+        // selectorMinimalHeight: 160
+      });
+      $('#Booking_selectContainer .duallistbox').bootstrapDualListbox({
         // selectorMinimalHeight: 160
       });
       console.log($('#editgroup'));
@@ -1947,6 +1979,67 @@ deleteCampaignbtn.addEventListener('click', function (event) {
 
   // console.log(templates, deleted);
 })
+
+
+/////////////////////////// Bookings campaign
+
+var btnBookingCampaign = document.querySelector("#btnBookingCampaign")
+
+btnBookingCampaign.addEventListener('click', function (e) {
+
+  e.preventDefault();
+
+  var Booking_selectContainer = document.querySelector('#Booking_selectContainer select[name="_helper2"]');
+  var groups = [];
+  var Booking_selectContainer2nd = Booking_selectContainer.querySelectorAll('option');
+  $.each(Booking_selectContainer2nd, function (index, option) {
+    groups.push(option.value);
+  })
+  // alert(groups);
+  // return;
+
+// Retrieve form values
+  var BookingRtype = document.getElementById('BookingRtype').value;
+  var BookingRTime = document.getElementById('BookingRTime').value;
+
+  if (BookingRtype !== '' && BookingRTime !== '' && groups.length > 0) {
+    const date = new Date();
+    const formattedDate = date.toLocaleDateString() + ' / ' + date.getHours() + ':' + date.getMinutes();
+    const formData = {
+      id: 1,
+      type: BookingRtype,
+      days: 'Bookings',
+      time: BookingRTime,
+      group: groups[0],
+      status: [],
+      // emailsignature: templateEmail.value,
+      date: formattedDate
+    };
+    console.log(formData);
+
+    $.ajax({
+      type: 'POST',
+      url: 'save.php',
+      data: { campaign: JSON.stringify(formData) },
+      success: function (response) {
+         console.log(response);
+        updateCampaign();
+        Swal.fire({
+          icon: 'success',
+          title: 'Congratulation',
+          text: 'Booking campaign added',
+        });
+      },
+      error: function () {
+        console.error('Error issue');
+      }
+    });
+
+  }
+
+});
+
+
 
 ////////////////////////////Birthday campaign
 
@@ -3263,17 +3356,23 @@ function countOptionsForQuestions(json) {
 
 $(document).ready(function() {
 	var type_booking = $('#type_booking').val();
-	if (('#type_booking').val() === 'event'){ $('#slot, #test1, .test1').hide();$('.event').show();}
-	else {$('#slot, #test1, .test1').show();$('.event').hide();}
+	if (type_booking === 'event') {
+		$('#slot, #test1, .test1, .users_booking').hide();
+		$('.event').show();
+	}
+	else {
+		$('#slot, #test1, .test1, users_booking').show();
+		$('.event').hide();
+	}
 
   $('#type_booking').change(function() {
     var type_booking = $(this).val();
     if (type_booking === 'event') {
-      $('#slot, #test1, .test1').hide();
+      $('#slot, #test1, .test1, .users_booking').hide();
       $('.event').show();
       // ...
     } else {
-      $('#slot, #test1, .test1').show();
+      $('#slot, #test1, .test1, .users_booking').show();
       $('.event').hide();
       // ...
     }
@@ -3306,6 +3405,7 @@ var submitbook = document.querySelector("#btnBooking")
 
 // var templateEmail = document.getElementById('templateEmail');
 var type = document.getElementById('type_booking');
+var users = document.getElementById('user_per_slot');
 var slot = document.getElementById('slot_booking');
 
 
@@ -3381,13 +3481,15 @@ let partiesDateevent = '';
  partiesDateevent = dateevent.split('-'); 
 dateevent= partiesDateevent[2] + '-' + partiesDateevent[1] + '-' +partiesDateevent[0] ;
 var timeevent = row.querySelector('.timeevent').value;
+var ticketsevent = row.querySelector('.ticketsevent').value;
     if (name.trim() !== "") {
       var entry = {
         "name": name,
         "price": price , // Si le prix est vide, définissez-le à 0 ? parseInt(price) : 0
         "url": url || "" ,
         "dateevent": dateevent || "",
-        "timeevent": timeevent || ""
+        "timeevent": timeevent || "",
+        "ticketsevent": ticketsevent || ""
       };
       service.push(entry);
     }
@@ -3427,7 +3529,7 @@ if(type.value == 'booking' )
 }
 
 if(type.value == 'event' )
-{  
+{
   if (type.value == '' || service.length <=0 ) {
     if (type.value == '') {
       type.style.borderColor = 'red'
@@ -3458,6 +3560,7 @@ if(type.value == 'event' )
     var formData = {
       id: bookings.length + 1,
       type: type.value,
+      users: users.value,
       slot: slot.value,
       days: dayData,
       services:service,
@@ -3471,6 +3574,7 @@ if(type.value == 'event' )
     var formData = {
       id: bookings.length + 1,
       type: type.value,
+      users: users.value,
       slot: '',
       days: [],
       services:service,
@@ -3593,7 +3697,10 @@ function displayBooking(json) {
   //var data = JSON.parse(json);
   var tbody = document.querySelector('#bookingtab');
   var tr = '';
+  var StatusBtnVal = '';
   json.forEach((Element, index) => {
+    var a = '';
+    var StatusArr = [];
     const age = calculateAge(Element.birthday);
     let existe = 0;
     if (index == 0) {
@@ -3608,7 +3715,16 @@ function displayBooking(json) {
     // change number beginning from 07 to 447
     var qrNumber = cleanNumber.replace(/^447/, '07');
     tr += '<p><img src="https://chart.googleapis.com/chart?cht=qr&chs=100x100&chl=tel:+' + qrNumber + '"></p><p><a aria-label="Chat on WhatsApp" class="btn btn-sm btn-success" href="https://wa.me/' + cleanNumber + '"onclick="openWhatsAppPopup(event)" ><i class="fa-brands fa-whatsapp"></i></i> WhatsApp<a/></p></td><td><p style="width:90px;">' + Element.email + '</p></td>';
-    tr += '<td><p style="width:90px;">' + Element.location + '</p></td><td><p style="width:75px;">' + Element.booking + '<br> ' + Element.dateofbooking + '</p></td>';
+
+    const dateTimeString = Element.dateofbooking;
+    const [datePart, timePart] = dateTimeString.split("/");
+    const [day, month, year] = datePart.split("-").map(Number);
+    const formattedDate = new Date(year, month - 1, day);
+    const optionsDate = { weekday: "short", month: "short", day: "numeric", year: "numeric" };
+    const formattedDateString = formattedDate.toLocaleDateString("en-US", optionsDate);
+    const formattedTime = timePart;
+    const formattedDateTime = `${formattedDateString} ${formattedTime}`;
+    tr += '<td><p style="width:90px;">' + Element.location + '</p></td><td><p style="width:75px;">' + Element.booking + '<br> ' + formattedDateTime + '</p></td>';
     if (Element.verified == 'true') {
       tr += '<td><span style="cursor:pointer;" class="badge bg-secondary ">Confirmed</span></td>';
     } else { tr += '<td><b>Pending</b></td>'; }
@@ -3622,15 +3738,29 @@ function displayBooking(json) {
         const statusObj = bookingsts[i];
         const statusKey = Object.keys(statusObj)[0];
         const statusValue = statusObj[statusKey];
+        StatusArr[statusKey] = statusValue;
+        a += '<a class="dropdown-item bg-' + statusValue + '" onclick="togglebookingstatut(' + index + ', \'' + statusKey + '\')">'+statusKey+'</a>';
 
+/*
         if (Element.status === statusKey) {
           tr += '<td><span style="cursor:pointer;" onclick="togglebookingstatut(' + index + ')" class="badge bg-' + statusValue + ' st' + (index + 1) + '">' + Element.status + '</span></td>';
           existe++;
           break;
         }
+*/
       }
+      StatusBtnVal = StatusArr[Element.status];
+      tr += '<td>' +
+          '<div class="btn-group">' +
+          '<button type="button" class="btn btn-'+StatusBtnVal+'">'+Element.status+'</button><button type="button" class="btn btn-'+StatusBtnVal+' dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>' +
+          '<div class="dropdown-menu" role="menu" style="">' +
+          a +
+          '</div>' +
+          '</div>' +
+          '</td>';
 
     }
+/*
     if (existe == 0) {
       const firstStatus = bookingsts[0];
       const firstStatusKey = Object.keys(firstStatus)[0];
@@ -3638,6 +3768,7 @@ function displayBooking(json) {
 
       tr += '<td><span style="cursor:pointer;" onclick="togglebookingstatut(' + index + ')" class="badge bg-' + firstStatusValue + ' st' + (index + 1) + '">' + firstStatusKey + '</span></td>';
     }
+*/
 
     tr += '<td>'
     tr += '<button class="m-1 btn btn-block btn btn-info btn-sm" onclick="editBooking(' + index + ')" data-toggle="modal" data-target="#edituserbooking"><i class="fas fa-pencil-alt"></i> Edit</button>';
@@ -3699,9 +3830,10 @@ function deleteBooking(id) {
   });
 }
 
-function togglebookingstatut(id) {
-  let newStatus = '';
+function togglebookingstatut(id,st) {
+  //let newStatus = '';
   var booking = userbookings[id];
+/*
   let currentStatus = booking.status;
 
   var statusButton = document.querySelector('.st' + (id + 1));
@@ -3747,8 +3879,9 @@ function togglebookingstatut(id) {
       break;
     }
   }
+*/
 
-  booking.status = newStatus;
+  booking.status = st;
   userbookings[id] = booking;
 
   $.ajax({

@@ -20,7 +20,7 @@ if (isset($_GET['index'])) {
 
 }
 $jsonData = $userdata;
-$questionsdata = file_get_contents('db/questions.json');
+$questionsdata = file_get_contents('db/questions_bookings.json');
 $questionS=json_decode($questionsdata,true);
 
 
@@ -38,18 +38,18 @@ $questions = $jsonData['question'];}
 <head>
 	
 <!-- Title -->
-<title>Social Promo - All-in-one Reward, Booking and Marketing Platform.</title>
+<title>Social Promo - All-in-one Rewards, Booking, Referrals & Marketing Platform.</title>
 
 <!-- Meta Data -->
 <meta charset="utf-8">
-<meta name="title" content="Social Promo - All-in-one Reward, Booking and Marketing Platform">
+<meta name="title" content="Social Promo - All-in-one Rewards, Booking, Referrals & Marketing Platform.">
 <meta name="description" content="Triple your traffic, leads & referrals while you focus on running your business and serving customers">
-<meta name="author" content="SocialSuite | https://suite.social">
-<meta name="keywords" content="Blog Promotion, Facebook Promotion, Flickr Promotion, oogle+ Promotion, Instagram Promotion, Linkedin Promotion, Periscope Promotion, Pinterest Promotion, eddit Promotion, Snapchat Promotion, Social Media Promotion, Social Media Marketing, Soundcloud Promotion, StumbleUpon Promotion, Tumblr Promotion, Twitter Promotion, Vimeo Promotion, Vk Promotion, WhatsApp Promotion, Wordpress Promotion, XING Promotion, YouTube Marketing, YouTube Promotion">
+<meta name="author" content="SocialPromo | https://socialpromo.biz">
+<meta name="keywords" content="Amazon Promotion, Blog Promotion, Etsy Promotion, Facebook Promotion, Instagram Promotion, Linkedin Promotion, Pinterest Promotion, Reddit Promotion, Snapchat Promotion, Social Media Promotion, Social Media Marketing, Soundcloud Promotion, TikTok Promotion, Tumblr Promotion, Twitter Promotion, Vimeo Promotion, Vk Promotion, WhatsApp Promotion, Wordpress Promotion, XING Promotion, YouTube Promotion, Email Marketing, SMS Marketing, WhatsApp Marketing, Push Notifications, Birthday Promotions, Holiday Promotions, Weather Promotions, Location Marketing, Kiosk Promotion, Social Screen, Social Wall, Reward Card">
 <meta name="robots" content="index, follow">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="language" content="English">
-<meta name="revisit-after" content="14 days">
+<meta name="revisit-after" content="7 days">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />	
@@ -57,27 +57,28 @@ $questions = $jsonData['question'];}
 <!-- Google -->
 <!-- Update your html tag to include the itemscope and itemtype attributes. -->
 <!-- html itemscope itemtype="//schema.org/{CONTENT_TYPE}" -->
-<meta itemprop="name" content="Social Promo - All-in-one Reward, Booking and Marketing Platform">
+<meta itemprop="name" content="Social Promo - All-in-one Rewards, Booking, Referrals & Marketing Platform.">
 <meta itemprop="description" content="Triple your traffic, leads & referrals while you focus on running your business and serving customers">
-<meta itemprop="image" content="https://suite.social/images/meta.jpg">
+<meta itemprop="image" content="https://socialpromo.biz/images/meta.jpg">
 
 <!-- Twitter -->
-<meta name="twitter:card" content="https://suite.social/images/meta.jpg"> <!-- to have large image post format in Twitter -->
+<meta name="twitter:card" content="https://socialpromo.biz/images/meta.jpg"> <!-- to have large image post format in Twitter -->
 <meta name="twitter:site" content="@socialsuite">
-<meta name="twitter:title" content="Social Promo - All-in-one Reward, Booking and Marketing Platform">
+<meta name="twitter:title" content="Social Promo - All-in-one Rewards, Booking, Referrals & Marketing Platform.">
 <meta name="twitter:description" content="Triple your traffic, leads & referrals while you focus on running your business and serving customers">
 <meta name="twitter:creator" content="@socialsuite">
-<meta name="twitter:image:src" content="https://suite.social/images/meta.jpg">
+<meta name="twitter:image:src" content="https://socialpromo.biz/images/meta.jpg">
 
 <!-- OG Meta Tags to improve the way the post looks when you share the page on Facebook, Twitter, LinkedIn -->
 <meta property="og:site_name" content="Social Promo" /> <!-- website name -->
 <meta property="og:site" content="https://socialpromo.biz" /> <!-- website link -->
-<meta property="og:title" content="Social Promo - All-in-one Reward, Booking and Marketing Platform"/> <!-- title shown in the actual shared post -->
+<meta property="og:title" content="Social Promo - All-in-one Rewards, Booking, Referrals & Marketing Platform."/> <!-- title shown in the actual shared post -->
 <meta property="og:description" content="Save time, money and resources and GROW traffic, customers & sales 24-7, 365 days a year!" /> <!-- description shown in the actual shared post -->
-<meta property="og:image" content="https://suite.social/images/meta.jpg" /> <!-- image link, make sure it's jpg -->
+<meta property="og:image" content="https://socialpromo.biz/images/meta.jpg" /> <!-- image link, make sure it's jpg -->
 <meta property="og:url" content="https://socialpromo.biz" /> <!-- where do you want your post to link to -->
 <meta property="og:type" content="product">
 <meta property="og:locale" content="en_UK">
+<meta property="fb:app_id" content="291494419107518" />
 
 <!-- Open Graph Article (Facebook & Pinterest) -->
 <meta property="article:section" content="Marketing">
@@ -91,15 +92,15 @@ $questions = $jsonData['question'];}
 <meta name="HandheldFriendly" content="true" />
 
 <!-- Favicon -->
-<link rel="shortcut icon" type="image/x-icon" href="https://suite.social/images/favicon/favicon.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="https://suite.social/images/favicon/icon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="https://suite.social/images/favicon/icon-16x16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="https://suite.social/images/favicon/apple-touch-icon-180x180.png">
-<link rel="apple-touch-icon" sizes="72x72" href="https://suite.social/images/favicon/apple-touch-icon-72x72.png">
-<link rel="apple-touch-icon" sizes="114x114" href="https://suite.social/images/favicon/apple-touch-icon-114x114.png">
-<link rel="apple-touch-icon" sizes="144x144" href="https://suite.social/images/favicon/apple-touch-icon-144x144.png">
-<link rel="apple-touch-icon" sizes="256x256" href="https://suite.social/images/favicon/apple-touch-icon-256x256.png" />
-<meta name="msapplication-TileImage" content="https://suite.social/images/favicon/mstile-150x150.png">
+<link rel="shortcut icon" type="image/x-icon" href="https://socialpromo.biz/images/favicon/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="https://socialpromo.biz/images/favicon/icon_32px.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://socialpromo.biz/images/favicon/icon_16px.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://socialpromo.biz/images/favicon/apple-touch-icon_180px.png">
+<link rel="apple-touch-icon" sizes="72x72" href="https://socialpromo.biz/images/favicon/apple-touch-icon_72px.png">
+<link rel="apple-touch-icon" sizes="114x114" href="https://socialpromo.biz/images/favicon/apple-touch-icon_114px.png">
+<link rel="apple-touch-icon" sizes="144x144" href="https://socialpromo.biz/images/favicon/apple-touch-icon_144px.png">
+<link rel="apple-touch-icon" sizes="256x256" href="https://socialpromo.biz/images/favicon/apple-touch-icon_256px.png" />
+<meta name="msapplication-TileImage" content="https://socialpromo.biz/images/favicon/mstile_150px.png">
 
 <!-- Fonts -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -136,7 +137,7 @@ $questions = $jsonData['question'];}
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-sm-12">
-            <h1 class="m-0 text-center"><p><img style="background-color: #001d45; padding:10px;border-radius:10px" class="img-fluid" width="320px" src="src/img/rush/logo.png"></h1></p>
+            <p class="text-center"><a href="https://socialpromo.biz"><img style="background-image: linear-gradient(45deg, #21a56e 0%, #9adc5f 100%); padding:10px;border-radius:10px" class="img-fluid" width="219px" src="https://socialpromo.biz/images/logo.png"></a></p>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -155,9 +156,9 @@ $questions = $jsonData['question'];}
 <?php if (isset($_GET['index']) and $jsonData):?>
 <p>Hi <?=$fullName?>,</p>
 
-<p>Congratulations for earning 100 points in the promotion, please review your answers, if any are incorrect, re-take the promotion so we can send you the offer.</p>
+<p>Thanks for your submission, review your answers below, if any are incorrect, please re-take the form.</p>
 
-<b>Your Social Profile:</b><br>
+<b>Your Website/Profile:</b><br>
 <?=$website?><br><br>
 
 <b>Your Mobile Number:</b><br>
@@ -181,7 +182,7 @@ $questions = $jsonData['question'];}
 <hr>
 <?php endif;?>
 
-<p><b>We will send you new rewards, tips & tricks, and reminders.</b>
+<p><b>We will send you new offers and reminders.</b>
 
 <p>Best regards,</p>
 

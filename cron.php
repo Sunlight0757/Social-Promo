@@ -27,12 +27,25 @@ function spinText($text) {
 // Fonction to send an e-mail to user
 function sendEmailToUser($user, $template,$campaign)
 {
+    $Appointment = "";
+    $bookingData = file_get_contents(bookingdatafile);
+    $bookings = json_decode($bookingData, true);
+    if($bookings!=null){
+        foreach ($bookings as $booking){
+            if ($booking['id'] == $user['id']) {
+                $Appointment = $booking['dateofbooking'];
+                $dateTime = DateTime::createFromFormat('d-m-Y/H:i', $Appointment);
+                $Appointment = $booking['booking']." - ".$dateTime->format('D, M j, Y H:i');
+                break;
+            }
+        }
+    }
 
      $task="Sending email to user " . $user['fullName'] . " with template: " . $template['id'] . "\n";
     echo $task;
 
-    $replace = array("{NAME}", "{WEBSITE}", "{PHONE}", "{EMAIL}", "{LOCATION}", "{UNSUBSCRIBE}");
-    $replaceby = array($user['fullName'], $user['website'], $user['number'], $user['email'], $user['location'],'<a id="uns" href="'.domain.'unsubscribe.php?index='.$user['id'].'">Unsubscribe</a>' );
+    $replace = array("{NAME}", "{WEBSITE}", "{PHONE}", "{EMAIL}", "{LOCATION}", "{APPOINTMENT}", "{UNSUBSCRIBE}");
+    $replaceby = array($user['fullName'], $user['website'], $user['number'], $user['email'], $user['location'], $Appointment, '<a id="uns" href="'.domain.'unsubscribe.php?index='.$user['id'].'">Unsubscribe</a>' );
     $content = str_ireplace($replace, $replaceby, $template['content']);
     $content = spinText($content);
     $mail = new PHPMailer(true);
@@ -40,10 +53,11 @@ function sendEmailToUser($user, $template,$campaign)
         $mail->SMTPDebug = SMTP::DEBUG_OFF;
         $mail->isSMTP();
         $mail->Host       = host;
-        $mail->SMTPAuth   = true;
+        $mail->SMTPAuth   = SMTPAuth;
         $mail->Username   = username;
         $mail->Password   = password;
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        //$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->SMTPSecure = SMTPSecure;
         $mail->Port = port;
         $mail->isHTML(true);
         $mail->Encoding = "base64";
@@ -65,7 +79,9 @@ function sendEmailToUser($user, $template,$campaign)
         $mail->isHTML(true);
         $mail->Subject = $template['title'];
         $body="";
+        if(isset($template['image']) || $template['image'] != 'default.png'){
         $body.='<p><img src="'.$template['image'].'" /></p><br>';
+        }
         $body.=$content;
         $mail->Body = $body;
         //var_dump($mail->Body);
@@ -157,6 +173,80 @@ file_put_contents('db/campaign.json', json_encode($campaignData));
     }
 }
 
+function sendEmailToAdmin($user, $template,$campaign)
+{
+    $Appointment = "";
+    $bookingData = file_get_contents(bookingdatafile);
+    $bookings = json_decode($bookingData, true);
+    if($bookings!=null){
+        foreach ($bookings as $booking){
+            if ($booking['id'] == $user['id']) {
+                $Appointment = $booking['dateofbooking'];
+                $dateTime = DateTime::createFromFormat('d-m-Y/H:i', $Appointment);
+                $Appointment = $booking['booking']." - ".$dateTime->format('D, M j, Y H:i');
+                break;
+            }
+        }
+    }
+
+     $task="Sending email to Admin of user : " . $user['fullName'] . " with template: " . $template['id'] . "\n";
+    echo $task;
+
+    $name = $user['fullName'];
+
+    $message = "Hi Admin, ".adminbookingreminder.$name.", Booking Details - ".$Appointment;
+
+    foreach (email_address as $adminEmail){
+        $mail = new PHPMailer(true);
+        try {
+            $mail->SMTPDebug = SMTP::DEBUG_OFF;
+            $mail->isSMTP();
+            $mail->Host       = host;
+            $mail->SMTPAuth   = SMTPAuth;
+            $mail->Username   = username;
+            $mail->Password   = password;
+            //$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->SMTPSecure = SMTPSecure;
+            $mail->Port = port;
+            $mail->isHTML(true);
+            $mail->Encoding = "base64";
+            $mail->CharSet = "UTF-8";
+            $mail->SMTPOptions = array(
+                'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                )
+            );
+
+            //Recipients
+            $mail->setFrom(address, name);
+
+            $mail->addAddress($adminEmail,  'Admin');
+
+            //Content
+            $mail->isHTML(true);
+            $mail->Subject = 'Booking Reminder of User';
+            $body="";
+            $body.=$message;
+            $mail->Body = $body;
+            //var_dump($mail->Body);
+
+            if ($mail->send()) {
+
+                echo '/n/success'.$mail->ErrorInfo;
+
+
+            } else {
+                echo 'error '.$mail->ErrorInfo;
+
+            }
+        } catch (Exception $e) {
+            var_dump($mail->ErrorInfo);
+        }
+    }
+}
+
 
 function sendSMSToUser($user, $template,$campaign){
     $task="Sending sms to user " . $user['fullName'] . " with template: " . $template['id'] . "\n";
@@ -239,6 +329,73 @@ file_put_contents('db/campaign.json', json_encode($campaignData));
 curl_close($ch);
 
 
+}
+
+function sendSMSToAdmin($user, $template,$campaign){
+
+    $Appointment = "";
+    $bookingData = file_get_contents(bookingdatafile);
+    $bookings = json_decode($bookingData, true);
+    if($bookings!=null){
+        foreach ($bookings as $booking){
+            if ($booking['id'] == $user['id']) {
+                $Appointment = $booking['dateofbooking'];
+                $dateTime = DateTime::createFromFormat('d-m-Y/H:i', $Appointment);
+                $Appointment = $booking['booking']." - ".$dateTime->format('D, M j, Y H:i');
+                break;
+            }
+        }
+    }
+
+    $task="Sending sms to user " . $user['fullName'] . " with template: " . $template['id'] . "\n";
+    echo $task;
+
+    $content = "Hi Admin, ".adminbookingreminder.$user['fullName'].", Booking Details - ".$Appointment;
+
+    foreach (sms_phoneNumber as $adminNumber){
+// Twilio Account Credentials
+        $accountSid = twilo_ssid;
+        $authToken = twilo_token;
+
+// Twilio Phone Number
+        $twilioPhoneNumber = twilo_phoneNumber;
+
+// Recipient Phone Number
+        $toNumber = $adminNumber;
+
+// Message Body
+        $messageBody =  $content;
+
+// Twilio API URL for sending messages
+        $url = 'https://api.twilio.com/2010-04-01/Accounts/' . $accountSid . '/Messages.json';
+
+// Request parameters
+        $data = array(
+            'To' => $toNumber,
+            'From' => $twilioPhoneNumber,
+            'Body' => $messageBody
+        );
+
+// cURL configuration
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($ch, CURLOPT_USERPWD, $accountSid . ':' . $authToken);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+// Execute the cURL request
+        $response = curl_exec($ch);
+
+// Check for errors
+        if (curl_errno($ch)) {
+            echo 'Error: ' . curl_error($ch);
+        } else {
+            // Message sent successfully
+            echo 'Message sent! Response: ' . $response;
+        }
+// Close the cURL session
+        curl_close($ch);
+    }
 }
 
 
@@ -519,9 +676,12 @@ foreach ($campaignData as $key => $campaign) {
     $currentTime = new DateTime();
     $currentTime->setTimezone($timezone);
     $currentTime->format('H:i');
-     if(($campaign['days'] != 'Birthdays') && is_array($campaign['days']) &&!isset($campaign['holiday']) && !isset($campaign['forecast'])){
-        // var_dump($campaign);
+     if($campaign['days'] != 'Bookings' && $campaign['days'] != 'Birthdays' && is_array($campaign['days']) &&!isset($campaign['holiday']) && !isset($campaign['forecast'])){
+         echo $currentDayOfWeek." -  Current Day<br>";
+         var_dump($campaign);
+         echo "<br>";
         if (in_array($currentDayOfWeek, $campaign['days'])) {
+            echo $currentTime->format('H:i')." Current Time<br>";
             if ($currentTime->format('H:i') == $campaign['time']) {
                 array_push($campaigns,$campaign);
     }
@@ -567,7 +727,11 @@ foreach ($campaignData as $key => $campaign) {
         }
       
     }  
-    
+
+   if($campaign['days'] == 'Bookings') {
+       array_push($campaigns,$campaign);
+    }
+
     if(isset($campaign['forecast'])) {
         # code...
          if ($currentTime->format('H:i') == $campaign['time']) {
@@ -576,7 +740,8 @@ foreach ($campaignData as $key => $campaign) {
     }
 }
 var_dump($campaigns);
-
+$bookingData = file_get_contents(bookingdatafile);
+$bookings = json_decode($bookingData, true);
 foreach ($campaigns as $key => $campaign) {
     # code...
     $group =  $campaign['group'];
@@ -596,7 +761,7 @@ foreach ($campaigns as $key => $campaign) {
         if ($campaign['type'] == 'Email') {
 
             //var_dump($campaign['days'] != 'Birthdays' && !isset($campaign['holiday']));
-            if($campaign['days'] != 'Birthdays' && !isset($campaign['holiday']) && !isset($campaign['forecast'])){
+            if($campaign['days'] != 'Birthdays' && $campaign['days'] != 'Bookings' && !isset($campaign['holiday']) && !isset($campaign['forecast'])){
                 
                 var_dump($campaign);
             if (in_array($currentDayOfWeek, $campaign['days'])) {
@@ -606,7 +771,7 @@ foreach ($campaigns as $key => $campaign) {
                     $currentTime->format('H:i');
                         foreach ($users as $user) {
                             if(in_array($template_by_group[$i]['group'],$user['groups'])){
-                                sendEmailToUser($user, $template_by_group[$i],$campaign); 
+                                sendEmailToUser($user, $template_by_group[$i],$campaign);
                              }
                         }
                         //update sendEmail attribut to true
@@ -659,7 +824,7 @@ foreach ($campaigns as $key => $campaign) {
 
                         if (date('d-m', strtotime($birthday)) === $today) {
                             var_dump('birthday');
-                            sendEmailToUser($user, $template_by_group[$i],$campaign); 
+                            sendEmailToUser($user, $template_by_group[$i],$campaign);
                         }
                                 }
                     }
@@ -680,6 +845,70 @@ foreach ($campaigns as $key => $campaign) {
 
                     file_put_contents('db/templates.json', json_encode($templateData));
                
+                break;
+            } else {
+
+                if (count($template_by_group) == 1) {
+                    foreach ($template_by_group as $key => $temp) {
+                        # code...
+                        $position = (array_search($temp, $templateData));
+                        $temp['sendemail'] = false;
+                        $templateData[$position] = $temp;
+                        file_put_contents('db/templates.json', json_encode($templateData));
+                    }
+                }
+            }
+          }
+
+          elseif($campaign['days'] == 'Bookings'){
+
+            if (!$template_by_group[$i]['sendemail']) {
+                $currentTime = new DateTime();
+                $currentTime->setTimezone($timezone);
+                $currentTime->format('H:i');
+                    foreach ($users as $user) {
+                        if(in_array($template_by_group[$i]['group'],$user['groups'])){
+                            //echo "You are Here<br>";
+                            if($bookings!=null){
+                                foreach ($bookings as $booking){
+                                    if ($booking['id'] == $user['id']) {
+                                        $Appointment = $booking['dateofbooking'];
+                                        echo $Appointment."<br>";
+                                        $dateTime = DateTime::createFromFormat('d-m-Y/H:i', $Appointment);
+                                        $dateTime->sub(new DateInterval('PT'.$campaign['time'].'M'));
+                                        $cronTime = $dateTime->format('Y-m-d H:i');
+                                        $currentDateTime = new DateTime();
+                                        $currentDateTime = $currentDateTime->format('Y-m-d H:i');
+                                            echo "User: ".$user['fullName']." - Booking Time: ".$Appointment." - Cron Time: ".$cronTime." - Current Time: ".$currentDateTime."<br>";
+                                        if($cronTime==$currentDateTime){
+                                            sendEmailToUser($user, $template_by_group[$i],$campaign);
+                                            if(send_email_alert){
+                                                sendEmailToAdmin($user, $template_by_group[$i],$campaign);
+                                            }
+                                            echo " >> Email Send";
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                   //update sendEmail attribut to true
+                    $templateData;
+                    $position = (array_search($template_by_group[$i], $templateData));
+                    $template_by_group[$i]['sendemail'] = true;
+                    $templateData[$position] = $template_by_group[$i];
+
+                    if ($i == count($template_by_group) - 1) {
+                        foreach ($template_by_group as $key => $temp) {
+                            # code...
+                            $position = (array_search($temp, $templateData));
+                            $temp['sendemail'] = false;
+                            $templateData[$position] = $temp;
+                        }
+                    }
+
+                    file_put_contents('db/templates.json', json_encode($templateData));
+
                 break;
             } else {
 
@@ -813,7 +1042,75 @@ foreach ($campaigns as $key => $campaign) {
 
         //sms
         if ($campaign['type'] == 'SMS') {
-        if($campaign['days'] != 'Birthdays' &&!isset($campaign['holiday'])){
+
+
+            //Bookings
+            if($campaign['days'] == 'Bookings'){
+
+                if (!$template_by_group[$i]['sendsms']) {
+                    $currentTime = new DateTime();
+                    $currentTime->setTimezone($timezone);
+                    $currentTime->format('H:i');
+                    foreach ($users as $user) {
+                        if(in_array($template_by_group[$i]['group'],$user['groups'])){
+                            if($bookings!=null){
+                                foreach ($bookings as $booking){
+                                    if ($booking['id'] == $user['id']) {
+                                        $Appointment = $booking['dateofbooking'];
+                                        echo $Appointment."<br>";
+                                        $dateTime = DateTime::createFromFormat('d-m-Y/H:i', $Appointment);
+                                        $dateTime->sub(new DateInterval('PT'.$campaign['time'].'M'));
+                                        $cronTime = $dateTime->format('Y-m-d H:i');
+                                        $currentDateTime = new DateTime();
+                                        $currentDateTime = $currentDateTime->format('Y-m-d H:i');
+                                        echo "User: ".$user['fullName']." - Booking Time: ".$Appointment." - Cron Time: ".$cronTime." - Current Time: ".$currentDateTime."<br>";
+                                        if($cronTime==$currentDateTime){
+                                            sendSMSToUser($user, $template_by_group[$i],$campaign);
+                                            if(send_sms_alert){
+                                                sendSMSToAdmin($user, $template_by_group[$i],$campaign);
+                                            }
+                                            echo " >> SMS Send";
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        //update sendEmail attribut to true
+                        $templateData;
+                        $position = (array_search($template_by_group[$i], $templateData));
+                        $template_by_group[$i]['sendsms'] = true;
+                        $templateData[$position] = $template_by_group[$i];
+
+                        if ($i == count($template_by_group) - 1) {
+                            foreach ($template_by_group as $key => $temp) {
+                                # code...
+                                $position = (array_search($temp, $templateData));
+                                $temp['sendsms'] = false;
+                                $templateData[$position] = $temp;
+                            }
+                        }
+
+                        file_put_contents('db/templates.json', json_encode($templateData));
+                    }
+                    break;
+                } else {
+
+                    if (count($template_by_group) == 1) {
+                        foreach ($template_by_group as $key => $temp) {
+                            # code...
+                            $position = (array_search($temp, $templateData));
+                            $temp['sendsms'] = false;
+                            $templateData[$position] = $temp;
+                            file_put_contents('db/templates.json', json_encode($templateData));
+                        }
+                    }
+                }
+
+            }
+
+
+            if($campaign['days'] != 'Birthdays' && $campaign['days'] != 'Bookings' &&!isset($campaign['holiday'])){
             if (in_array($currentDayOfWeek, $campaign['days'])) {
                 if (!$template_by_group[$i]['sendsms']) {
                     $currentTime = new DateTime();
@@ -1029,7 +1326,7 @@ foreach ($campaigns as $key => $campaign) {
         if ($campaign['type'] == 'Push') {
 
             
-            if($campaign['days'] != 'Birthdays'){
+            if($campaign['days'] != 'Birthdays' && $campaign['days'] != 'Bookings'){
                 $pushData = [];
                 if (in_array($currentDayOfWeek, $campaign['days'])) {
                     if (!$template_by_group[$i]['sendpush']) {
@@ -1039,7 +1336,7 @@ foreach ($campaigns as $key => $campaign) {
                         if ($currentTime->format('H:i') == $campaign['time']) {
                             foreach ($users as $user) {
                                 if(in_array($template_by_group[$i]['group'],$user['groups'])){
-                                    
+
                                     //get content of push with the user device;
                                     $pushjson = getPushContent($user, $template_by_group[$i],$campaign);                                   
                                     array_push($pushData,$pushjson);
@@ -1085,7 +1382,6 @@ foreach ($campaigns as $key => $campaign) {
                     }
                }
              }
-    
              else{
                 $pushData = [];
                 if (!$template_by_group[$i]['push']) {
@@ -1147,7 +1443,80 @@ foreach ($campaigns as $key => $campaign) {
     
     
               }
-               
+
+            //Bookings
+            if($campaign['days'] == 'Bookings'){
+                $pushData = [];
+                if (in_array($currentDayOfWeek, $campaign['days'])) {
+                    if (!$template_by_group[$i]['sendpush']) {
+                        $currentTime = new DateTime();
+                        $currentTime->setTimezone($timezone);
+                        $currentTime->format('H:i');
+                        if ($currentTime->format('H:i') == $campaign['time']) {
+                            foreach ($users as $user) {
+                                if(in_array($template_by_group[$i]['group'],$user['groups'])){
+                                    if($bookings!=null){
+                                        foreach ($bookings as $booking){
+                                            if ($booking['id'] == $user['id']) {
+                                                $Appointment = $booking['dateofbooking'];
+                                                echo $Appointment."<br>";
+                                                $dateTime = DateTime::createFromFormat('d-m-Y/H:i', $Appointment);
+                                                $dateTime->sub(new DateInterval('PT'.$campaign['time'].'M'));
+                                                $cronTime = $dateTime->format('Y-m-d H:i');
+                                                $currentDateTime = new DateTime();
+                                                $currentDateTime = $currentDateTime->format('Y-m-d H:i');
+                                                echo "User: ".$user['fullName']." - Booking Time: ".$Appointment." - Cron Time: ".$cronTime." - Current Time: ".$currentDateTime."<br>";
+                                                if($cronTime==$currentDateTime){
+                                                    $pushjson = getPushContent($user, $template_by_group[$i],$campaign);
+                                                    array_push($pushData,$pushjson);
+                                                    echo " >> Pushed";
+                                                }
+                                            }
+                                        }
+                                    }
+                                    //get content of push with the user device;
+                                }
+                            }
+                            //update sendpush attribut to true
+                            $templateData;
+                            $position = (array_search($template_by_group[$i], $templateData));
+                            $template_by_group[$i]['sendpush'] = true;
+                            $templateData[$position] = $template_by_group[$i];
+
+                            if ($i == count($template_by_group) - 1) {
+                                foreach ($template_by_group as $key => $temp) {
+                                    # code...
+                                    $position = (array_search($temp, $templateData));
+                                    $temp['sendpush'] = false;
+                                    $templateData[$position] = $temp;
+                                }
+                            }
+
+                            //var_dump($templateData);
+                            file_put_contents('db/templates.json', json_encode($templateData));
+                        }
+
+                        if(count($pushData)>0)
+                        {
+                            // send sendPushToUsers
+                            sendPushToUsers($pushData);
+                            $pushData=[];
+                        }
+                        break;
+                    }else {
+
+                        if (count($template_by_group) == 1) {
+                            foreach ($template_by_group as $key => $temp) {
+                                # code...
+                                $position = (array_search($temp, $templateData));
+                                $temp['push'] = false;
+                                $templateData[$position] = $temp;
+                                file_put_contents('db/templates.json', json_encode($templateData));
+                            }
+                        }
+                    }
+                }
+            }
 
             }
             

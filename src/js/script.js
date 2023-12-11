@@ -65,24 +65,10 @@ $(document).ready(function () {
             }
             var dateandtime = bookingdata.dateofbooking;
             var dateofbooking = dateandtime.split('/')[0];
-            var timeofbooking = dateandtime.split('/')[1];
-
-            // parse date
-            var eventdate 	= dateofbooking.split('-');
-            let month 		= eventdate[1];
-            try {
-                let parsed	= isNaN(parseInt(eventdate[1])) ? eventdate[1] : parseInt(eventdate[1]);
-                month 		= month - 1;
-            } 
-            catch (error) {}
-            let date 		    = new Date(eventdate[2], month, eventdate[0]);
-            let options 	    = { weekday: 'long',day: 'numeric',month: 'short',year: 'numeric' };
-            const dateFormatter = new Intl.DateTimeFormat('en-US', options);
-            const formattedDate = dateFormatter.format(date);
-
+            var timeofbooking = dateandtime.split('/')[1]
            
             $('.bookingData').show();
-           $('.bookingdate').text(formattedDate);
+           $('.bookingdate').text(dateofbooking);
             $('.bookingtime').text(timeofbooking);
          }
 
@@ -662,7 +648,7 @@ if(number[0]!='+')
                             // console.log(twillo_ssid, twillo_token);
                             if(send_sms && update !=='update')
                             {
-            
+                                if(smsMessage!=='') {
                               var link= domain+''+confirmFile+'?index='+uniqueID+'&id='+confirmSlidePosition;
                                 $(document).ready(function () {
                                     $.ajax({
@@ -688,8 +674,8 @@ if(number[0]!='+')
                                     
                                     
                                 });
-
-                                if(bookingdata)
+                                }
+                                if(bookingdata && smsbookingMessage!=='')
                                 {  
                                     // var link= domain+''+confirmFile+'?index='+uniqueID+'&id='+confirmSlidePosition;
                                 $(document).ready(function () {

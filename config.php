@@ -6,8 +6,8 @@ require 'search/getSearchData.php';
 header('Access-Control-Allow-Origin: *');
 
 // Domain
-// define("domain", 'https://socialpromo.biz/test/');
-define("domain", '/');
+define("domain", 'https://socialpromo.biz/demo/sunlight/');
+//define("domain", 'https://socialpromo.biz/test/');
 define("SEARCH_BASE_URL", 'https://suite.social/search/');
 
 // Max Search URL's
@@ -42,15 +42,17 @@ define('locationapi', '');
 //weather info by cities
 define('weatherapi', '');
 
-// Email verification
-define('send_email_verification', true);
+// Email verification // Gmail lets you send up to 500 emails per day.
+define('send_email_verification',true);
 define('address', 'no-reply@socialpromo.biz');
 define('name', 'Social Promo');
-define('subject', 'Social Promotion');
+define('subject', 'Social Management & Promotion');
 define('username', 'test@socialpromo.biz');
-define('password', 'm29Y9POMPa2M');
-define('host', 'mail.socialpromo.biz');
-define('port', '465');
+define('password', 'testing@123');
+define('host','mail.socialpromo.biz');
+define('SMTPAuth', true);
+define('SMTPSecure', 'ssl');
+define('port','465'); // OR TRY 587
 
 // Twilio verification and whatsapp
 define('send_sms', false);
@@ -62,12 +64,13 @@ define('smsMessage', 'Thanks for taking part! Confirm your answers here');
 define('smsbookingMessage', 'Thanks for taking this booking with us');
 
 // Admin alert
-define('send_email_alert', false);
-define('send_sms_alert', false);
-define('email_address', ['message,uk@gmail.com', '', '']); //you can add more email
+define('send_email_alert', true);
+define('send_sms_alert', true);
+define('email_address', ['message.uk@gmail.com', '', '']); //you can add more email
 define('sms_phoneNumber', ['', '',]); // you can add more number
 define('adminalert', 'has just completed your promotion, visit to view: ');
 define('adminbookingalert', 'has just completed your promotion, visit to view: ');
+define('adminbookingreminder', 'booking Reminder for');
 
 // 92.205.9.14 
 // henocvik@socialpromo.biz
@@ -123,8 +126,8 @@ define('confirmSlide', '15');
 define('giftslide', '20');
 
 //Bookings
-define('bookingslide','12');
-define('afterbookingslide','17');
+define('bookingslide','1');
+define('afterbookingslide','2');
 
 //Badges
 define('badge1', 25);
@@ -145,6 +148,7 @@ define('sendemailFile', 'send-email.php');
 define('emailFile', 'email.php');
 define('confirmFile', 'confirm.php');
 define('datafile', 'db/data.json');
+define('bookingdatafile', 'db/bookings.json');
 define('sendemailBookingFile','send-email_booking.php');
 define('emailBookingFile','email_booking.php');
 define('confirmBookingFile','confirm_booking.php');
