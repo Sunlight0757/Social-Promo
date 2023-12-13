@@ -3970,7 +3970,8 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
 			      <div class="input-group input-group-lg pb-3">
               <input type="text" class="form-control" id="cplLink">
               <span class="input-group-append">
-                <a href="javascript:void(0);" class="btn btn-info btn-flat" id="cplBtn">COPY</a>
+                <a href="javascript:void(0);" class="btn btn-success btn-flat">VISIT</a>
+				<a href="javascript:void(0);" class="btn btn-info btn-flat" id="cplBtn">COPY</a>
                 <a class="btn btn-danger btn-flat" id="cplDelBtn">DELETE</a>
               </span>
             </div>				  
