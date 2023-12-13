@@ -34,6 +34,16 @@ $data =json_decode($data,true);
   $linkdata = file_get_contents('db/clientlinks.json');
   $clientlinks = json_decode($linkdata, true);
  
+  $leadgroups = [];
+  $leaddata = file_get_contents(datafile);
+
+  $leaddata =json_decode($leaddata,true);
+  foreach ($leaddata as $lkey => $lvalue) {
+    // array_push($groups,$lvalue['group']);
+    if (count(array_diff($lvalue['groups'], $leadgroups))!=0 and $lvalue['groups'] != '') {
+      $leadgroups = array_merge($leadgroups, $lvalue['groups']);
+    }
+  }
 ?>
 
 <?php
@@ -269,6 +279,7 @@ const domain = '<?=domain?>';
 const nbquestion = <?=$nbq?>;
 const search_data = <?=json_encode($search_data)?>;
 var client_links = <?=json_encode($clientlinks)?>;
+const dataID = [];
 </script>
 
 <body class="hold-transition layout-top-nav">
@@ -496,10 +507,10 @@ var client_links = <?=json_encode($clientlinks)?>;
                     <option value="">- SELECT GROUP OR RESET-</option>
                     <?php
         
-        sort($groups);
+        sort($leadgroups);
         
        
-        foreach ($groups as $key => $group):
+        foreach ($leadgroups as $key => $group):
         ?>
         <option value="<?= $group ?>"><?= $group ?></option>
         <?php endforeach; ?>
@@ -3876,8 +3887,8 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
             <select style="width:100%" class="form-control select2" id="linkfiltergroup" name="filtergroup">
               <option value="">- SELECT GROUP OR RESET-</option>
               <?php
-                sort($groups);
-                foreach ($groups as $key => $group):
+                sort($leadgroups);
+                foreach ($leadgroups as $key => $group):
               ?>
                 <option value="<?= $group ?>"><?= $group ?></option>
               <?php endforeach; ?>
@@ -3970,8 +3981,8 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
 			      <div class="input-group input-group-lg pb-3">
               <input type="text" class="form-control" id="cplLink">
               <span class="input-group-append">
-                <a href="javascript:void(0);" class="btn btn-success btn-flat">VISIT</a>
-				<a href="javascript:void(0);" class="btn btn-info btn-flat" id="cplBtn">COPY</a>
+                <a target="_blank" class="btn btn-success btn-flat" id="cplVisitBtn">VISIT</a>
+				        <a href="javascript:void(0);" class="btn btn-info btn-flat" id="cplBtn">COPY</a>
                 <a class="btn btn-danger btn-flat" id="cplDelBtn">DELETE</a>
               </span>
             </div>				  

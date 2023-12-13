@@ -124,26 +124,26 @@ function displayelemnt(json) {
       tr += ' <tr data-widget="expandable-table" class="' + (index + 1) + '" aria-expanded="false">';
     }
     tr += '<td><input type="checkbox" name="delete-lead" id="" value="' + index + ' " class="delete-lead" /></td><td>' + (index + 1) + '</td>';
-    if(dataID.includes('0')) tr += '<td><p style="width:90px;">' + Element.fullName + '</p></td>';
-    if(dataID.includes('1')) tr += '<td><p style="width:30px;">' + age + '</p></td>';
-    if(dataID.includes('2')) tr += '<td><p style="width:90px;"><a href="' + Element.website + '" target="_blank"onclick="openWebsitePopup(event)">' + Element.website + ' </a></p></td>';
-    if(dataID.includes('3')) {
+    if(dataID.length==0||dataID.includes('0')) tr += '<td><p style="width:90px;">' + Element.fullName + '</p></td>';
+    if(dataID.length==0||dataID.includes('1')) tr += '<td><p style="width:30px;">' + age + '</p></td>';
+    if(dataID.length==0||dataID.includes('2')) tr += '<td><p style="width:90px;"><a href="' + Element.website + '" target="_blank"onclick="openWebsitePopup(event)">' + Element.website + ' </a></p></td>';
+    if(dataID.length==0||dataID.includes('3')) {
       tr += '<td><p style="width:110px;">' + Element.number + '<br>';
       var cleanNumber = Element.number.replace("+", "");
       // change number beginning from 07 to 447
       var qrNumber = cleanNumber.replace(/^447/, '07');
       tr += '<p><img src="https://chart.googleapis.com/chart?cht=qr&chs=100x100&chl=tel:+' + qrNumber + '"></p><p><a aria-label="Chat on WhatsApp" class="btn btn-sm btn-success" href="https://wa.me/' + cleanNumber + '"onclick="openWhatsAppPopup(event)" ><i class="fa-brands fa-whatsapp"></i></i> WhatsApp<a/></p></td>';
     }
-    if(dataID.includes('4')) tr += '<td><p style="width:90px;">' + Element.email + '</p></td>';
-    if(dataID.includes('5')) tr += '<td><p style="width:90px;">' + Element.location + '</p></td>';
-    if(dataID.includes('6')) tr += '<td><p style="width:75px;">' + Element.date + '</p></td>';
-    if(dataID.includes('7')) {
+    if(dataID.length==0||dataID.includes('4')) tr += '<td><p style="width:90px;">' + Element.email + '</p></td>';
+    if(dataID.length==0||dataID.includes('5')) tr += '<td><p style="width:90px;">' + Element.location + '</p></td>';
+    if(dataID.length==0||dataID.includes('6')) tr += '<td><p style="width:75px;">' + Element.date + '</p></td>';
+    if(dataID.length==0||dataID.includes('7')) {
       if (Element.verified == 'true') {
         tr += '<td><span style="cursor:pointer;" class="badge bg-secondary ">Confirmed</span></td>';
       } else { tr += '<td><b>Pending</b></td>'; }
     }
 
-    if(dataID.includes('8')) {
+    if(dataID.length==0||dataID.includes('8')) {
       if (Element.unsubscribed == 'true') {
         tr += '<td><span style="cursor:pointer;"  st' + (index + 1) + '" class="badge bg-info">Unsubscribed</span></td>';
         existe++;
@@ -183,7 +183,7 @@ function displayelemnt(json) {
     }
 */
 
-    if(dataID.includes('9')) tr += '<td> <button class="m-1 btn btn-block btn-info btn-sm" onclick="edit(' + index + ')" data-toggle="modal" data-target="#edit"><i class="fas fa-pencil-alt"></i> Edit</button><button onclick="deleteit(' + index + ')" class="m-1 btn btn-block btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button> <button data-toggle="modal" data-target="#message" class="m-1 btn btn-block btn-success btn-sm"><i class="fas fa-envelope"></i> Message</button></td>';
+    if(dataID.length==0||dataID.includes('9')) tr += '<td> <button class="m-1 btn btn-block btn-info btn-sm" onclick="edit(' + index + ')" data-toggle="modal" data-target="#edit"><i class="fas fa-pencil-alt"></i> Edit</button><button onclick="deleteit(' + index + ')" class="m-1 btn btn-block btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button> <button data-toggle="modal" data-target="#message" class="m-1 btn btn-block btn-success btn-sm"><i class="fas fa-envelope"></i> Message</button></td>';
     tr += '</tr>';
     tr += '<tr class="expandable-body ' + (index + 1) + '"><td style = "padding:12px !important" colspan = "12"> ';
     tr += '<span>';
@@ -209,16 +209,16 @@ function displayelemnt(json) {
   tbody.innerHTML = tr;
   var thr = '';
   thr += '<tr><th><input type="checkbox" id="allleads" name="delete-all" value="lead" title="select all"></th><th>#</th>';
-  if(dataID.includes('0')) thr += '<td>Name</td>';
-  if(dataID.includes('1')) thr += '<td>Age</td>';
-  if(dataID.includes('2')) thr += '<td>Website</td>';
-  if(dataID.includes('3')) thr += '<td>Phone (+Area Code)</td>';
-  if(dataID.includes('4')) thr += '<td>Email</td>';
-  if(dataID.includes('5')) thr += '<td>Location</td>';
-  if(dataID.includes('6')) thr += '<td>Date</td>';
-  if(dataID.includes('7')) thr += '<td>Confirmed</td>';
-  if(dataID.includes('8')) thr += '<td>Status</td>';
-  if(dataID.includes('9')) thr += '<td>Actions</td>';
+  if(dataID.length==0||dataID.includes('0')) thr += '<td>Name</td>';
+  if(dataID.length==0||dataID.includes('1')) thr += '<td>Age</td>';
+  if(dataID.length==0||dataID.includes('2')) thr += '<td>Website</td>';
+  if(dataID.length==0||dataID.includes('3')) thr += '<td>Phone (+Area Code)</td>';
+  if(dataID.length==0||dataID.includes('4')) thr += '<td>Email</td>';
+  if(dataID.length==0||dataID.includes('5')) thr += '<td>Location</td>';
+  if(dataID.length==0||dataID.includes('6')) thr += '<td>Date</td>';
+  if(dataID.length==0||dataID.includes('7')) thr += '<td>Confirmed</td>';
+  if(dataID.length==0||dataID.includes('8')) thr += '<td>Status</td>';
+  if(dataID.length==0||dataID.includes('9')) thr += '<td>Actions</td>';
   thr += '</tr>';
   thead.innerHTML = thr;
 }
@@ -253,6 +253,7 @@ downloadBtn.addEventListener('click', () => {
 
 
 function deleteit(id) {
+  var groups = json[id]['groups'];
   json.splice(id, 1);
   deleted = json;
 
@@ -297,6 +298,17 @@ function deleteit(id) {
           setTimeout(function () {
             leads_stat(json);
           }, 1000);
+          
+          var flag = false;
+          for(var i=0; i<json.length; i++){
+            flag = json[i]['groups'].some(element => {
+              return groups.includes(element)
+            })
+            if(flag) break;
+          }
+          if(!flag) {
+            groups.forEach(group=>deleteClientLink(group))
+          }
 
         },
         error: function () {
@@ -782,7 +794,19 @@ deleteLeadbtn.addEventListener('click', function (event) {
   todelete.forEach(del => {
     // array.includes(item, fromIndex)
     deleted = json;
+    var groups = deleted[del]['groups'];
     deleted.splice(del, 1);
+          
+    var flag = false;
+    for(var i=0; i<deleted.length; i++){
+      flag = deleted[i]['groups'].some(element => {
+        return groups.includes(element)
+      })
+      if(flag) break;
+    }
+    if(!flag) {
+      groups.forEach(group=>deleteClientLink(group))
+    }
   });
   Swal.fire({
     title: 'Are you sure?',
@@ -966,8 +990,6 @@ function displayTemplate(templates) {
 //delete template
 
 function deleteTemplate(id) {
-  var group = templates[id]['group'];
-  console.log("group: ", group);
   templates.splice(id, 1);
   deleted = templates;
 
@@ -998,14 +1020,6 @@ function deleteTemplate(id) {
           }, 1000);
 
           updateSelectOptions();
-          
-          var flag = false;
-          for(var i=0; i<templates.length; i++){
-            if (templates[i]['group'] === group){
-              flag = true;
-            }
-          }
-          if(!flag) deleteClientLink(group);
 
         },
         error: function () {
@@ -1261,15 +1275,7 @@ deleteTemplatebtn.addEventListener('click', function (event) {
   var inv = todelete.reverse();
   todelete.forEach(del => {
     deleted = templates;
-    var group = deleted[del]['group'];
     deleted.splice(del, 1);
-    var flag = false;
-    for(var i=0; i<deleted.length; i++){
-      if (deleted[i]['group'] === group){
-        flag = true;
-      }
-    }
-    if(!flag) deleteClientLink(group);
   });
   Swal.fire({
     title: 'Are you sure?',
@@ -4537,7 +4543,7 @@ function creatingLink() {
   }
   const formData = {
     group: linkformdata.get('filtergroup'),
-    link: domain + "client.php?id=" + makeKeyFromID(keyword)
+    link: domain + "c-leads.php?id=" + makeKeyFromID(keyword)
   }
   $.ajax({
     url: domain + "save.php",
@@ -4545,6 +4551,7 @@ function creatingLink() {
     data: {linkdata: JSON.stringify(formData)},
     success: function (responsive) {
       cplLink.value = formData['link'];
+      $("#cplVisitBtn").attr("href", formData['link']);
       client_links = JSON.parse(responsive);
       Swal.fire({
         icon: 'success',
@@ -4639,6 +4646,7 @@ function loadLinkData(link){
   `;
   $("#data-list").html(list);
   $("#cplLink").val(link.replace(/\\/g, ''));
+  $("#cplVisitBtn").attr("href", link.replace(/\\/g, ''));
 }
 
 $('#linkfiltergroup').change(function(){

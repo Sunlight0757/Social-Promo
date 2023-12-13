@@ -1,9 +1,28 @@
 <!DOCTYPE html>
-<?php require 'config.php'; 
+<?php require 'config.php'; ?>
+<?php
+  $linkdata = file_get_contents('db/clientlinks.json');
+  $clientlinks = json_decode($linkdata, true);
+?>
+<?php
 
-// Current domain
-$current_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+  // Current domain
+  $current_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
+  $linkFound = false;
+  foreach ($clientlinks as $link) {
+      if (str_replace("\\", "", $link['link']) === $current_url) {
+          $linkFound = true;
+          break;
+      }
+  }
+
+  if (!$linkFound) {
+      header('Location: ' . domain);
+      exit();
+  }
+?>
+<?php
 // Get Search Data
 $search_data = getSearchData();
 
@@ -30,7 +49,8 @@ $data =json_decode($data,true);
 
   $categorydata = file_get_contents('db/search_categories.json');
   $categories = json_decode($categorydata, true);
- 
+
+  $dataID = $_GET['id'];
 ?>
 
 <?php
@@ -1446,10 +1466,15 @@ function updateText() {
 <!-- Grid -->
 <script  src="src/js/grid.js"></script>
 <script  src="src/js/actions.js"></script>
+<script  src="src/js/secret.js"></script>
 <!-- Sweetalert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Scripts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
+<script>
+const dataID = getInfoFromKey('<?=$dataID?>')
+</script>
 
 <script>
 $(document).ready(function(){
