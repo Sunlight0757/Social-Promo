@@ -109,6 +109,7 @@ function datajson() {
 function displayelemnt(json) {
 
   //var data = JSON.parse(json);
+  var thead = document.querySelector('thead');
   var tbody = document.querySelector('tbody');
   var tr = '';
   var StatusBtnVal = '';
@@ -122,45 +123,55 @@ function displayelemnt(json) {
     } else {
       tr += ' <tr data-widget="expandable-table" class="' + (index + 1) + '" aria-expanded="false">';
     }
-    tr += '<td><input type="checkbox" name="delete-lead" id="" value="' + index + ' " class="delete-lead" /></td><td>' + (index + 1) + '</td> <td><p style="width:90px;">' + Element.fullName + '</p></td>';
-    tr += '<td><p style="width:30px;">' + age + '</p></td>';
-    tr += '<td><p style="width:90px;"><a href="' + Element.website + '" target="_blank"onclick="openWebsitePopup(event)">' + Element.website + ' </a></p></td><td><p style="width:110px;">' + Element.number + '<br>';
-    var cleanNumber = Element.number.replace("+", "");
-    // change number beginning from 07 to 447
-    var qrNumber = cleanNumber.replace(/^447/, '07');
-    tr += '<p><img src="https://chart.googleapis.com/chart?cht=qr&chs=100x100&chl=tel:+' + qrNumber + '"></p><p><a aria-label="Chat on WhatsApp" class="btn btn-sm btn-success" href="https://wa.me/' + cleanNumber + '"onclick="openWhatsAppPopup(event)" ><i class="fa-brands fa-whatsapp"></i></i> WhatsApp<a/></p></td><td><p style="width:90px;">' + Element.email + '</p></td>';
-    tr += '<td><p style="width:90px;">' + Element.location + '</p></td><td><p style="width:75px;">' + Element.date + '</p></td>';
-    if (Element.verified == 'true') {
-      tr += '<td><span style="cursor:pointer;" class="badge bg-secondary ">Confirmed</span></td>';
-    } else { tr += '<td><b>Pending</b></td>'; }
-
-    if (Element.unsubscribed == 'true') {
-      tr += '<td><span style="cursor:pointer;"  st' + (index + 1) + '" class="badge bg-info">Unsubscribed</span></td>';
-      existe++;
+    tr += '<td><input type="checkbox" name="delete-lead" id="" value="' + index + ' " class="delete-lead" /></td><td>' + (index + 1) + '</td>';
+    if(dataID.includes('0')) tr += '<td><p style="width:90px;">' + Element.fullName + '</p></td>';
+    if(dataID.includes('1')) tr += '<td><p style="width:30px;">' + age + '</p></td>';
+    if(dataID.includes('2')) tr += '<td><p style="width:90px;"><a href="' + Element.website + '" target="_blank"onclick="openWebsitePopup(event)">' + Element.website + ' </a></p></td>';
+    if(dataID.includes('3')) {
+      tr += '<td><p style="width:110px;">' + Element.number + '<br>';
+      var cleanNumber = Element.number.replace("+", "");
+      // change number beginning from 07 to 447
+      var qrNumber = cleanNumber.replace(/^447/, '07');
+      tr += '<p><img src="https://chart.googleapis.com/chart?cht=qr&chs=100x100&chl=tel:+' + qrNumber + '"></p><p><a aria-label="Chat on WhatsApp" class="btn btn-sm btn-success" href="https://wa.me/' + cleanNumber + '"onclick="openWhatsAppPopup(event)" ><i class="fa-brands fa-whatsapp"></i></i> WhatsApp<a/></p></td>';
     }
-    else {
-      for (let i = 0; i < sts.length; i++) {
-        const statusObj = sts[i];
-        const statusKey = Object.keys(statusObj)[0];
-        const statusValue = statusObj[statusKey];
-        StatusArr[statusKey] = statusValue;
-        a += '<a class="dropdown-item bg-' + statusValue + '" onclick="togglestatut(' + index + ', \'' + statusKey + '\')">'+statusKey+'</a>';
-        //if (Element.status === statusKey) {
-          //tr += '<td><span style="cursor:pointer;" onclick="togglestatut(' + index + ')" class="badge bg-' + statusValue + ' st' + (index + 1) + '">' + Element.status + '</span></td>';
-          //existe++;
-          //break;
-        //}
-      }
+    if(dataID.includes('4')) tr += '<td><p style="width:90px;">' + Element.email + '</p></td>';
+    if(dataID.includes('5')) tr += '<td><p style="width:90px;">' + Element.location + '</p></td>';
+    if(dataID.includes('6')) tr += '<td><p style="width:75px;">' + Element.date + '</p></td>';
+    if(dataID.includes('7')) {
+      if (Element.verified == 'true') {
+        tr += '<td><span style="cursor:pointer;" class="badge bg-secondary ">Confirmed</span></td>';
+      } else { tr += '<td><b>Pending</b></td>'; }
+    }
 
-      StatusBtnVal = StatusArr[Element.status];
-      tr += '<td>' +
-            '<div class="btn-group">' +
-              '<button type="button" class="btn btn-'+StatusBtnVal+'">'+Element.status+'</button><button type="button" class="btn btn-'+StatusBtnVal+' dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>' +
-              '<div class="dropdown-menu" role="menu" style="">' +
-                a +
+    if(dataID.includes('8')) {
+      if (Element.unsubscribed == 'true') {
+        tr += '<td><span style="cursor:pointer;"  st' + (index + 1) + '" class="badge bg-info">Unsubscribed</span></td>';
+        existe++;
+      }
+      else {
+        for (let i = 0; i < sts.length; i++) {
+          const statusObj = sts[i];
+          const statusKey = Object.keys(statusObj)[0];
+          const statusValue = statusObj[statusKey];
+          StatusArr[statusKey] = statusValue;
+          a += '<a class="dropdown-item bg-' + statusValue + '" onclick="togglestatut(' + index + ', \'' + statusKey + '\')">'+statusKey+'</a>';
+          //if (Element.status === statusKey) {
+            //tr += '<td><span style="cursor:pointer;" onclick="togglestatut(' + index + ')" class="badge bg-' + statusValue + ' st' + (index + 1) + '">' + Element.status + '</span></td>';
+            //existe++;
+            //break;
+          //}
+        }
+  
+        StatusBtnVal = StatusArr[Element.status];
+        tr += '<td>' +
+              '<div class="btn-group">' +
+                '<button type="button" class="btn btn-'+StatusBtnVal+'">'+Element.status+'</button><button type="button" class="btn btn-'+StatusBtnVal+' dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>' +
+                '<div class="dropdown-menu" role="menu" style="">' +
+                  a +
+                '</div>' +
               '</div>' +
-            '</div>' +
-          '</td>';
+            '</td>';
+      }
     }
 /*
     if (existe == 0) {
@@ -172,7 +183,7 @@ function displayelemnt(json) {
     }
 */
 
-    tr += '<td> <button class="m-1 btn btn-block btn-info btn-sm" onclick="edit(' + index + ')" data-toggle="modal" data-target="#edit"><i class="fas fa-pencil-alt"></i> Edit</button><button onclick="deleteit(' + index + ')" class="m-1 btn btn-block btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button> <button data-toggle="modal" data-target="#message" class="m-1 btn btn-block btn-success btn-sm"><i class="fas fa-envelope"></i> Message</button></td>';
+    if(dataID.includes('9')) tr += '<td> <button class="m-1 btn btn-block btn-info btn-sm" onclick="edit(' + index + ')" data-toggle="modal" data-target="#edit"><i class="fas fa-pencil-alt"></i> Edit</button><button onclick="deleteit(' + index + ')" class="m-1 btn btn-block btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button> <button data-toggle="modal" data-target="#message" class="m-1 btn btn-block btn-success btn-sm"><i class="fas fa-envelope"></i> Message</button></td>';
     tr += '</tr>';
     tr += '<tr class="expandable-body ' + (index + 1) + '"><td style = "padding:12px !important" colspan = "12"> ';
     tr += '<span>';
@@ -196,7 +207,20 @@ function displayelemnt(json) {
 
   });
   tbody.innerHTML = tr;
-
+  var thr = '';
+  thr += '<tr><th><input type="checkbox" id="allleads" name="delete-all" value="lead" title="select all"></th><th>#</th>';
+  if(dataID.includes('0')) thr += '<td>Name</td>';
+  if(dataID.includes('1')) thr += '<td>Age</td>';
+  if(dataID.includes('2')) thr += '<td>Website</td>';
+  if(dataID.includes('3')) thr += '<td>Phone (+Area Code)</td>';
+  if(dataID.includes('4')) thr += '<td>Email</td>';
+  if(dataID.includes('5')) thr += '<td>Location</td>';
+  if(dataID.includes('6')) thr += '<td>Date</td>';
+  if(dataID.includes('7')) thr += '<td>Confirmed</td>';
+  if(dataID.includes('8')) thr += '<td>Status</td>';
+  if(dataID.includes('9')) thr += '<td>Actions</td>';
+  thr += '</tr>';
+  thead.innerHTML = thr;
 }
 
 
@@ -942,6 +966,8 @@ function displayTemplate(templates) {
 //delete template
 
 function deleteTemplate(id) {
+  var group = templates[id]['group'];
+  console.log("group: ", group);
   templates.splice(id, 1);
   deleted = templates;
 
@@ -972,7 +998,14 @@ function deleteTemplate(id) {
           }, 1000);
 
           updateSelectOptions();
-
+          
+          var flag = false;
+          for(var i=0; i<templates.length; i++){
+            if (templates[i]['group'] === group){
+              flag = true;
+            }
+          }
+          if(!flag) deleteClientLink(group);
 
         },
         error: function () {
@@ -1228,7 +1261,15 @@ deleteTemplatebtn.addEventListener('click', function (event) {
   var inv = todelete.reverse();
   todelete.forEach(del => {
     deleted = templates;
+    var group = deleted[del]['group'];
     deleted.splice(del, 1);
+    var flag = false;
+    for(var i=0; i<deleted.length; i++){
+      if (deleted[i]['group'] === group){
+        flag = true;
+      }
+    }
+    if(!flag) deleteClientLink(group);
   });
   Swal.fire({
     title: 'Are you sure?',
@@ -4460,3 +4501,192 @@ function saveTemplate() {
     }
   });
 }
+
+var cplBtn = document.getElementById("cplBtn");
+var cplLink = document.getElementById("cplLink");
+
+cplBtn.onclick = function(){
+  navigator.clipboard.writeText(cplLink.value);
+  cplBtn.innerHTML ="COPIED";
+  setTimeout(function(){
+    cplBtn.innerHTML="COPY";
+  }, 3000);
+}
+
+const linkform = document.getElementById("link-data-form");
+linkform.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if($('#linkfiltergroup').val()==""){
+    Swal.fire({
+      icon: 'error',
+      title: "Error issue",
+      html: "Please select group",
+    });
+    return;
+  }
+  await creatingLink();
+});
+
+function creatingLink() {
+  const linkformdata = new FormData(linkform);
+  var keyword = "";
+  for (const pair of linkformdata.entries()) {
+    if(pair[0]!="filtergroup" && pair[0]!="link"){
+      keyword += pair[1];
+    }
+  }
+  const formData = {
+    group: linkformdata.get('filtergroup'),
+    link: domain + "client.php?id=" + makeKeyFromID(keyword)
+  }
+  $.ajax({
+    url: domain + "save.php",
+    type: "POST",
+    data: {linkdata: JSON.stringify(formData)},
+    success: function (responsive) {
+      cplLink.value = formData['link'];
+      client_links = JSON.parse(responsive);
+      Swal.fire({
+        icon: 'success',
+        title: 'Congratulation',
+        text: 'Client link created',
+      });
+    },
+    error: function () {
+      console.log("Error issue");
+    }
+  });
+}
+
+function loadLinkData(link){
+  var arr = [];
+  if(link!="") {
+    var pos = link.indexOf('=');
+    arr = getInfoFromKey(link.slice(pos+1))
+  }
+  
+  var list = `
+    <li>
+      <div class="icheck-primary d-inline ml-2">
+        <input type="checkbox" value="0" name="name" id="todoCheck0" ${arr.includes('0')?"checked":""}>
+        <label for="todoCheck0"></label>
+      </div>
+      <span class="text">Name</span>
+    </li>
+    <li>
+      <div class="icheck-primary d-inline ml-2">
+        <input type="checkbox" value="1" name="age" id="todoCheck1" ${arr.includes('1')?"checked":""}>
+        <label for="todoCheck1"></label>
+      </div>
+      <span class="text">Age</span>
+    </li>
+    <li>
+      <div class="icheck-primary d-inline ml-2">
+        <input type="checkbox" value="2" name="website" id="todoCheck2" ${arr.includes('2')?"checked":""}>
+        <label for="todoCheck2"></label>
+      </div>
+      <span class="text">Website</span>
+    </li>
+    <li>
+      <div class="icheck-primary d-inline ml-2">
+        <input type="checkbox" value="3" name="phone" id="todoCheck3" ${arr.includes('3')?"checked":""}>
+        <label for="todoCheck3"></label>
+      </div>
+      <span class="text">Phone</span>
+    </li>
+    <li>
+      <div class="icheck-primary d-inline ml-2">
+        <input type="checkbox" value="4" name="email" id="todoCheck4" ${arr.includes('4')?"checked":""}>
+        <label for="todoCheck4"></label>
+      </div>
+      <span class="text">Email</span>
+    </li>
+    <li>
+      <div class="icheck-primary d-inline ml-2">
+        <input type="checkbox" value="5" name="location" id="todoCheck5" ${arr.includes('5')?"checked":""}>
+        <label for="todoCheck5"></label>
+      </div>
+      <span class="text">Location</span>
+    </li>
+    <li>
+      <div class="icheck-primary d-inline ml-2">
+        <input type="checkbox" value="6" name="date" id="todoCheck6" ${arr.includes('6')?"checked":""}>
+        <label for="todoCheck6"></label>
+      </div>
+      <span class="text">Date</span>
+    </li>
+    <li>
+      <div class="icheck-primary d-inline ml-2">
+        <input type="checkbox" value="7" name="confirmed" id="todoCheck7" ${arr.includes('7')?"checked":""}>
+        <label for="todoCheck7"></label>
+      </div>
+      <span class="text">Confirmed</span>
+    </li>
+    <li>
+      <div class="icheck-primary d-inline ml-2">
+        <input type="checkbox" value="8" name="status" id="todoCheck8" ${arr.includes('8')?"checked":""}>
+        <label for="todoCheck8"></label>
+      </div>
+      <span class="text">Status</span>
+    </li>
+    <li>
+      <div class="icheck-primary d-inline ml-2">
+        <input type="checkbox" value="9" name="group" id="todoCheck9" ${arr.includes('9')?"checked":""}>
+        <label for="todoCheck9"></label>
+      </div>
+      <span class="text">Actions</span>					
+    </li>
+  `;
+  $("#data-list").html(list);
+  $("#cplLink").val(link.replace(/\\/g, ''));
+}
+
+$('#linkfiltergroup').change(function(){
+  var group=$(this).val();
+  var index = 0;
+  var flag = false;
+  for(var i=0;i<client_links.length;i++){
+    if(client_links[i].group==group){
+      flag = true;
+      index = i;
+    }
+  }
+  
+  var link = "";
+  if(flag) {
+    link = client_links[index]["link"];
+  }
+  loadLinkData(link);
+})
+
+function deleteClientLink(group) {
+  var arr = [];
+  for(var i=0;i<client_links.length;i++){
+    if(client_links[i]['group']!==group){
+      arr.push(client_links[i])
+    }
+  }
+  
+  $.ajax({
+    url: domain + "save.php",
+    type: "POST",
+    data: {deleteLinkdata: JSON.stringify(arr)},
+    success: function () {
+      Swal.fire({
+        icon: 'success',
+        title: 'Delete!',
+        text: 'Client link has been deleted',
+      });
+      loadLinkData("");
+      client_links = arr;
+    },
+    error: function () {
+      console.log("Error issue");
+    }
+  });
+}
+
+$("#cplDelBtn").click(function(){
+  const group = $("#linkfiltergroup").val();
+  deleteClientLink(group);
+})

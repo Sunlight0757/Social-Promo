@@ -30,6 +30,9 @@ $data =json_decode($data,true);
 
   $categorydata = file_get_contents('db/search_categories.json');
   $categories = json_decode($categorydata, true);
+
+  $linkdata = file_get_contents('db/clientlinks.json');
+  $clientlinks = json_decode($linkdata, true);
  
 ?>
 
@@ -264,7 +267,8 @@ h5.search-url-table-notes-label{
 <script>
 const domain = '<?=domain?>';
 const nbquestion = <?=$nbq?>;
-const search_data = <?=json_encode($search_data)?>
+const search_data = <?=json_encode($search_data)?>;
+var client_links = <?=json_encode($clientlinks)?>;
 </script>
 
 <body class="hold-transition layout-top-nav">
@@ -272,7 +276,7 @@ const search_data = <?=json_encode($search_data)?>
 
 <div class="wrapper">
 	
-  <!-- Preloader --
+  <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__wobble" src="https://socialpromo.biz/images/favicon/icon_100px.png" alt="Logo" height="100" width="100">
   </div>
@@ -510,6 +514,7 @@ const search_data = <?=json_encode($search_data)?>
 			  <button class="m-3 btn btn btn-success float-right" id="csv"><i class="fa-solid fa-file-csv"></i> Export CSV</button>
 			  <button data-toggle="modal" data-target="#import" class="m-3 btn btn btn-primary float-right" id="csv-import"><i class="fa-solid fa-file-import"></i> Import CSV</button>             
 			  <button data-toggle="modal" data-target="#voting" class="m-3 btn btn btn-dark float-right" id="vote"><i class="fa-solid fa-users"></i> Voting</button>
+			  <button data-toggle="modal" data-target="#client" class="m-3 btn btn btn-warning float-right" id="client-link"><i class="fa-solid fa-link"></i> Client Link</button>
 				
 			<div class="table-responsive">
 			
@@ -1159,8 +1164,8 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
 {WEBSITE} - Replaces website.<br>
 {PHONE} - Replaces phone number.<br>
 {EMAIL} - Replaces email.<br>
-{LOCATION} - Replaces location.<br>
-{APPOINTMENT} - Replaces time of appointment.<br>
+{LOCATION} - Replacesï¿½location.<br>
+{APPOINTMENT} - Replacesï¿½time of appointment.<br>
                  </p>
                   
                 </div><!-- /.card-body -->
@@ -3853,6 +3858,135 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
 	
 <!--================================================================================ MODELS ================================================================================-->
 
+<!-------------- CLIENT -------------->
+
+<div class="modal fade" id="client">
+  <div class="modal-dialog modal-lg">
+		<div class="modal-content">
+		  <div class="modal-header">
+        <h4 class="modal-title">Client Link</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+		  </div>
+		  <div class="modal-body">
+        <form id="link-data-form">
+          <div class="form-group">
+				    <label for="InputGroup">1. Select Group</label>
+            <select style="width:100%" class="form-control select2" id="linkfiltergroup" name="filtergroup">
+              <option value="">- SELECT GROUP OR RESET-</option>
+              <?php
+                sort($groups);
+                foreach ($groups as $key => $group):
+              ?>
+                <option value="<?= $group ?>"><?= $group ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <!-- /.form-group -->
+
+			    <label for="InputData">2. Select data to include</label>
+			    <p><small>Only select the data you want to show to client</small></p>
+			    <p>
+            <ul class="todo-list ui-sortable" data-widget="todo-list" id="data-list">
+              <li>
+                <div class="icheck-primary d-inline ml-2">
+                  <input type="checkbox" value="0" name="name" id="todoCheck0">
+                  <label for="todoCheck0"></label>
+                </div>
+                <span class="text">Name</span>
+              </li>
+              <li>
+                <div class="icheck-primary d-inline ml-2">
+                  <input type="checkbox" value="1" name="age" id="todoCheck1">
+                  <label for="todoCheck1"></label>
+                </div>
+                <span class="text">Age</span>
+              </li>
+              <li>
+                <div class="icheck-primary d-inline ml-2">
+                  <input type="checkbox" value="2" name="website" id="todoCheck2">
+                  <label for="todoCheck2"></label>
+                </div>
+                <span class="text">Website</span>
+              </li>
+              <li>
+                <div class="icheck-primary d-inline ml-2">
+                  <input type="checkbox" value="3" name="phone" id="todoCheck3">
+                  <label for="todoCheck3"></label>
+                </div>
+                <span class="text">Phone</span>
+              </li>
+              <li>
+                <div class="icheck-primary d-inline ml-2">
+                  <input type="checkbox" value="4" name="email" id="todoCheck4">
+                  <label for="todoCheck4"></label>
+                </div>
+                <span class="text">Email</span>
+              </li>
+              <li>
+                <div class="icheck-primary d-inline ml-2">
+                  <input type="checkbox" value="5" name="location" id="todoCheck5">
+                  <label for="todoCheck5"></label>
+                </div>
+                <span class="text">Location</span>
+              </li>
+              <li>
+                <div class="icheck-primary d-inline ml-2">
+                  <input type="checkbox" value="6" name="date" id="todoCheck6">
+                  <label for="todoCheck6"></label>
+                </div>
+                <span class="text">Date</span>
+              </li>
+              <li>
+                <div class="icheck-primary d-inline ml-2">
+                  <input type="checkbox" value="7" name="confirmed" id="todoCheck7">
+                  <label for="todoCheck7"></label>
+                </div>
+                <span class="text">Confirmed</span>
+              </li>
+              <li>
+                <div class="icheck-primary d-inline ml-2">
+                  <input type="checkbox" value="8" name="status" id="todoCheck8">
+                  <label for="todoCheck8"></label>
+                </div>
+                <span class="text">Status</span>
+              </li>
+              <li>
+                <div class="icheck-primary d-inline ml-2">
+                  <input type="checkbox" value="9" name="group" id="todoCheck9">
+                  <label for="todoCheck9"></label>
+                </div>
+                <span class="text">Actions</span>					
+              </li>
+            </ul>
+				  </p>
+				
+			    <div class="card-footer clearfix">
+            <button type="submit" class="btn btn-primary float-right" id="create-link">Submit</button>
+          </div>
+          <hr>
+			    <div class="form-group">
+			      <div class="input-group input-group-lg pb-3">
+              <input type="text" class="form-control" id="cplLink">
+              <span class="input-group-append">
+                <a href="javascript:void(0);" class="btn btn-info btn-flat" id="cplBtn">COPY</a>
+                <a class="btn btn-danger btn-flat" id="cplDelBtn">DELETE</a>
+              </span>
+            </div>				  
+          </div>
+        </form>
+		  </div>
+		  <div class="modal-footer justify-content-between">
+			  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		  </div>
+		</div>
+		<!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
 <!-------------- VOTING -------------->
 
 	<div class="modal fade" id="voting">
@@ -3865,7 +3999,18 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
 			</button>
 		  </div>
 		  <div class="modal-body">
-		  
+		    <div class="form-group">
+          <label for="exampleInputFile">1. Select Group</label>
+          <div class="input-group">
+            <div class="custom-file">
+              <input type="file" name="csvFile" class="custom-file-input" id="exampleInputFile">
+              <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+            </div>
+            <div class="input-group-append">
+              <span class="input-group-text">Upload</span>
+            </div>
+          </div>
+        </div>
 		  </div>
 		  <div class="modal-footer justify-content-between">
 			<button type="button" id="closemodale" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -4710,6 +4855,7 @@ function updateText() {
 <!-- Grid -->
 <script  src="src/js/grid.js"></script>
 <script  src="src/js/actions.js"></script>
+<script  src="src/js/secret.js"></script>
 <!-- Sweetalert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Scripts -->

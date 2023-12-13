@@ -1,6 +1,46 @@
 <?php
 require 'config.php';
 
+if (isset($_POST['linkdata'])) {
+	# code...
+	$linkdata = $_POST['linkdata'];
+
+	//var_dump($jsonData);
+	$linkdata = json_decode($linkdata, true);
+
+	$data_json = file_get_contents('db/clientlinks.json');
+	$existingData = json_decode($data_json, true);
+	$exist = 0;
+	for ($i = 0; $i < count($existingData); $i++) {
+		# code...
+		if ($existingData[$i]['group'] == $linkdata['group']) {
+			$exist++;
+			$existingData[$i] = $linkdata;
+			break;
+		}
+	}
+	if ($exist==0) {
+		array_push($existingData, $linkdata);
+	}
+
+	$data_json = json_encode($existingData);
+	file_put_contents('db/clientlinks.json', $data_json);
+	echo $data_json;
+}
+
+if (isset($_POST['deleteLinkdata'])) {
+	# code...
+	$jsonData = $_POST['deleteLinkdata'];
+
+	$fileName = 'db/clientlinks.json';
+
+	$file = fopen($fileName, 'w');
+
+	fwrite($file, $jsonData);
+
+	fclose($file);
+}
+
 if (isset($_POST['jsonData'])) {
 	# code...
 
