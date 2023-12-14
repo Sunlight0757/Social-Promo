@@ -440,6 +440,7 @@ const dataID = <?=json_encode($dataID)?>;
   })
   
   let sts= <?=(status)?>;
+  let datafile = "<?=datafile?>";
 </script>
 
 <script src="src/js/admin.js"></script>
