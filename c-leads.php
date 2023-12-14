@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php require 'config.php'; ?>
 <?php
-  $linkdata = file_get_contents('db/clientlinks.json');
+  $linkdata = file_get_contents('db/leads_client_links.json');
   $clientlinks = json_decode($linkdata, true);
 ?>
 <?php
@@ -263,14 +263,14 @@ const dataID = <?=json_encode($dataID)?>;
 			<div class="table-responsive">
 			
 			  <table class="table table-bordered table-striped table-hover">
-				<thead>
+				<thead id="leadth">
 				  <tr>
               <th><input type="checkbox" id="allleads" name="delete-all" value="lead" title="select all"></th> 
 					<th>#</th>
 					<td>Name</td>
 					<td>Age</td>
 					<td>Website</td>
-					<td>Phone (+Area Code)</td>
+					<td>Phone</td>
 					<td>Email</td>
 					<td>Location</td>
 					<td>Date</td>
@@ -279,7 +279,7 @@ const dataID = <?=json_encode($dataID)?>;
 					<td>Actions</td>
 				  </tr>
 				</thead>
-				<tbody>
+				<tbody id="leadtab">
 				</tbody>
 			  </table>
 			  

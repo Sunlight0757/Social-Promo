@@ -31,17 +31,20 @@ $data =json_decode($data,true);
   $categorydata = file_get_contents('db/search_categories.json');
   $categories = json_decode($categorydata, true);
 
-  $linkdata = file_get_contents('db/clientlinks.json');
-  $clientlinks = json_decode($linkdata, true);
- 
-  $leadgroups = [];
-  $leaddata = file_get_contents(datafile);
+  $leadlinkdata = file_get_contents('db/leads_client_links.json');
+  $leadclientlinks = json_decode($leadlinkdata, true);
 
-  $leaddata =json_decode($leaddata,true);
-  foreach ($leaddata as $lkey => $lvalue) {
-    // array_push($groups,$lvalue['group']);
-    if (count(array_diff($lvalue['groups'], $leadgroups))!=0 and $lvalue['groups'] != '') {
-      $leadgroups = array_merge($leadgroups, $lvalue['groups']);
+  $bookinglinkdata = file_get_contents('db/bookings_client_links.json');
+  $bookingclientlinks = json_decode($bookinglinkdata, true);
+ 
+  $datagroups = [];
+  $ddata = file_get_contents(datafile);
+
+  $ddata =json_decode($ddata,true);
+  foreach ($ddata as $dkey => $dvalue) {
+    // array_push($groups,$dvalue['group']);
+    if (count(array_diff($dvalue['groups'], $datagroups))!=0 and $dvalue['groups'] != '') {
+      $datagroups = array_merge($datagroups, $dvalue['groups']);
     }
   }
 ?>
@@ -278,7 +281,8 @@ h5.search-url-table-notes-label{
 const domain = '<?=domain?>';
 const nbquestion = <?=$nbq?>;
 const search_data = <?=json_encode($search_data)?>;
-var client_links = <?=json_encode($clientlinks)?>;
+var lead_client_links = <?=json_encode($leadclientlinks)?>;
+var booking_client_links = <?=json_encode($bookingclientlinks)?>;
 const dataID = [];
 </script>
 
@@ -507,10 +511,10 @@ const dataID = [];
                     <option value="">- SELECT GROUP OR RESET-</option>
                     <?php
         
-        sort($leadgroups);
+        sort($datagroups);
         
        
-        foreach ($leadgroups as $key => $group):
+        foreach ($datagroups as $key => $group):
         ?>
         <option value="<?= $group ?>"><?= $group ?></option>
         <?php endforeach; ?>
@@ -525,7 +529,7 @@ const dataID = [];
 			  <button class="m-3 btn btn btn-success float-right" id="csv"><i class="fa-solid fa-file-csv"></i> Export CSV</button>
 			  <button data-toggle="modal" data-target="#import" class="m-3 btn btn btn-primary float-right" id="csv-import"><i class="fa-solid fa-file-import"></i> Import CSV</button>             
 			  <button data-toggle="modal" data-target="#voting" class="m-3 btn btn btn-dark float-right" id="vote"><i class="fa-solid fa-users"></i> Voting</button>
-			  <button data-toggle="modal" data-target="#client" class="m-3 btn btn btn-warning float-right" id="client-link"><i class="fa-solid fa-link"></i> Client Link</button>
+			  <button data-toggle="modal" data-target="#client" class="m-3 btn btn btn-warning float-right" id="lead-client-link"><i class="fa-solid fa-link"></i> Client Link</button>
 				
 			<div class="table-responsive">
 			
@@ -546,7 +550,7 @@ const dataID = [];
 					<td>Actions</td>
 				  </tr>
 				</thead>
-				<tbody>
+				<tbody id="leadtab">
 				</tbody>
 			  </table>
 			  
@@ -583,10 +587,10 @@ const dataID = [];
                     <option value="">- SELECT GROUP OR RESET-</option>
                     <?php
         
-        sort($groups);
+        sort($datagroups);
         
        
-        foreach ($groups as $key => $group):
+        foreach ($datagroups as $key => $group):
         ?>
         <option value="<?= $group ?>"><?= $group ?></option>
         <?php endforeach; ?>
@@ -601,8 +605,8 @@ const dataID = [];
 			  <button class="m-3 btn btn btn-success float-right" id="csv"><i class="fa-solid fa-file-csv"></i> Export CSV</button>
 			  <button data-toggle="modal" data-target="#import" class="m-3 btn btn btn-primary float-right" id="csv-import"><i class="fa-solid fa-file-import"></i> Import CSV</button>
 			  <button data-toggle="modal" on data-target="#booking" class="m-3 btn btn btn-dark float-right"><i class="fa-solid fa-clock"></i> Create Booking</button>
+        <button data-toggle="modal" data-target="#client" class="m-3 btn btn btn-warning float-right" id="booking-client-link"><i class="fa-solid fa-link"></i> Client Link</button>
 			<div class="table-responsive">
-
           
 			
 			  <table class="table table-bordered table-striped table-hover">
@@ -3887,8 +3891,8 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
             <select style="width:100%" class="form-control select2" id="linkfiltergroup" name="filtergroup">
               <option value="">- SELECT GROUP OR RESET-</option>
               <?php
-                sort($leadgroups);
-                foreach ($leadgroups as $key => $group):
+                sort($datagroups);
+                foreach ($datagroups as $key => $group):
               ?>
                 <option value="<?= $group ?>"><?= $group ?></option>
               <?php endforeach; ?>
@@ -3974,6 +3978,7 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
 				  </p>
 				
 			    <div class="card-footer clearfix">
+            <input type="hidden" id="create-link-type" value="leads" />
             <button type="submit" class="btn btn-primary float-right" id="create-link">Submit</button>
           </div>
           <hr>

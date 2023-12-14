@@ -2,6 +2,7 @@
 
 
 var json = '';
+var userbookings='';
 var questions = '';
 var searched = false;
 
@@ -14,7 +15,6 @@ $(document).ready(function () {
     dataType: "json",
     success: function (data) {
       json = [];
-      console.log(dataID);
       if(dataID.length!=0) {
         for(var i=0;i<data.length;i++){
           if(data[i]['groups'].includes(current_group))
@@ -31,6 +31,30 @@ $(document).ready(function () {
       setTimeout(function () {
         leads_stat(json);
       }, 1000);
+    }
+  });
+
+  $.ajax({
+    url: domain + "getbooking.php",
+    dataType: "json",
+    success: function (data) {
+      userbookings = [];
+      if(dataID.length!=0) {
+        for(var i=0;i<data.length;i++){
+          if(data[i]['groups'].includes(current_group))
+            userbookings.push(data[i]);
+        }
+      } else {
+        userbookings = data;
+      }
+      setTimeout(function () {
+        displayBooking(userbookings);
+      }, 2000);
+  
+      setTimeout(function () {
+        booking_stat(userbookings);
+      }, 1000);
+  
     }
   });
 
@@ -125,9 +149,10 @@ function datajson() {
 
 function displayelemnt(json) {
 
+  console.log("first")
   //var data = JSON.parse(json);
-  var thead = document.querySelector('thead');
-  var tbody = document.querySelector('tbody');
+  var thead = document.querySelector('#leadth');
+  var tbody = document.querySelector('#leadtab');
   var tr = '';
   var StatusBtnVal = '';
   json.forEach((Element, index) => {
@@ -2481,18 +2506,24 @@ function booking_stat(booking) {
   // total_stat.textContent = total_contact;
 
   const firstStatusg = bookingsts[0];
-  const thirdStatusg = bookingsts[1];
+  const secondStatusg = bookingsts[1];
+  const thirdStatusg = bookingsts[2];
 
   const firstStatusKey = Object.keys(firstStatusg)[0];
+  const secondStatusKey = Object.keys(secondStatusg)[0];
   const thirdStatusKey = Object.keys(thirdStatusg)[0];
 
-  var total_first = 0; var total_third = 0;
+  var total_first = 0; var total_second = 0; var total_third = 0;
   var total_pending = 0;
   var total_confirmed = 0;
   // var total_hot = 0;
   booking.forEach(element => {
     if (element.status == firstStatusKey) {
       total_first++;
+    }
+
+    if (element.status == secondStatusKey) {
+      total_second++;
     }
 
     if (element.status == thirdStatusKey) {
@@ -2509,6 +2540,10 @@ function booking_stat(booking) {
 
   })
 
+  $("#booking_pending_stat").text(total_first);
+  $("#booking_attended_stat").text(total_second);
+  $("#booking_rejected_stat").text(total_third);
+
   var booking_stats = document.getElementById('booking_stats');
 
   var li = '';
@@ -2516,7 +2551,7 @@ function booking_stat(booking) {
 
   li += '<li class="list-group-item">' + firstStatusKey + ' <span class="float-right badge bg-info" id="warm_stat">' + total_first + '</span></li>';
 
-  li += ' <li class="list-group-item">' + thirdStatusKey + ' <span class="float-right badge bg-info" id="hot_stat">' + total_third + '</span></li>';
+  li += ' <li class="list-group-item">' + secondStatusKey + ' <span class="float-right badge bg-info" id="hot_stat">' + total_second + '</span></li>';
   
   booking_stats.innerHTML = li;
 }
@@ -3755,27 +3790,10 @@ bookings[0].slot=slot_editbooking.value;
 });
 });
 
-
-var userbookings='';
-$.ajax({
-  url: domain + "getbooking.php",
-  dataType: "json",
-  success: function (data) {
-    userbookings = data;
-    setTimeout(function () {
-      displayBooking(userbookings);
-    }, 2000);
-
-    setTimeout(function () {
-      booking_stat(userbookings);
-    }, 1000);
-
-  }
-});
-
 function displayBooking(json) {
 
   //var data = JSON.parse(json);
+  var thead = document.querySelector('#bookingth');
   var tbody = document.querySelector('#bookingtab');
   var tr = '';
   var StatusBtnVal = '';
@@ -3789,13 +3807,18 @@ function displayBooking(json) {
     } else {
       tr += ' <tr data-widget="expandable-table" class="booking' + (index + 1) + '" aria-expanded="false">';
     }
-    tr += '<td><input type="checkbox" name="delete-booking" id="" value="' + index + ' " class="delete-booking" /></td><td>' + (index + 1) + '</td> <td><p style="width:90px;">' + Element.fullName + '</p></td>';
+    tr += '<td><input type="checkbox" name="delete-booking" id="" value="' + index + ' " class="delete-booking" /></td><td>' + (index + 1) + '</td>';
+    if(dataID.length==0||dataID.includes('0')) tr += '<td><p style="width:90px;">' + Element.fullName + '</p></td>';
    
-    tr += '<td><p style="width:90px;"><a href="' + Element.website + '" target="_blank"onclick="openWebsitePopup(event)">' + Element.website + ' </a></p></td><td><p style="width:110px;">' + Element.number + '<br>';
-    var cleanNumber = Element.number.replace("+", "");
-    // change number beginning from 07 to 447
-    var qrNumber = cleanNumber.replace(/^447/, '07');
-    tr += '<p><img src="https://chart.googleapis.com/chart?cht=qr&chs=100x100&chl=tel:+' + qrNumber + '"></p><p><a aria-label="Chat on WhatsApp" class="btn btn-sm btn-success" href="https://wa.me/' + cleanNumber + '"onclick="openWhatsAppPopup(event)" ><i class="fa-brands fa-whatsapp"></i></i> WhatsApp<a/></p></td><td><p style="width:90px;">' + Element.email + '</p></td>';
+    if(dataID.length==0||dataID.includes('1')) tr += '<td><p style="width:90px;"><a href="' + Element.website + '" target="_blank"onclick="openWebsitePopup(event)">' + Element.website + ' </a></p></td>';
+    if(dataID.length==0||dataID.includes('2')) {
+      tr += '<td><p style="width:110px;">' + Element.number + '<br>';
+      var cleanNumber = Element.number.replace("+", "");
+      // change number beginning from 07 to 447
+      var qrNumber = cleanNumber.replace(/^447/, '07');
+      tr += '<p><img src="https://chart.googleapis.com/chart?cht=qr&chs=100x100&chl=tel:+' + qrNumber + '"></p><p><a aria-label="Chat on WhatsApp" class="btn btn-sm btn-success" href="https://wa.me/' + cleanNumber + '"onclick="openWhatsAppPopup(event)" ><i class="fa-brands fa-whatsapp"></i></i> WhatsApp<a/></p></td>';
+    }
+    if(dataID.length==0||dataID.includes('3')) tr += '<td><p style="width:90px;">' + Element.email + '</p></td>';
 
     const dateTimeString = Element.dateofbooking;
     const [datePart, timePart] = dateTimeString.split("/");
@@ -3805,41 +3828,46 @@ function displayBooking(json) {
     const formattedDateString = formattedDate.toLocaleDateString("en-US", optionsDate);
     const formattedTime = timePart;
     const formattedDateTime = `${formattedDateString} ${formattedTime}`;
-    tr += '<td><p style="width:90px;">' + Element.location + '</p></td><td><p style="width:75px;">' + Element.booking + '<br> ' + formattedDateTime + '</p></td>';
-    if (Element.verified == 'true') {
-      tr += '<td><span style="cursor:pointer;" class="badge bg-secondary ">Confirmed</span></td>';
-    } else { tr += '<td><b>Pending</b></td>'; }
-
-    if (Element.unsubscribed == 'true') {
-      tr += '<td><span style="cursor:pointer;"  st' + (index + 1) + '" class="badge bg-info">Unsubscribed</span></td>';
-      existe++;
+    if(dataID.length==0||dataID.includes('4')) tr += '<td><p style="width:90px;">' + Element.location + '</p></td>';
+    if(dataID.length==0||dataID.includes('5')) tr += '<td><p style="width:75px;">' + Element.booking + '<br> ' + formattedDateTime + '</p></td>';
+    if(dataID.length==0||dataID.includes('6')) {
+      if (Element.verified == 'true') {
+        tr += '<td><span style="cursor:pointer;" class="badge bg-secondary ">Confirmed</span></td>';
+      } else { tr += '<td><b>Pending</b></td>'; }
     }
-    else {
-      for (let i = 0; i < bookingsts.length; i++) {
-        const statusObj = bookingsts[i];
-        const statusKey = Object.keys(statusObj)[0];
-        const statusValue = statusObj[statusKey];
-        StatusArr[statusKey] = statusValue;
-        a += '<a class="dropdown-item bg-' + statusValue + '" onclick="togglebookingstatut(' + index + ', \'' + statusKey + '\')">'+statusKey+'</a>';
 
-/*
-        if (Element.status === statusKey) {
-          tr += '<td><span style="cursor:pointer;" onclick="togglebookingstatut(' + index + ')" class="badge bg-' + statusValue + ' st' + (index + 1) + '">' + Element.status + '</span></td>';
-          existe++;
-          break;
-        }
-*/
+    if(dataID.length==0||dataID.includes('7')) {
+      if (Element.unsubscribed == 'true') {
+        tr += '<td><span style="cursor:pointer;"  st' + (index + 1) + '" class="badge bg-info">Unsubscribed</span></td>';
+        existe++;
       }
-      StatusBtnVal = StatusArr[Element.status];
-      tr += '<td>' +
-          '<div class="btn-group">' +
-          '<button type="button" class="btn btn-'+StatusBtnVal+'">'+Element.status+'</button><button type="button" class="btn btn-'+StatusBtnVal+' dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>' +
-          '<div class="dropdown-menu" role="menu" style="">' +
-          a +
-          '</div>' +
-          '</div>' +
-          '</td>';
+      else {
+        for (let i = 0; i < bookingsts.length; i++) {
+          const statusObj = bookingsts[i];
+          const statusKey = Object.keys(statusObj)[0];
+          const statusValue = statusObj[statusKey];
+          StatusArr[statusKey] = statusValue;
+          a += '<a class="dropdown-item bg-' + statusValue + '" onclick="togglebookingstatut(' + index + ', \'' + statusKey + '\')">'+statusKey+'</a>';
 
+  /*
+          if (Element.status === statusKey) {
+            tr += '<td><span style="cursor:pointer;" onclick="togglebookingstatut(' + index + ')" class="badge bg-' + statusValue + ' st' + (index + 1) + '">' + Element.status + '</span></td>';
+            existe++;
+            break;
+          }
+  */
+        }
+        StatusBtnVal = StatusArr[Element.status];
+        tr += '<td>' +
+            '<div class="btn-group">' +
+            '<button type="button" class="btn btn-'+StatusBtnVal+'">'+Element.status+'</button><button type="button" class="btn btn-'+StatusBtnVal+' dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>' +
+            '<div class="dropdown-menu" role="menu" style="">' +
+            a +
+            '</div>' +
+            '</div>' +
+            '</td>';
+
+      }
     }
 /*
     if (existe == 0) {
@@ -3851,21 +3879,31 @@ function displayBooking(json) {
     }
 */
 
-    tr += '<td>'
-    tr += '<button class="m-1 btn btn-block btn btn-info btn-sm" onclick="editBooking(' + index + ')" data-toggle="modal" data-target="#edituserbooking"><i class="fas fa-pencil-alt"></i> Edit</button>';
-    tr += '<button class="m-1 btn btn-block btn btn-danger btn-sm" onclick="deleteBooking(' + index + ')" ><i class="fas fa-trash"></i> Delete</button>';
-    tr += '</td>';
+    if(dataID.length==0||dataID.includes('8')) tr += '<td><button class="m-1 btn btn-block btn btn-info btn-sm" onclick="editBooking(' + index + ')" data-toggle="modal" data-target="#edituserbooking"><i class="fas fa-pencil-alt"></i> Edit</button><button class="m-1 btn btn-block btn btn-danger btn-sm" onclick="deleteBooking(' + index + ')" ><i class="fas fa-trash"></i> Delete</button></td>';
     tr += '</tr>';
     
 
   });
   tbody.innerHTML = tr;
 
-
+  var thr = '';
+  thr += '<tr><th><input type="checkbox" id="allleads" name="delete-all" value="lead" title="select all"></th><th>#</th>';
+  if(dataID.length==0||dataID.includes('0')) thr += '<td>Name</td>';
+  if(dataID.length==0||dataID.includes('1')) thr += '<td>Website</td>';
+  if(dataID.length==0||dataID.includes('2')) thr += '<td>Phone</td>';
+  if(dataID.length==0||dataID.includes('3')) thr += '<td>Email</td>';
+  if(dataID.length==0||dataID.includes('4')) thr += '<td>Location</td>';
+  if(dataID.length==0||dataID.includes('5')) thr += '<td>Booking</td>';
+  if(dataID.length==0||dataID.includes('6')) thr += '<td>Confirmed</td>';
+  if(dataID.length==0||dataID.includes('7')) thr += '<td>Status</td>';
+  if(dataID.length==0||dataID.includes('8')) thr += '<td>Actions</td>';
+  thr += '</tr>';
+  thead.innerHTML = thr;
 }
 
 // Delete a booking
 function deleteBooking(id) {
+  var groups = userbookings[id]['groups'];
   userbookings.splice(id, 1);
   deleted = userbookings;
 
@@ -3892,6 +3930,17 @@ function deleteBooking(id) {
             message_stats();
           }, 1000);
           //updateSelectOptions();
+          
+          var flag = false;
+          for(var i=0; i<userbookings.length; i++){
+            flag = userbookings[i]['groups'].some(element => {
+              return groups.includes(element)
+            })
+            if(flag) break;
+          }
+          if(!flag) {
+            groups.forEach(group=>deleteClientLink(group))
+          }
         },
         error: function () {
           console.error('Error');
@@ -3974,7 +4023,7 @@ function togglebookingstatut(id,st) {
     success: function () {
       setTimeout(displayBooking(userbookings), 1000);
       setTimeout(function () {
-        //leadsStat(userbookings);
+        booking_stat(userbookings);
       }, 1000);
     },
     error: function () {
@@ -4550,6 +4599,153 @@ function saveTemplate() {
   });
 }
 
+$("#custom-tabs-one-leads-tab").click(function(){
+  var datalist = `
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="0" name="name" id="todoCheck0">
+          <label for="todoCheck0"></label>
+        </div>
+        <span class="text">Name</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="1" name="age" id="todoCheck1">
+          <label for="todoCheck1"></label>
+        </div>
+        <span class="text">Age</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="2" name="website" id="todoCheck2">
+          <label for="todoCheck2"></label>
+        </div>
+        <span class="text">Website</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="3" name="phone" id="todoCheck3">
+          <label for="todoCheck3"></label>
+        </div>
+        <span class="text">Phone</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="4" name="email" id="todoCheck4">
+          <label for="todoCheck4"></label>
+        </div>
+        <span class="text">Email</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="5" name="location" id="todoCheck5">
+          <label for="todoCheck5"></label>
+        </div>
+        <span class="text">Location</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="6" name="date" id="todoCheck6">
+          <label for="todoCheck6"></label>
+        </div>
+        <span class="text">Date</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="7" name="confirmed" id="todoCheck7">
+          <label for="todoCheck7"></label>
+        </div>
+        <span class="text">Confirmed</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="8" name="status" id="todoCheck8">
+          <label for="todoCheck8"></label>
+        </div>
+        <span class="text">Status</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="9" name="group" id="todoCheck9">
+          <label for="todoCheck9"></label>
+        </div>
+        <span class="text">Actions</span>					
+      </li>
+  `;
+  $("#data-list").html(datalist);
+  $("#create-link-type").val("leads");
+})
+
+$("#custom-tabs-one-bookings-tab").click(function(){
+  var datalist = `
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="0" name="name" id="todoCheck0">
+          <label for="todoCheck0"></label>
+        </div>
+        <span class="text">Name</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="1" name="website" id="todoCheck1">
+          <label for="todoCheck1"></label>
+        </div>
+        <span class="text">Website</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="2" name="phone" id="todoCheck2">
+          <label for="todoCheck2"></label>
+        </div>
+        <span class="text">Phone</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="3" name="email" id="todoCheck3">
+          <label for="todoCheck3"></label>
+        </div>
+        <span class="text">Email</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="4" name="location" id="todoCheck4">
+          <label for="todoCheck4"></label>
+        </div>
+        <span class="text">Location</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="5" name="booking" id="todoCheck5">
+          <label for="todoCheck5"></label>
+        </div>
+        <span class="text">Booking</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="6" name="confirmed" id="todoCheck6">
+          <label for="todoCheck6"></label>
+        </div>
+        <span class="text">Confirmed</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="7" name="status" id="todoCheck7">
+          <label for="todoCheck7"></label>
+        </div>
+        <span class="text">Status</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="8" name="group" id="todoCheck8">
+          <label for="todoCheck8"></label>
+        </div>
+        <span class="text">Actions</span>					
+      </li>
+  `;
+  $("#data-list").html(datalist);
+  $("#create-link-type").val("bookings");
+})
+
 var cplBtn = document.getElementById("cplBtn");
 var cplLink = document.getElementById("cplLink");
 
@@ -4586,16 +4782,19 @@ function creatingLink() {
   const formData = {
     group: linkformdata.get('filtergroup'),
     key: keyword,
-    link: domain + "c-leads.php?id=" + makeRandomString(5)
+    link: domain + "c-" + $("#create-link-type").val() + ".php?id=" + makeRandomString(5)
   }
   $.ajax({
     url: domain + "save.php",
     type: "POST",
-    data: {linkdata: JSON.stringify(formData)},
+    data: {linkdata: JSON.stringify(formData), type:$("#create-link-type").val()},
     success: function (responsive) {
       cplLink.value = formData['link'];
       $("#cplVisitBtn").attr("href", formData['link']);
-      client_links = JSON.parse(responsive);
+      if ($("#create-link-type").val()=="leads")
+        lead_client_links = JSON.parse(responsive);
+      else 
+        booking_client_links = JSON.parse(responsive);
       Swal.fire({
         icon: 'success',
         title: 'Congratulation',
@@ -4693,6 +4892,7 @@ $('#linkfiltergroup').change(function(){
   var group=$(this).val();
   var index = 0;
   var flag = false;
+  var client_links = $("#create-link-type").val()=="leads"?lead_client_links:booking_client_links;
   for(var i=0;i<client_links.length;i++){
     if(client_links[i].group==group){
       flag = true;
@@ -4710,6 +4910,7 @@ $('#linkfiltergroup').change(function(){
 
 function deleteClientLink(group) {
   var arr = [];
+  var client_links = $("#create-link-type").val()=="leads"?lead_client_links:booking_client_links;
   for(var i=0;i<client_links.length;i++){
     if(client_links[i]['group']!==group){
       arr.push(client_links[i])
@@ -4719,7 +4920,7 @@ function deleteClientLink(group) {
   $.ajax({
     url: domain + "save.php",
     type: "POST",
-    data: {deleteLinkdata: JSON.stringify(arr)},
+    data: {deleteLinkdata: JSON.stringify(arr), type:$("#create-link-type").val()},
     success: function () {
       Swal.fire({
         icon: 'success',
@@ -4727,7 +4928,10 @@ function deleteClientLink(group) {
         text: 'Client link has been deleted',
       });
       loadLinkData("");
-      client_links = arr;
+      if ($("#create-link-type").val()=="leads")
+        lead_client_links = arr;
+      else 
+        booking_client_links = arr;
     },
     error: function () {
       console.log("Error issue");
