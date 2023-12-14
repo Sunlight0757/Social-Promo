@@ -4790,6 +4790,7 @@ function creatingLink() {
     }
   }
   const formData = {
+    id: $("#create-link-type").val(),
     group: linkformdata.get('filtergroup'),
     key: keyword,
     link: domain + "c-" + $("#create-link-type").val() + ".php?id=" + makeRandomString(5)
@@ -4797,14 +4798,11 @@ function creatingLink() {
   $.ajax({
     url: domain + "save.php",
     type: "POST",
-    data: {linkdata: JSON.stringify(formData), type:$("#create-link-type").val()},
+    data: {linkdata: JSON.stringify(formData)},
     success: function (responsive) {
       cplLink.value = formData['link'];
       $("#cplVisitBtn").attr("href", formData['link']);
-      if ($("#create-link-type").val()=="leads")
-        lead_client_links = JSON.parse(responsive);
-      else 
-        booking_client_links = JSON.parse(responsive);
+      client_links = JSON.parse(responsive);
       Swal.fire({
         icon: 'success',
         title: 'Congratulation',
@@ -4966,9 +4964,13 @@ $('#linkfiltergroup').change(function(){
   var group=$(this).val();
   var index = 0;
   var flag = false;
-  var client_links = $("#create-link-type").val()=="leads"?lead_client_links:booking_client_links;
-  for(var i=0;i<client_links.length;i++){
-    if(client_links[i].group==group){
+  var clientlinks = [];
+  for(var i=0; i<client_links.length;i++){
+    if(client_links[i]['id']==$("#create-link-type").val())
+      clientlinks.push(client_links[i]);
+  }
+  for(var i=0;i<clientlinks.length;i++){
+    if(clientlinks[i].group==group){
       flag = true;
       index = i;
       break;
@@ -4977,16 +4979,15 @@ $('#linkfiltergroup').change(function(){
   
   var linkdata = [];
   if(flag) {
-    linkdata = client_links[index];
+    linkdata = clientlinks[index];
   }
   loadLinkData(linkdata);
 })
 
 function deleteClientLink(group) {
   var arr = [];
-  var client_links = $("#create-link-type").val()=="leads"?lead_client_links:booking_client_links;
   for(var i=0;i<client_links.length;i++){
-    if(client_links[i]['group']!==group){
+    if(!(client_links[i]['group']==group && client_links[i]['id']==$("#create-link-type").val())){
       arr.push(client_links[i])
     }
   }
@@ -4994,7 +4995,7 @@ function deleteClientLink(group) {
   $.ajax({
     url: domain + "save.php",
     type: "POST",
-    data: {deleteLinkdata: JSON.stringify(arr), type:$("#create-link-type").val()},
+    data: {deleteLinkdata: JSON.stringify(arr)},
     success: function () {
       Swal.fire({
         icon: 'success',
@@ -5002,10 +5003,7 @@ function deleteClientLink(group) {
         text: 'Client link has been deleted',
       });
       loadLinkData("");
-      if ($("#create-link-type").val()=="leads")
-        lead_client_links = arr;
-      else 
-        booking_client_links = arr;
+      client_links = arr;
     },
     error: function () {
       console.log("Error issue");

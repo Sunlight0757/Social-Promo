@@ -8,12 +8,12 @@ if (isset($_POST['linkdata'])) {
 	//var_dump($jsonData);
 	$linkdata = json_decode($linkdata, true);
 
-	$data_json = file_get_contents('db/'.$_POST['type'].'_client_links.json');
+	$data_json = file_get_contents('db/client_links.json');
 	$existingData = json_decode($data_json, true);
 	$exist = 0;
 	for ($i = 0; $i < count($existingData); $i++) {
 		# code...
-		if ($existingData[$i]['group'] == $linkdata['group']) {
+		if ($existingData[$i]['group'] == $linkdata['group'] && $existingData[$i]['id'] == $linkdata['id']) {
 			$exist++;
 			$existingData[$i] = $linkdata;
 			break;
@@ -24,7 +24,7 @@ if (isset($_POST['linkdata'])) {
 	}
 
 	$data_json = json_encode($existingData);
-	file_put_contents('db/'.$_POST['type'].'_client_links.json', $data_json);
+	file_put_contents('db/client_links.json', $data_json);
 	echo $data_json;
 }
 
@@ -32,7 +32,7 @@ if (isset($_POST['deleteLinkdata'])) {
 	# code...
 	$jsonData = $_POST['deleteLinkdata'];
 
-	$fileName = 'db/'.$_POST['type'].'_client_links.json';
+	$fileName = 'db/client_links.json';
 
 	$file = fopen($fileName, 'w');
 

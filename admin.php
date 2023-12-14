@@ -31,12 +31,9 @@ $data =json_decode($data,true);
   $categorydata = file_get_contents('db/search_categories.json');
   $categories = json_decode($categorydata, true);
 
-  $leadlinkdata = file_get_contents('db/leads_client_links.json');
-  $leadclientlinks = json_decode($leadlinkdata, true);
+  $linkdata = file_get_contents('db/client_links.json');
+  $clientlinks = json_decode($linkdata, true);
 
-  $bookinglinkdata = file_get_contents('db/bookings_client_links.json');
-  $bookingclientlinks = json_decode($bookinglinkdata, true);
- 
   $datagroups = [];
   $ddata = file_get_contents(datafile);
 
@@ -281,8 +278,7 @@ h5.search-url-table-notes-label{
 const domain = '<?=domain?>';
 const nbquestion = <?=$nbq?>;
 const search_data = <?=json_encode($search_data)?>;
-var lead_client_links = <?=json_encode($leadclientlinks)?>;
-var booking_client_links = <?=json_encode($bookingclientlinks)?>;
+var client_links = <?=json_encode($clientlinks)?>;
 const dataID = [];
 </script>
 

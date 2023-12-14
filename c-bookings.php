@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php require 'config.php'; ?>
 <?php
-  $linkdata = file_get_contents('db/bookings_client_links.json');
+  $linkdata = file_get_contents('db/client_links.json');
   $clientlinks = json_decode($linkdata, true);
 ?>
 <?php
