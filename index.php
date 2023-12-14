@@ -670,7 +670,7 @@ video {
             </div>
             <!-- /.widget-user -->
         </div>
-        <button class="text-white btn bg-gradient-dark btn-lg mt-0 slideform-btn slideform-btn-goto" value="18">NEXT</button>
+        <button class="text-white btn bg-gradient-dark btn-lg mt-0 slideform-btn slideform-btn-next">NEXT</button>
     </div>
 </div>
 
