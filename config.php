@@ -6,8 +6,7 @@ require 'search/getSearchData.php';
 header('Access-Control-Allow-Origin: *');
 
 // Domain
-define("domain", '/');
-// define("domain", 'https://socialpromo.biz/demo/sunlight/');
+define("domain", 'https://socialpromo.biz/demo/sunlight/');
 //define("domain", 'https://socialpromo.biz/test/');
 define("SEARCH_BASE_URL", 'https://suite.social/search/');
 
@@ -139,7 +138,8 @@ define('badge4', 100);
 //status
 define('status', '[{"Warm":"primary"},{"Rejected": "warning"},{"Hot": "danger"}, {"Contacted":"success"}]');
 
-define('bookingstatus', '[{"Pending":"light"},{"Attended":"primary"},{"Rejected": "warning"}]');
+define('bookingstatus', '[{"Pending":"warning"},{"Attended":"primary"},{"Rejected": "danger"}]');
+
 //share alert
 define('alerttitle', 'Confirm your shared to add points!');
 define('alerttext', 'Do you share it? We check so no cheating please.');

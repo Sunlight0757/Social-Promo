@@ -185,7 +185,7 @@ const dataID = <?=json_encode($dataID)?>;
         <div class="row">
           <div class="col-12 col-sm-6 col-md-4">
             <div class="info-box mb-3">
-              <span class="info-box-icon bg-white elevation-1"><i class="fa-solid fa-fire"></i></span>
+              <span class="info-box-icon bg-warning elevation-1"><i class="fa-solid fa-clock"></i></span>
 
               <div class="info-box-content">
                 <span class="info-box-text">Pending</span>
@@ -198,7 +198,7 @@ const dataID = <?=json_encode($dataID)?>;
           <!-- /.col -->
           <div class="col-12 col-sm-6 col-md-4">
             <div class="info-box">
-              <span class="info-box-icon bg-primary elevation-1"><i class="fa-solid fa-users"></i></span>
+              <span class="info-box-icon bg-primary elevation-1"><i class="fa-solid fa-check"></i></span>
 
               <div class="info-box-content">
                 <span class="info-box-text">Attended</span>
@@ -211,7 +211,7 @@ const dataID = <?=json_encode($dataID)?>;
           <!-- /.col -->
           <div class="col-12 col-sm-6 col-md-4">
             <div class="info-box mb-3">
-              <span class="info-box-icon bg-warning elevation-1"><i class="fa-solid fa-triangle-exclamation"></i></span>
+              <span class="info-box-icon bg-danger elevation-1"><i class="fa-solid fa-triangle-exclamation"></i></span>
 
               <div class="info-box-content">
                 <span class="info-box-text">Rejected</span>
