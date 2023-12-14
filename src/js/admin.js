@@ -13,7 +13,16 @@ $(document).ready(function () {
     url: domain + "getdata.php",
     dataType: "json",
     success: function (data) {
-      json = data;
+      json = [];
+      console.log(dataID);
+      if(dataID.length!=0) {
+        for(var i=0;i<data.length;i++){
+          if(data[i]['groups'].includes(current_group))
+            json.push(data[i]);
+        }
+      } else {
+        json = data;
+      }
       // console.log(json);
       setTimeout(function () {
         displayelemnt(json);
@@ -77,7 +86,15 @@ function datajson() {
     url: domain + "getdata.php",
     dataType: "json",
     success: function (data) {
-      json = data;
+      json = [];
+      if(dataID.length!=0) {
+        for(var i=0;i<data.length;i++){
+          if(data[i]['groups'].includes(current_group))
+            json.push(data[i]);
+        }
+      } else {
+        json = data;
+      }
       // console.log(json);
       setTimeout(function () {
         displayelemnt(json);
@@ -2378,12 +2395,16 @@ function leads_stat(json) {
   // total_stat.textContent = total_contact;
 
   const firstStatusg = sts[0];
-  const thirdStatusg = sts[1];
+  const secondStatusg = sts[1];
+  const thirdStatusg = sts[2];
+  const forthStatusg = sts[3];
 
   const firstStatusKey = Object.keys(firstStatusg)[0];
+  const secondStatusKey = Object.keys(secondStatusg)[0];
   const thirdStatusKey = Object.keys(thirdStatusg)[0];
+  const forthStatusKey = Object.keys(forthStatusg)[0];
 
-  var total_first = 0; var total_third = 0;
+  var total_first = 0; var total_second = 0; var total_third = 0; var total_forth = 0;
   var total_pending = 0;
   var total_confirmed = 0;
   // var total_hot = 0;
@@ -2392,8 +2413,16 @@ function leads_stat(json) {
       total_first++;
     }
 
+    if (element.status == secondStatusKey) {
+      total_second++;
+    }
+
     if (element.status == thirdStatusKey) {
       total_third++;
+    }
+
+    if (element.status == forthStatusKey) {
+      total_forth++;
     }
 
     if (element.verified == 'true') {
@@ -2406,6 +2435,11 @@ function leads_stat(json) {
 
   })
 
+  $("#lead_warm_stat").text(total_first);
+  $("#lead_rejected_stat").text(total_second);
+  $("#lead_hot_stat").text(total_third);
+  $("#lead_contacted_stat").text(total_forth);
+
   var leads_stat = document.getElementById('leads_stats');
 
   var li = '';
@@ -2413,7 +2447,7 @@ function leads_stat(json) {
 
   li += '<li class="list-group-item">' + firstStatusKey + ' <span class="float-right badge bg-info" id="warm_stat">' + total_first + '</span></li>';
 
-  li += ' <li class="list-group-item">' + thirdStatusKey + ' <span class="float-right badge bg-info" id="hot_stat">' + total_third + '</span></li>';
+  li += ' <li class="list-group-item">' + secondStatusKey + ' <span class="float-right badge bg-info" id="hot_stat">' + total_second + '</span></li>';
   var pending_stat = document.getElementById('pending_stat');
   pending_stat.textContent = total_pending;
 
@@ -4274,7 +4308,15 @@ setInterval(() => {
       url: domain + "getdata.php",
       dataType: "json",
       success: function (data) {
-        json = data;
+        json = [];
+        if(dataID.length!=0) {
+          for(var i=0;i<data.length;i++){
+            if(data[i]['groups'].includes(current_group))
+              json.push(data[i]);
+          }
+        } else {
+          json = data;
+        }
         // console.log(json);
         setTimeout(function () {
           displayelemnt(json);
@@ -4543,7 +4585,8 @@ function creatingLink() {
   }
   const formData = {
     group: linkformdata.get('filtergroup'),
-    link: domain + "c-leads.php?id=" + makeKeyFromID(keyword)
+    key: keyword,
+    link: domain + "c-leads.php?id=" + makeRandomString(5)
   }
   $.ajax({
     url: domain + "save.php",
@@ -4565,12 +4608,9 @@ function creatingLink() {
   });
 }
 
-function loadLinkData(link){
-  var arr = [];
-  if(link!="") {
-    var pos = link.indexOf('=');
-    arr = getInfoFromKey(link.slice(pos+1))
-  }
+function loadLinkData(linkdata){
+  linkdata = linkdata.length!=0 ? linkdata : {'key':'',link:''};
+  var arr = linkdata['key'].split('');
   
   var list = `
     <li>
@@ -4645,8 +4685,8 @@ function loadLinkData(link){
     </li>
   `;
   $("#data-list").html(list);
-  $("#cplLink").val(link.replace(/\\/g, ''));
-  $("#cplVisitBtn").attr("href", link.replace(/\\/g, ''));
+  $("#cplLink").val(linkdata['link'].replace(/\\/g, ''));
+  $("#cplVisitBtn").attr("href", linkdata['link'].replace(/\\/g, ''));
 }
 
 $('#linkfiltergroup').change(function(){
@@ -4657,14 +4697,15 @@ $('#linkfiltergroup').change(function(){
     if(client_links[i].group==group){
       flag = true;
       index = i;
+      break;
     }
   }
   
-  var link = "";
+  var linkdata = [];
   if(flag) {
-    link = client_links[index]["link"];
+    linkdata = client_links[index];
   }
-  loadLinkData(link);
+  loadLinkData(linkdata);
 })
 
 function deleteClientLink(group) {
