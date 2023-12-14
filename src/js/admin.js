@@ -3881,7 +3881,17 @@ function displayBooking(json) {
 
     if(dataID.length==0||dataID.includes('8')) tr += '<td><button class="m-1 btn btn-block btn btn-info btn-sm" onclick="editBooking(' + index + ')" data-toggle="modal" data-target="#edituserbooking"><i class="fas fa-pencil-alt"></i> Edit</button><button class="m-1 btn btn-block btn btn-danger btn-sm" onclick="deleteBooking(' + index + ')" ><i class="fas fa-trash"></i> Delete</button></td>';
     tr += '</tr>';
-    
+    tr += '<tr class="expandable-body ' + (index + 1) + '"><td style = "padding:12px !important" colspan = "12"> ';
+    tr += '<span>';
+    tr += ' <h5>' + Element.booking + '</h5><p class="text-muted"></p>';
+    tr += '<h5>Notes:</h5><p class="text-muted">' + Element.notes + '</p> ';
+    tr += '<h5>Groups:</h5><p class="text-muted">';
+    Element.groups.forEach((group) => {
+      tr += '<small class="badge badge-primary"> ' + group + '  </small>  ';
+    });
+    tr += '</p> ';
+    tr += ' </span>';
+    tr += '</td></tr> ';
 
   });
   tbody.innerHTML = tr;
@@ -4811,7 +4821,7 @@ function loadLinkData(linkdata){
   linkdata = linkdata.length!=0 ? linkdata : {'key':'',link:''};
   var arr = linkdata['key'].split('');
   
-  var list = `
+  var list = $("#create-link-type").val()=="leads" ? `
     <li>
       <div class="icheck-primary d-inline ml-2">
         <input type="checkbox" value="0" name="name" id="todoCheck0" ${arr.includes('0')?"checked":""}>
@@ -4882,6 +4892,70 @@ function loadLinkData(linkdata){
       </div>
       <span class="text">Actions</span>					
     </li>
+  ` : `
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="0" name="name" id="todoCheck0" ${arr.includes('0')?"checked":""}>
+          <label for="todoCheck0"></label>
+        </div>
+        <span class="text">Name</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="1" name="website" id="todoCheck1" ${arr.includes('1')?"checked":""}>
+          <label for="todoCheck1"></label>
+        </div>
+        <span class="text">Website</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="2" name="phone" id="todoCheck2" ${arr.includes('2')?"checked":""}>
+          <label for="todoCheck2"></label>
+        </div>
+        <span class="text">Phone</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="3" name="email" id="todoCheck3" ${arr.includes('3')?"checked":""}>
+          <label for="todoCheck3"></label>
+        </div>
+        <span class="text">Email</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="4" name="location" id="todoCheck4" ${arr.includes('4')?"checked":""}>
+          <label for="todoCheck4"></label>
+        </div>
+        <span class="text">Location</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="5" name="booking" id="todoCheck5" ${arr.includes('5')?"checked":""}>
+          <label for="todoCheck5"></label>
+        </div>
+        <span class="text">Booking</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="6" name="confirmed" id="todoCheck6" ${arr.includes('6')?"checked":""}>
+          <label for="todoCheck6"></label>
+        </div>
+        <span class="text">Confirmed</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="7" name="status" id="todoCheck7" ${arr.includes('7')?"checked":""}>
+          <label for="todoCheck7"></label>
+        </div>
+        <span class="text">Status</span>
+      </li>
+      <li>
+        <div class="icheck-primary d-inline ml-2">
+          <input type="checkbox" value="8" name="group" id="todoCheck8" ${arr.includes('8')?"checked":""}>
+          <label for="todoCheck8"></label>
+        </div>
+        <span class="text">Actions</span>					
+      </li>
   `;
   $("#data-list").html(list);
   $("#cplLink").val(linkdata['link'].replace(/\\/g, ''));
