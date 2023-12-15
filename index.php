@@ -56,6 +56,26 @@ if (isset($_GET['index'])) {
 		file_put_contents(datafile, $data_json);
 		$confirm=true;
 	}
+
+	$data_json = file_get_contents(bookingdatafile);
+	$data = json_decode($data_json, true);
+	$userdata = null;
+	$position = null;
+	foreach ($data as $key => $value) {
+		# code...
+		if ($value['id'] == $index ) {
+			$userdata = $value;
+			$position = $key;
+		}
+	}
+
+	if ($userdata) {
+		$userdata['verified'] = 'true';
+		$data[$position] = $userdata;
+		$data_json = json_encode($data);
+		file_put_contents(bookingdatafile, $data_json);
+		$confirm=true;
+	}
 }
 
 $isgift= false;
@@ -912,6 +932,7 @@ video {
 	//console.log(apiKey);
 	const api_location = '<?=api_location?>';
 	const send_email_verification = '<?=send_email_verification?>';
+	const send_booking_verification = '<?=send_booking_verification?>';
 	const send_sms = '<?=send_sms?>';
 	const smsMessage = '<?=smsMessage?>';
 	const smsbookingMessage = '<?=smsbookingMessage?>';
@@ -959,8 +980,8 @@ video {
 	let emailFile ='<?=emailFile?>';
 
 	sendemailBookingFile  = '<?=sendemailBookingFile?>';
-emailBookingFile  = '<?=emailBookingFile?>';
-confirmBookingFile  = '<?=confirmBookingFile?>';
+    emailBookingFile  = '<?=emailBookingFile?>';
+    confirmBookingFile  = '<?=confirmBookingFile?>';
 </script>
 
 <!-- Promo-->
