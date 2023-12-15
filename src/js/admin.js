@@ -316,6 +316,9 @@ function deleteit(id) {
       }, 3 * 1000);
 
       //json = data;
+      if(deleted===null){
+        deleted = [];
+      }
       data = deleted;
       $.ajax({
         type: 'POST',
@@ -867,6 +870,9 @@ deleteLeadbtn.addEventListener('click', function (event) {
       }, 3 * 1000);
 
       //json = data;
+      if(deleted===null){
+        deleted = [];
+      }
       data = deleted;
       $.ajax({
         type: 'POST',
@@ -3790,6 +3796,24 @@ bookings[0].slot=slot_editbooking.value;
 });
 });
 
+
+var userbookings='';
+$.ajax({
+  url: domain + "getbooking.php",
+  dataType: "json",
+  success: function (data) {
+    userbookings = data;
+    setTimeout(function () {
+      displayBooking(userbookings);
+    }, 2000);
+
+    setTimeout(function () {
+      booking_stat(userbookings);
+    }, 1000);
+
+  }
+});
+
 function displayBooking(json) {
 
   //var data = JSON.parse(json);
@@ -3868,6 +3892,16 @@ function displayBooking(json) {
             '</td>';
 
       }
+      StatusBtnVal = StatusArr[Element.status];
+      tr += '<td>' +
+          '<div class="btn-group">' +
+          '<button type="button" class="btn btn-'+StatusBtnVal+'">'+Element.status+'</button><button type="button" class="btn btn-'+StatusBtnVal+' dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>' +
+          '<div class="dropdown-menu" role="menu" style="">' +
+          a +
+          '</div>' +
+          '</div>' +
+          '</td>';
+
     }
 /*
     if (existe == 0) {
@@ -3924,6 +3958,9 @@ function deleteBooking(id) {
   var groups = userbookings[id]['groups'];
   userbookings.splice(id, 1);
   deleted = userbookings;
+  if(userbookings===null){
+    deleted = [];
+  }
 
   Swal.fire({
     title: 'Are you sure?',
@@ -4089,6 +4126,9 @@ deleteBookingBtn.addEventListener('click', function (event) {
     confirmButtonText: 'Yes, delete all!'
   }).then((result) => {
     if (result.isConfirmed) {
+      if(deletedBookings===null){
+        deletedBookings=[];
+      }
       data = deletedBookings;
       $.ajax({
         type: 'POST',
