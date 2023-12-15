@@ -3883,7 +3883,15 @@ function displayBooking(json) {
     tr += '</tr>';
     tr += '<tr class="expandable-body ' + (index + 1) + '"><td style = "padding:12px !important" colspan = "12"> ';
     tr += '<span>';
-    tr += ' <h5>' + Element.booking + '</h5><p class="text-muted"></p>';
+    
+    Element.question.forEach((quest, position) => {
+      tr += ' <h5>' + quest.question + '</h5><p class="text-muted">';
+
+      quest.answers.forEach((answer) => {
+        tr += answer + '<br>';
+      });
+      tr += quest.comment; tr += '</p>';
+    });
     tr += '<h5>Notes:</h5><p class="text-muted">' + Element.notes + '</p> ';
     tr += '<h5>Groups:</h5><p class="text-muted">';
     Element.groups.forEach((group) => {

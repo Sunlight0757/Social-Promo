@@ -490,6 +490,7 @@ if(number[0]!='+')
                               booking.number= number;
                               booking.email= email;
                               booking.date= formattedDate;
+                              booking.question= questions;
                               booking.location=locationUser;
                               booking.id=uniqueID;
                               console.log(booking);
