@@ -135,39 +135,54 @@ define('badge2', 50);
 define('badge3', 75);
 define('badge4', 100);
 
-//status
-define('status', '[{"Warm":"primary"},{"Rejected": "warning"},{"Hot": "danger"}, {"Contacted":"success"}]');
+//Status (Leads)
+define('status', '[
+{"Warm":"primary"},
+{"Rejected": "warning"},
+{"Hot": "danger"}, 
+{"Contacted":"success"},
+{"Attended":"success"}
+]');
 
-define('bookingstatus', '[{"Pending":"warning"},{"Attended":"primary"},{"Rejected": "danger"}]');
+//Status (Bookings)
+define('bookingstatus', '[
+{"Pending":"warning"},
+{"Attended":"primary"},
+{"Rejected": "danger"}
+]');
 
-//share alert
+//Share alert
 define('alerttitle', 'Confirm your shared to add points!');
-define('alerttext', 'Do you share it? We check so no cheating please.');
+define('alerttext', 'Did you share it? We check so no cheating please.');
 
-//files
+//Files (Email)
 define('sendemailFile', 'send-email.php');
 define('emailFile', 'email.php');
 define('confirmFile', 'confirm.php');
 define('datafile', 'db/data.json');
-define('bookingdatafile', 'db/bookings.json');
-define('sendemailBookingFile','send-email_booking.php');
-define('emailBookingFile','email_booking.php');
-define('confirmBookingFile','confirm_booking.php');
-//weather
-/*define('weather_promotion',true);
-define('sunny', 'image', 'text', 'link');
-define('cloudy', 'image', 'text', 'link');
-define('rainy', 'image', 'text', 'link');
-define('windy', 'image', 'text', 'link');
-define('snowy', 'image', 'text', 'link');
-define('thunder', 'image', 'text', 'link');
-define('sleet', 'image', 'text', 'link');
-define('flog', 'image', 'text', 'link');
-define('tornado', 'image', 'text', 'link');
-define('storm', 'image', 'text', 'link');
-define('default', 'image', 'text', 'link');*/
 
-// post request;
+//Files (Booking)
+define('bookingdatafile', 'db/bookings.json');
+define('sendemailBookingFile', 'send-email_booking.php');
+define('emailBookingFile', 'email_booking.php');
+define('confirmBookingFile', 'confirm_booking.php');
+
+//Files (Support)
+/*
+define('supportdatafile', 'db/support.json');
+define('sendemailSupportFile', 'send-email_support.php');
+define('emailSupportFile', 'email_support.php');
+define('confirmBSupportFile', 'confirm_support.php');
+*/
+
+//Files (Admin)
+define('adminTemplatesFile', 'db/templates.json');
+define('adminQuestionsFile', 'db/questions.json');
+define('adminServicesFile', 'db/services.json');
+define('adminSearchCategoriesFile', 'db/search_categories.json');
+define('adminClientLinksFile', 'db/client_links.json');
+
+//Post request;
 
 if (isset($_POST['apikey'])) {
     echo json_encode(api_key);
@@ -195,6 +210,3 @@ if (isset($_POST['pushdt'])) {
     $pushdata['KeyPair'] = KeyPair;
     echo json_encode($pushdata);
 }
-
-
-
