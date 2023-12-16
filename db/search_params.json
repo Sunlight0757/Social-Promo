@@ -1,1 +1,18 @@
-[]
+[
+    {
+        "id": 0,
+        "search_url": "https:\/\/suite.social\/search\/search-result.php?q=starbucks&site=Facebook-Leads&rss&apikey=DfbocUOh1x76d9Lt1hfLf5ia1Ugs6Zqu",
+        "category": "Starbucks",
+        "keyword": "starbucks",
+        "type": "keyword",
+        "network": "Facebook-Leads"
+    },
+    {
+        "id": 1,
+        "search_url": "https:\/\/suite.social\/search\/search-result.php?q=model&site=Facebook-Leads&rss&apikey=DfbocUOh1x76d9Lt1hfLf5ia1Ugs6Zqu",
+        "category": "model",
+        "keyword": "model",
+        "type": "keyword",
+        "network": "Facebook-Leads"
+    }
+]

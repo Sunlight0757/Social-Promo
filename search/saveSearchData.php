@@ -125,12 +125,14 @@ function generateUniqueID()
 
 function appendDataInRSSFeed($data, $searchParams)
 {
+    $category = $searchParams['category'] ?? '';
     $keyword = $searchParams['keyword'] ?? '';
     $type = $searchParams['type'] ?? '';
     $network = $searchParams['network'] ?? '';
 
     foreach ($data as &$item) {
         $item['id'] = generateUniqueID();
+        $item['category'] = $category;
         $item['keyword'] = $keyword;
         $item['type'] = $type;
         $item['network'] = $network;

@@ -278,6 +278,9 @@ h5.search-url-table-notes-label{
 const domain = '<?=domain?>';
 const nbquestion = <?=$nbq?>;
 const search_data = <?=json_encode($search_data)?>;
+var data_groups = <?=json_encode($datagroups)?>;
+var categories = <?=json_encode($categories)?>;
+var tempate_groups = <?=json_encode($groups)?>;
 var client_links = <?=json_encode($clientlinks)?>;
 const dataID = [];
 </script>
@@ -846,7 +849,7 @@ const dataID = [];
                       <li class="nav-item" data-searchParamId="<?php echo $search_param_id; ?>">
                           <a href="#" class="nav-link">
                             <?php echo $search_keyword=="" ? "{$search_url}" : "{$search_keyword} ({$search_type}, {$search_network})"; ?>
-                            <span class="float-right btn btn-sm btn-danger btn-flat search-param-item">Delete</span>
+                            <span onclick="deleteSearchParam(event)" class="float-right btn btn-sm btn-danger btn-flat">Delete</span>
                           </a>
                     </li>
                       <?php
@@ -858,6 +861,8 @@ const dataID = [];
               </div>
 
               <button class="m-3 btn btn btn-danger float-right" id="search-data-table-delete"><i class="fa-solid fa-trash"></i> Delete</button>
+              <button data-toggle="modal" data-target="#client" class="m-3 btn btn btn-warning float-right" id="search-client-link"><i class="fa-solid fa-link"></i> Client Link</button>
+              
               <div class="overflow-auto w-100">
                 <table class="table table-bordered table-hover search-data-table">
                   <thead>
@@ -897,9 +902,9 @@ const dataID = [];
                               <td>
                                   <a href="javascript:void(0);" class="m-1 btn btn-block btn-success btn-sm search-url-table-link"
                                       onClick="popupSocial('<?php echo $data['link']  ?>')"><i class="fas fa-envelope"></i> Contact</a>
-                                  <button class="m-1 btn btn-block btn btn-info btn-sm search-item-edit-btn"><i
+                                  <button onclick="openSearchEditForm(event)" class="m-1 btn btn-block btn btn-info btn-sm"><i
                                           class="fas fa-pencil-alt"></i> Edit</button>
-                                  <button class="m-1 btn btn-block btn btn-danger btn-sm delete-search-item"><i class="fas fa-trash"></i> Delete</button>
+                                  <button onclick="deleteSearchItem(event)" class="m-1 btn btn-block btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button>
                                   <button data-toggle="modal" data-target="#modal-switch" class="m-1 btn btn-block btn btn-primary btn-sm add-search-item"><i class="fas fa-add"></i> Add</button>
                               </td>
 
@@ -3898,9 +3903,9 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
 		  </div>
 		  <div class="modal-body">
         <form id="link-data-form">
-          <div class="form-group">
+          <div class="form-group" id="group-form">
 				    <label for="InputGroup">1. Select Group</label>
-            <select style="width:100%" class="form-control select2" id="linkfiltergroup" name="filtergroup">
+            <select style="width:100%" class="form-control" id="linkfiltergroup" name="filtergroup" onchange="linkfilterchange(this)">
               <option value="">- SELECT GROUP OR RESET-</option>
               <?php
                 sort($datagroups);
