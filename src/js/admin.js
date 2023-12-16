@@ -2730,6 +2730,9 @@ function updateSearchDataTable(searchData) {
   // Update Table
   searchDataTableBody.empty();
   if (searchData.length != 0) {
+    $("#rss_type").val(searchData[searchData.length-1]['type']);
+    $("#rss_network").val(searchData[searchData.length-1]['network']);
+    $("#rss_keyword").val(searchData[searchData.length-1]['keyword']);
     searchData.forEach((data, key) => {
       searchDataTableRow += `
         <tr data-widget="expandable-table" aria-expanded="true" data-id="${data['id']}" data-link="${data['link']}">
@@ -4586,6 +4589,9 @@ $('#search_type').change(function(){
     $("#keyword_field").show();
     $("#search_rss").val("");
   }
+  $("#rss_type").val('');
+  $("#rss_network").val('');
+  $("#rss_keyword").val('');
 })
 $("#select_template_btn").click(function() {
   toggleLoader("show");

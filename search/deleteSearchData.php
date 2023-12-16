@@ -108,7 +108,8 @@ function deleteCategory()
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if($_POST['method']==='delete'){
+    $method = isset( $_POST["method"] ) ? $_POST["method"] :"";
+    if($method==='delete'){
         deleteCategory();
     } else {
         $link = $_POST['link'] ?? '';

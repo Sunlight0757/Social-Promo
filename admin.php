@@ -794,13 +794,13 @@ const dataID = [];
 
 				  <div class="row">
                   <div class="col-4">
-                    <input name="rss_type" type="text" class="form-control" placeholder="Enter type for reference">
+                    <input id="rss_type" name="rss_type" type="text" class="form-control" placeholder="Enter type for reference" readonly>
                   </div>
                   <div class="col-4">
-                    <input name="rss_network" type="text" class="form-control" placeholder="Enter network for reference">
+                    <input id="rss_network" name="rss_network" type="text" class="form-control" placeholder="Enter network for reference" readonly>
                   </div>
                   <div class="col-4">
-                    <input name="rss_keyword" type="text" class="form-control" placeholder="Enter keyword for reference">			
+                    <input id="rss_keyword" name="rss_keyword" type="text" class="form-control" placeholder="Enter keyword for reference" readonly>
                   </div>
                 </div>
 
