@@ -8,7 +8,7 @@ $current_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP
 $search_data = getSearchData();
 
 $groups = [];
-$data = file_get_contents('db/templates.json');
+$data = file_get_contents(adminTemplatesFile);
 
 $data =json_decode($data,true);
 
@@ -20,18 +20,18 @@ $data =json_decode($data,true);
 		
 	}
 	}
-  $quest = file_get_contents('db/questions.json');
+  $quest = file_get_contents(adminQuestionsFile);
   $quest =json_decode($quest,true);
   $nbq = count($quest);
 
 
-  $bookingdata = file_get_contents('db/services.json');
+  $bookingdata = file_get_contents(adminServicesFile);
   $books = json_decode($bookingdata, true);
 
-  $categorydata = file_get_contents('db/search_categories.json');
+  $categorydata = file_get_contents(adminSearchCategoriesFile);
   $categories = json_decode($categorydata, true);
 
-  $linkdata = file_get_contents('db/client_links.json');
+  $linkdata = file_get_contents(adminClientLinksFile);
   $clientlinks = json_decode($linkdata, true);
 
   $datagroups = [];

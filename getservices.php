@@ -1,3 +1,4 @@
 <?php
-$data = file_get_contents('db/services.json');
+require 'config.php';
+$data = file_get_contents(adminServicesFile);
 echo $data;

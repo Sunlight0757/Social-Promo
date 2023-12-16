@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php require 'config.php'; ?>
 <?php
-  $linkdata = file_get_contents('db/client_links.json');
+  $linkdata = file_get_contents(adminClientLinksFile);
   $clientlinks = json_decode($linkdata, true);
 ?>
 <?php
@@ -32,7 +32,7 @@
 $search_data = getSearchData();
 
 $groups = [];
-$data = file_get_contents('db/templates.json');
+$data = file_get_contents(adminTemplatesFile);
 
 $data =json_decode($data,true);
 
@@ -44,7 +44,7 @@ $data =json_decode($data,true);
 		
 	}
 	}
-  $quest = file_get_contents('db/questions.json');
+  $quest = file_get_contents(adminQuestionsFile);
   $quest =json_decode($quest,true);
   $nbq = count($quest);
 ?>

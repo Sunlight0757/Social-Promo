@@ -8,7 +8,7 @@ if (isset($_POST['linkdata'])) {
 	//var_dump($jsonData);
 	$linkdata = json_decode($linkdata, true);
 
-	$data_json = file_get_contents('db/client_links.json');
+	$data_json = file_get_contents(adminClientLinksFile);
 	$existingData = json_decode($data_json, true);
 	$exist = 0;
 	for ($i = 0; $i < count($existingData); $i++) {
@@ -24,7 +24,7 @@ if (isset($_POST['linkdata'])) {
 	}
 
 	$data_json = json_encode($existingData);
-	file_put_contents('db/client_links.json', $data_json);
+	file_put_contents(adminClientLinksFile, $data_json);
 	echo $data_json;
 }
 
@@ -32,7 +32,7 @@ if (isset($_POST['deleteLinkdata'])) {
 	# code...
 	$jsonData = $_POST['deleteLinkdata'];
 
-	$fileName = 'db/client_links.json';
+	$fileName = adminClientLinksFile;
 
 	$file = fopen($fileName, 'w');
 
@@ -88,7 +88,7 @@ if (isset($_POST['userbook'])) {
 
 	//var_dump($jsonData);
 	$jsonData = json_decode($jsonData, true);
-	$data_json = file_get_contents('db/bookings.json');
+	$data_json = file_get_contents(bookingdatafile);
 	$data = json_decode($data_json, true);
 	$exist = 0;
 	for ($i = 0; $i < count($data); $i++) {
@@ -118,7 +118,7 @@ if (isset($_POST['userbook'])) {
 	}
 	$data_json = json_encode($data);
 	//var_dump($data_json);
-	file_put_contents('db/bookings.json', $data_json);
+	file_put_contents(bookingdatafile, $data_json);
 }
 if (isset($_POST['jsonDatAdmin'])) {
 	# code...
@@ -141,7 +141,7 @@ if (isset($_POST['template'])) {
 	//var_dump($jsonData);
 	$template = json_decode($template, true);
 
-	$data_json = file_get_contents('db/templates.json');
+	$data_json = file_get_contents(adminTemplatesFile);
 	$data = json_decode($data_json, true);
 
 	function idUniq($data, $id)
@@ -166,14 +166,14 @@ if (isset($_POST['template'])) {
 	$data[count($data)] = $template;
 	//var_dump($data, $template['id']);
 	$data_json = json_encode($data);
-	file_put_contents('db/templates.json', $data_json);
+	file_put_contents(adminTemplatesFile, $data_json);
 }
 
 if (isset($_POST['deleteTemplate'])) {
 	# code...
 	$jsonData = $_POST['deleteTemplate'];
 
-	$fileName = 'db/templates.json';
+	$fileName = adminTemplatesFile;
 
 	$file = fopen($fileName, 'w');
 
@@ -245,7 +245,7 @@ if (isset($_POST['booking'])) {
 	//var_dump($jsonData);
 	$booking = json_decode($booking, true);
  var_dump($booking);
-	$data_json = file_get_contents('db/services.json');
+	$data_json = file_get_contents(adminServicesFile);
 	$data = json_decode($data_json, true);
 	$booking['id'] = 1;
 	$lastbooking = $data[0];
@@ -265,7 +265,7 @@ if (isset($_POST['booking'])) {
 	}
 
 	$data_json = json_encode($data);
-	file_put_contents('db/services.json', $data_json);
+	file_put_contents(adminServicesFile, $data_json);
 }
 
 //userbookings
@@ -273,7 +273,7 @@ if (isset($_POST['deleteBooking'])) {
 	# code...
 	$jsonData = $_POST['deleteBooking'];
 
-	$fileName = 'db/bookings.json';
+	$fileName = bookingdatafile;
 
 	$file = fopen($fileName, 'w');
 

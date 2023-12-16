@@ -8,7 +8,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 
-$questionsdata = file_get_contents('db/questions.json');
+$questionsdata = file_get_contents(adminQuestionsFile);
 $questionS=json_decode($questionsdata,true);
 if(isset($_POST['jsonData']))
 {

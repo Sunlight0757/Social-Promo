@@ -1,3 +1,4 @@
 <?php
-$data = file_get_contents('db/templates.json');
+require 'config.php';
+$data = file_get_contents(adminTemplatesFile);
 echo $data;

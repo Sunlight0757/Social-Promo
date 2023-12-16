@@ -20,7 +20,7 @@ if (isset($_GET['index'])) {
 
 }
 $jsonData = $userdata;
-$questionsdata = file_get_contents('db/questions.json');
+$questionsdata = file_get_contents(adminQuestionsFile);
 $questionS=json_decode($questionsdata,true);
 
 

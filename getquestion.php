@@ -1,3 +1,4 @@
 <?php
-$data = file_get_contents('db/questions.json');
+require 'config.php';
+$data = file_get_contents(adminQuestionsFile);
 echo $data;

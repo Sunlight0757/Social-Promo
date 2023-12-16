@@ -9,7 +9,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 
-$templateData = file_get_contents('db/templates.json');
+$templateData = file_get_contents(adminTemplatesFile);
 $templateData = json_decode($templateData, true);
 $campaignData = file_get_contents('db/campaign.json');
 $campaignData = json_decode($campaignData, true);
@@ -789,7 +789,7 @@ foreach ($campaigns as $key => $campaign) {
                             }
                         }
 
-                        file_put_contents('db/templates.json', json_encode($templateData));
+                        file_put_contents(adminTemplatesFile, json_encode($templateData));
                
                     break;
                 } else {
@@ -800,7 +800,7 @@ foreach ($campaigns as $key => $campaign) {
                             $position = (array_search($temp, $templateData));
                             $temp['sendemail'] = false;
                             $templateData[$position] = $temp;
-                            file_put_contents('db/templates.json', json_encode($templateData));
+                            file_put_contents(adminTemplatesFile, json_encode($templateData));
                         }
                     }
                 }
@@ -843,7 +843,7 @@ foreach ($campaigns as $key => $campaign) {
                         }
                     }
 
-                    file_put_contents('db/templates.json', json_encode($templateData));
+                    file_put_contents(adminTemplatesFile, json_encode($templateData));
                
                 break;
             } else {
@@ -854,7 +854,7 @@ foreach ($campaigns as $key => $campaign) {
                         $position = (array_search($temp, $templateData));
                         $temp['sendemail'] = false;
                         $templateData[$position] = $temp;
-                        file_put_contents('db/templates.json', json_encode($templateData));
+                        file_put_contents(adminTemplatesFile, json_encode($templateData));
                     }
                 }
             }
@@ -907,7 +907,7 @@ foreach ($campaigns as $key => $campaign) {
                         }
                     }
 
-                    file_put_contents('db/templates.json', json_encode($templateData));
+                    file_put_contents(adminTemplatesFile, json_encode($templateData));
 
                 break;
             } else {
@@ -918,7 +918,7 @@ foreach ($campaigns as $key => $campaign) {
                         $position = (array_search($temp, $templateData));
                         $temp['sendemail'] = false;
                         $templateData[$position] = $temp;
-                        file_put_contents('db/templates.json', json_encode($templateData));
+                        file_put_contents(adminTemplatesFile, json_encode($templateData));
                     }
                 }
             }
@@ -953,7 +953,7 @@ foreach ($campaigns as $key => $campaign) {
                         }
                     }
 
-                    file_put_contents('db/templates.json', json_encode($templateData));
+                    file_put_contents(adminTemplatesFile, json_encode($templateData));
                
                 break;
             } else {
@@ -964,7 +964,7 @@ foreach ($campaigns as $key => $campaign) {
                         $position = (array_search($temp, $templateData));
                         $temp['sendemail'] = false;
                         $templateData[$position] = $temp;
-                        file_put_contents('db/templates.json', json_encode($templateData));
+                        file_put_contents(adminTemplatesFile, json_encode($templateData));
                     }
                 }
             }
@@ -1019,7 +1019,7 @@ foreach ($campaigns as $key => $campaign) {
                     }
                 }
 
-                file_put_contents('db/templates.json', json_encode($templateData));
+                file_put_contents(adminTemplatesFile, json_encode($templateData));
            
             break;
         } else {
@@ -1030,7 +1030,7 @@ foreach ($campaigns as $key => $campaign) {
                     $position = (array_search($temp, $templateData));
                     $temp['sendemail'] = false;
                     $templateData[$position] = $temp;
-                    file_put_contents('db/templates.json', json_encode($templateData));
+                    file_put_contents(adminTemplatesFile, json_encode($templateData));
                 }
             }
         }
@@ -1091,7 +1091,7 @@ foreach ($campaigns as $key => $campaign) {
                             }
                         }
 
-                        file_put_contents('db/templates.json', json_encode($templateData));
+                        file_put_contents(adminTemplatesFile, json_encode($templateData));
                     }
                     break;
                 } else {
@@ -1102,7 +1102,7 @@ foreach ($campaigns as $key => $campaign) {
                             $position = (array_search($temp, $templateData));
                             $temp['sendsms'] = false;
                             $templateData[$position] = $temp;
-                            file_put_contents('db/templates.json', json_encode($templateData));
+                            file_put_contents(adminTemplatesFile, json_encode($templateData));
                         }
                     }
                 }
@@ -1138,7 +1138,7 @@ foreach ($campaigns as $key => $campaign) {
                         }
 
                         //var_dump($templateData);
-                        file_put_contents('db/templates.json', json_encode($templateData));
+                        file_put_contents(adminTemplatesFile, json_encode($templateData));
             
                     break;
                 }else {
@@ -1149,7 +1149,7 @@ foreach ($campaigns as $key => $campaign) {
                             $position = (array_search($temp, $templateData));
                             $temp['sendsms'] = false;
                             $templateData[$position] = $temp;
-                            file_put_contents('db/templates.json', json_encode($templateData));
+                            file_put_contents(adminTemplatesFile, json_encode($templateData));
                         }
                     }
                 }
@@ -1189,7 +1189,7 @@ foreach ($campaigns as $key => $campaign) {
                         }
                     }
 
-                    file_put_contents('db/templates.json', json_encode($templateData));
+                    file_put_contents(adminTemplatesFile, json_encode($templateData));
                 }
                 break;
             } else {
@@ -1200,7 +1200,7 @@ foreach ($campaigns as $key => $campaign) {
                         $position = (array_search($temp, $templateData));
                         $temp['sendsms'] = false;
                         $templateData[$position] = $temp;
-                        file_put_contents('db/templates.json', json_encode($templateData));
+                        file_put_contents(adminTemplatesFile, json_encode($templateData));
                     }
                 }
             }
@@ -1237,7 +1237,7 @@ foreach ($campaigns as $key => $campaign) {
                         }
                     }
 
-                    file_put_contents('db/templates.json', json_encode($templateData));
+                    file_put_contents(adminTemplatesFile, json_encode($templateData));
                 }
                 break;
             } else {
@@ -1248,7 +1248,7 @@ foreach ($campaigns as $key => $campaign) {
                         $position = (array_search($temp, $templateData));
                         $temp['sendsms'] = false;
                         $templateData[$position] = $temp;
-                        file_put_contents('db/templates.json', json_encode($templateData));
+                        file_put_contents(adminTemplatesFile, json_encode($templateData));
                     }
                 }
             }
@@ -1303,7 +1303,7 @@ foreach ($campaigns as $key => $campaign) {
                         }
                     }
 
-                    file_put_contents('db/templates.json', json_encode($templateData));
+                    file_put_contents(adminTemplatesFile, json_encode($templateData));
                 }
                 break;
             } else {
@@ -1314,7 +1314,7 @@ foreach ($campaigns as $key => $campaign) {
                         $position = (array_search($temp, $templateData));
                         $temp['sendsms'] = false;
                         $templateData[$position] = $temp;
-                        file_put_contents('db/templates.json', json_encode($templateData));
+                        file_put_contents(adminTemplatesFile, json_encode($templateData));
                     }
                 }
             }
@@ -1358,7 +1358,7 @@ foreach ($campaigns as $key => $campaign) {
                             }
     
                             //var_dump($templateData);
-                            file_put_contents('db/templates.json', json_encode($templateData));
+                            file_put_contents(adminTemplatesFile, json_encode($templateData));
                         }
                        
                         if(count($pushData)>0)
@@ -1376,7 +1376,7 @@ foreach ($campaigns as $key => $campaign) {
                                 $position = (array_search($temp, $templateData));
                                 $temp['push'] = false;
                                 $templateData[$position] = $temp;
-                                file_put_contents('db/templates.json', json_encode($templateData));
+                                file_put_contents(adminTemplatesFile, json_encode($templateData));
                             }
                         }
                     }
@@ -1425,7 +1425,7 @@ foreach ($campaigns as $key => $campaign) {
                             }
                         }
     
-                        file_put_contents('db/templates.json', json_encode($templateData));
+                        file_put_contents(adminTemplatesFile, json_encode($templateData));
                     }
                     break;
                 } else {
@@ -1436,7 +1436,7 @@ foreach ($campaigns as $key => $campaign) {
                             $position = (array_search($temp, $templateData));
                             $temp['sendpush'] = false;
                             $templateData[$position] = $temp;
-                            file_put_contents('db/templates.json', json_encode($templateData));
+                            file_put_contents(adminTemplatesFile, json_encode($templateData));
                         }
                     }
                 }
@@ -1493,7 +1493,7 @@ foreach ($campaigns as $key => $campaign) {
                             }
 
                             //var_dump($templateData);
-                            file_put_contents('db/templates.json', json_encode($templateData));
+                            file_put_contents(adminTemplatesFile, json_encode($templateData));
                         }
 
                         if(count($pushData)>0)
@@ -1511,7 +1511,7 @@ foreach ($campaigns as $key => $campaign) {
                                 $position = (array_search($temp, $templateData));
                                 $temp['push'] = false;
                                 $templateData[$position] = $temp;
-                                file_put_contents('db/templates.json', json_encode($templateData));
+                                file_put_contents(adminTemplatesFile, json_encode($templateData));
                             }
                         }
                     }

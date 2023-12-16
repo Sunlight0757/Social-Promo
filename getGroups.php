@@ -1,6 +1,7 @@
 <?php
+require 'config.php';
 $groups = [];
-$data = file_get_contents('db/templates.json');
+$data = file_get_contents(adminTemplatesFile);
 
 $data = json_decode($data, true);
 

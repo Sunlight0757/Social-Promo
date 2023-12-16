@@ -1,3 +1,4 @@
 <?php
-$data = file_get_contents('db/bookings.json');
+require 'config.php';
+$data = file_get_contents(bookingdatafile);
 echo $data;
