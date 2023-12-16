@@ -780,13 +780,29 @@ const dataID = [];
 				
 			  <div class="input-group mb-3" id="RSS_feed_field">
 			   <label for="search_rss">Enter RSS feed</label>
-                  <div class="input-group">
+				  <div class="input-group pb-3">
                     <input id="search_rss" name="search_rss" type="url" class="form-control" placeholder="Enter valid RSS feed">
                     <span class="input-group-append">
 					  <button class="btn btn-success btn-flat" type="submit">SUBMIT</button>
                     </span>
                   </div>
+				  
+		  <div class="col-md-12">
 
+				  <div class="row">
+                  <div class="col-4">
+                    <input name="rss_type" type="text" class="form-control" placeholder="Enter type for reference">
+                  </div>
+                  <div class="col-4">
+                    <input name="rss_network" type="text" class="form-control" placeholder="Enter network for reference">
+                  </div>
+                  <div class="col-4">
+                    <input name="rss_keyword" type="text" class="form-control" placeholder="Enter keyword for reference">			
+                  </div>
+                </div>
+
+          </div>
+				  
 			</div>
 				
                 <div class="form-group" id="network_field">
