@@ -4,6 +4,7 @@
 var json = '';
 var questions = '';
 var searchjson = '';
+var templates = '';
 var searched = false;
 
 var seachdtbgroup = false;
@@ -44,6 +45,30 @@ $(document).ready(function () {
     displaySearch(searchjson);
     search_stat(searchjson);
   }, 1000);
+  
+  $.ajax({
+    url: domain + "gettemplate.php",
+    dataType: "json",
+    success: function (data) {
+      templates = [];
+      if(dataID.length!=0) {
+        for(var i=0;i<data.length;i++){
+          if(data[i]['group']==current_group)
+            templates.push(data[i]);
+        }
+      } else {
+        templates = data;
+      }
+      setTimeout(function () {
+        displayTemplate(templates);
+      }, 1000);
+
+      setTimeout(function () {
+        message_stats();
+      }, 1000);
+
+    }
+  });
 
   $.ajax({
     url: domain + "getquestion.php",
@@ -113,6 +138,29 @@ function datajson() {
 
       setTimeout(function () {
         leads_stat(json);
+      }, 1000);
+    }
+  });
+
+  $.ajax({
+    url: domain + "gettemplate.php",
+    dataType: "json",
+    success: function (data) {
+      templates = [];
+      if(dataID.length!=0) {
+        for(var i=0;i<data.length;i++){
+          if(data[i]['group']==current_group)
+            templates.push(data[i]);
+        }
+      } else {
+        templates = data;
+      }
+      setTimeout(function () {
+        displayTemplate(templates);
+      }, 1000);
+  
+      setTimeout(function () {
+        message_stats();
       }, 1000);
     }
   });
@@ -943,33 +991,24 @@ function formatUrl(url) {
 
 /////////// --------------------- TEMPLATES -------------------- ///////////
 
-var templates = '';
-$.ajax({
-  url: domain + "gettemplate.php",
-  dataType: "json",
-  success: function (data) {
-    templates = data;
-    setTimeout(function () {
-      displayTemplate(templates);
-    }, 2000);
-
-    setTimeout(function () {
-      message_stats();
-    }, 1000);
-
-  }
-});
-
 function updateTempate() {
   $.ajax({
     url: domain + "gettemplate.php",
     dataType: "json",
     success: function (data) {
-      templates = data;
-      // console.log(data);
+      templates = [];
+      if(dataID.length!=0) {
+        for(var i=0;i<data.length;i++){
+          if(data[i]['group']==current_group)
+            templates.push(data[i]);
+        }
+      } else {
+        templates = data;
+      }
       setTimeout(function () {
         displayTemplate(templates);
       }, 1000);
+  
       setTimeout(function () {
         message_stats();
       }, 1000);
@@ -997,25 +1036,35 @@ const generateID = () => {
 function displayTemplate(templates) {
 
   //var data = JSON.parse(json);
+  var thead = document.querySelector('#templateth');
   var tbody = document.querySelector('#templateBody');
   var tr = '';
   templates.forEach((Element, index) => {
 
     tr += '<tr class="template' + (index + 1) + '"><td><input type="checkbox" name="delete-template" value="' + index + ' " class="delete-template" /></td><td>' + (index + 1) + ' </td>';
-
-    tr += '<td>' + Element.group + '</td>';
-    tr += '<td><img width="100%" src = "' + Element.image + '"/></td><td><a href="//' + Element.url + '" target="_blank">' + Element.url + '</a></td></td><td>' + Element.title + '</td>';
-    tr += '<td>' + Element.content + '</td>';
-
-
-    tr += '<td><a href="view.php?index=' + Element.id + '" class="m-1 btn btn-block btn-primary btn-sm"><i class="fas fa-eye"></i> View</a>';
-    tr += '<button class="m-1 btn btn-block btn-success btn-sm" onclick="postTemplate(' + index + ')"  data-toggle="modal" data-target="#post"><i class="fas fa-share-alt"></i> Post</button>';
-    tr += '<button class="m-1 btn btn-block btn btn-info btn-sm" onclick="editTemplate(' + index + ')" data-toggle="modal" data-target="#edit-template"><i class="fas fa-pencil-alt"></i> Edit</button>';
-    tr += '<button class="m-1 btn btn-block btn btn-danger btn-sm" onclick="deleteTemplate(' + index + ')" ><i class="fas fa-trash"></i> Delete</button></td>';
+    if(dataID.length==0||dataID.includes('0')) tr += '<td><img width="100%" src = "' + Element.image + '"/></td>';
+    if(dataID.length==0||dataID.includes('1')) tr += '<td><a href="//' + Element.url + '" target="_blank">' + Element.url + '</a></td>';
+    if(dataID.length==0||dataID.includes('2')) tr += '<td>' + Element.title + '</td>';
+    if(dataID.length==0||dataID.includes('3')) tr += '<td>' + Element.content + '</td>';
+    if(dataID.length==0||dataID.includes('4')) {
+      tr += '<td><a href="view.php?index=' + Element.id + '" class="m-1 btn btn-block btn-primary btn-sm"><i class="fas fa-eye"></i> View</a>';
+      tr += '<button class="m-1 btn btn-block btn-success btn-sm" onclick="postTemplate(' + index + ')"  data-toggle="modal" data-target="#post"><i class="fas fa-share-alt"></i> Post</button>';
+      tr += '<button class="m-1 btn btn-block btn btn-info btn-sm" onclick="editTemplate(' + index + ')" data-toggle="modal" data-target="#edit-template"><i class="fas fa-pencil-alt"></i> Edit</button>';
+      tr += '<button class="m-1 btn btn-block btn btn-danger btn-sm" onclick="deleteTemplate(' + index + ')" ><i class="fas fa-trash"></i> Delete</button></td>';
+    }
     tr += '</tr>';
 
   });
   tbody.innerHTML = tr;
+  var thr = '';
+  thr += '<tr><th><input type="checkbox" id="alltemplate" name="delete-all" value="template" title="select all"></th><th>No</th>';
+  if(dataID.length==0||dataID.includes('0')) thr += '<td>Image</td>';
+  if(dataID.length==0||dataID.includes('1')) thr += '<td>Link</td>';
+  if(dataID.length==0||dataID.includes('2')) thr += '<td>Title</td>';
+  if(dataID.length==0||dataID.includes('3')) thr += '<td>Content</td>';
+  if(dataID.length==0||dataID.includes('4')) thr += '<td>Actions</td>';
+  thr += '</tr>';
+  thead.innerHTML = thr;
 
 }
 
@@ -1616,6 +1665,7 @@ function updateSelectOptions() {
       $('#birth-selectContainer').empty();
       $('#birth-selectContainer #editgroup').empty();
       $('#filtertemplategroup').empty();
+      $('#linkfiltergroup').html('<option value="">- SELECT GROUP OR RESET-</option>');
       $('#filtergroup').empty();
       $('#holidaygroup').empty();
       $('#weatherGroup').empty();
@@ -1630,9 +1680,11 @@ function updateSelectOptions() {
       var Booking_selectContainer = document.getElementById('Booking_selectContainer');
       Booking_selectContainer.innerHTML = '  <label for="InputGroup">Select Group</label> <select class="duallistbox" multiple="multiple">'
       var duallistbox3 = document.querySelector('#Booking_selectContainer .duallistbox'); var options = '';
+      template_groups = response;
       response.forEach(function (group) {
         $('#selectContainer .duallistbox').append('<option>' + group + '</option>');
         $('#filtertemplategroup').append('<option value="' + group + '">' + group + '</option>');
+        $('#linkfiltergroup').append('<option value="' + group + '">' + group + '</option>');
         $('#filtergroup').append('<option value="' + group + '">' + group + '</option>');
         options += '<option>' + group + '</option>';
         $('#editgroup').append('<option value = "' + group + '">' + group + '</option>');
@@ -2494,18 +2546,47 @@ function leads_stat(json) {
 }
 
 function message_stats() {
+  const firstStatusg = templatests[0];
+  const secondStatusg = templatests[1];
+  const thirdStatusg = templatests[2];
+
+  const firstStatusKey = Object.keys(firstStatusg)[0];
+  const secondStatusKey = Object.keys(secondStatusg)[0];
+  const thirdStatusKey = Object.keys(thirdStatusg)[0];
+
+  var total_first = 0; var total_second = 0; var total_third = 0;
+
+  templates.forEach(element => {
+    if (element.status == firstStatusKey) {
+      total_first++;
+    }
+
+    if (element.status == secondStatusKey) {
+      total_second++;
+    }
+
+    if (element.status == thirdStatusKey) {
+      total_third++;
+    }
+  })
+
+  $("#template_pending_stat").text(total_first);
+  $("#template_approved_stat").text(total_second);
+  $("#template_rejected_stat").text(total_third);
+  
   var templates_stat = document.getElementById('templates_stat');
   templates_stat.textContent = templates.length;
 
   var campaigns_stat = document.getElementById('campaigns_stat');
   campaigns_stat.textContent = campaigns.length;
   var messages_total = 0;
-  campaigns.forEach(element => {
+  // campaigns.forEach(element => {
     //var sent = element.status.split('Success');  
 
     //if(sent.length>1){messages_total+=(sent.length/2);}
 
-  })
+  // })
+
   var sent_stat = document.getElementById('sent_stat');
   sent_stat.textContent = messages_total;
 
@@ -4946,6 +5027,19 @@ $("#custom-tabs-one-search-tab").click(function(){
   $("#data-list").html(loaddatalist('search'));
   $("#cplLink").val('');
   $("#create-link-type").val("search");
+})
+
+$("#custom-tabs-one-templates-tab").click(function(){
+  var options = '';
+  console.log(template_groups)
+  for(var i=0;i<template_groups.length;i++){
+    options += '<option value="' + template_groups[i] + '">' + template_groups[i] + '</option>';
+  }
+  var groupform = '<label for="InputGroup">1. Select Group</label><select style="width:100%" class="form-control" id="linkfiltergroup" name="filtergroup" onchange="linkfilterchange(this)"><option value="">- SELECT GROUP OR RESET-</option>' + options + '</select>';
+  $("#group-form").html(groupform);
+  $("#data-list").html(loaddatalist('templates'));
+  $("#cplLink").val('');
+  $("#create-link-type").val("templates");
 })
 
 var cplBtn = document.getElementById("cplBtn");

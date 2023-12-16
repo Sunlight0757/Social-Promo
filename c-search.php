@@ -93,7 +93,6 @@ $data =json_decode($data,true);
   justify-content: center;
   align-items: center;
 }
-
 </style>
 
 </head>

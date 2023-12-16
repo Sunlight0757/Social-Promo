@@ -277,7 +277,7 @@ const nbquestion = <?=$nbq?>;
 var search_data = <?=json_encode($search_data)?>;
 var data_groups = <?=json_encode($datagroups)?>;
 var categories = <?=json_encode($categories)?>;
-var tempate_groups = <?=json_encode($groups)?>;
+var template_groups = <?=json_encode($groups)?>;
 var client_links = <?=json_encode($clientlinks)?>;
 const dataID = [];
 </script>
@@ -1214,6 +1214,7 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
                 <!-- /.form-group -->
 			
                  <button class="m-3 btn btn btn-danger float-right" id="deleteTemplate"><i class="fa-solid fa-trash"></i> Delete</button>		
+                 <button data-toggle="modal" data-target="#client" class="m-3 btn btn btn-warning float-right" id="template-client-link"><i class="fa-solid fa-link"></i> Client Link</button>
 				 
 				 </div><!-- /.card-body -->
 

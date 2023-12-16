@@ -160,6 +160,14 @@ define('searchstatus', '[
 {"Rejected": "warning"}
 ]');
 
+// Status (Template)
+define('templatestatus', '[
+{"Pending":"warning"},
+{"Approved":"primary"},
+{"Rejected": "danger"},
+{"Published": "success"}
+]');
+
 // Share alert
 define('alerttitle','Confirm you shared to add points!');
 define('alerttext','Did you share it? We check so no cheating please.');
