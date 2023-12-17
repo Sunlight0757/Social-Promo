@@ -2730,9 +2730,6 @@ function updateSearchDataTable(searchData) {
   // Update Table
   searchDataTableBody.empty();
   if (searchData.length != 0) {
-    $("#rss_type").val(searchData[searchData.length-1]['type']);
-    $("#rss_network").val(searchData[searchData.length-1]['network']);
-    $("#rss_keyword").val(searchData[searchData.length-1]['keyword']);
     searchData.forEach((data, key) => {
       searchDataTableRow += `
         <tr data-widget="expandable-table" aria-expanded="true" data-id="${data['id']}" data-link="${data['link']}">
@@ -2742,7 +2739,20 @@ function updateSearchDataTable(searchData) {
           <td class="search-url-table-title">${data['title']}</td>
           <td><b>Type:</b> ${data['type']}<br><b>Network:</b> ${data['network']}<br><b>Keyword:</b> ${data['keyword']}</td>
           <td>${data['date']}</td>
-          <td><span style="cursor:pointer;" class="badge ${colors[data['status']]} search-url-table-status">${data['status']}</span></td>
+          <td>
+            <div class="btn-group">
+              <button type="button" class="btn btn-${colors[data['status']]}">${data['status']}</button>
+              <button type="button" class="btn btn-${colors[data['status']]} dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <div class="dropdown-menu" role="menu" style="">
+                <a class="dropdown-item bg-primary" onclick="togglesearchstatut(${data['id']}, 'Pending')">Pending</a>
+                <a class="dropdown-item bg-secondary" onclick="togglesearchstatut(${data['id']}, 'Contacted')">Contacted</a>
+                <a class="dropdown-item bg-success" onclick="togglesearchstatut(${data['id']}, 'Replied')">Replied</a>
+                <a class="dropdown-item bg-warning" onclick="togglesearchstatut(${data['id']}, 'Rejected')">Rejected</a>
+              </div>
+            </div>
+          </td>
           <td>
               <a href="javascript:void(0);" class="m-1 btn btn-block btn-success btn-sm search-url-table-link"
                   onClick="popupSocial('${data['link']}')"><i class="fas fa-envelope"></i> Contact</a>
@@ -2784,12 +2794,19 @@ function UpdateSearchStatusCount(allStatus) {
     counts[status] = (counts[status] || 0) + 1;
     return counts;
   }, {});
+  const pendingCount = statusCounts['Pending'] || 0;
   const contactedCount = statusCounts['Contacted'] || 0;
   const repliedCount = statusCounts['Replied'] || 0;
+  const rejectedCount = statusCounts['Rejected'] || 0;
 
   $("#total_search_status").text(total);
   $("#total_search_contacted_status").text(contactedCount);
   $("#total_search_replied_status").text(repliedCount);
+
+  $("#search_pending_stat").text(pendingCount);
+  $("#search_contacted_stat").text(contactedCount);
+  $("#search_replied_stat").text(repliedCount);
+  $("#search_rejected_stat").text(rejectedCount);
 }
 
 // Delete Search Param
@@ -3086,21 +3103,7 @@ function submitSearchEditForm(e) {
 
 // Search Item - Status Only - Form Submission
 
-$(document).on("click", ".search-url-table-status", updateSearchStatusOnly);
-
-function updateSearchStatusOnly(e) {
-  e.preventDefault();
-
-  const target = $(e.currentTarget);
-  const row = $(target).closest('tr')[0];
-
-  $(target).attr("disabled", true);
-  toggleLoader("show");
-
-  const id = row.dataset.id;
-  const currentStatus = target.text();
-  const status = toggleColor(colors, currentStatus);
-
+function togglesearchstatut(id,status) {
   const formData = new FormData();
   formData.append("id", id);
   formData.append("status", status);
@@ -3117,17 +3120,28 @@ function updateSearchStatusOnly(e) {
         var searchData = xhr.updatedItem;
         var statuses = xhr.statuses;
 
-        // Update Status
-        target.text(searchData.status);
-        target.removeClass(colors[currentStatus]);
-        target.addClass(colors[searchData.status]);
+        for(var i=0; i<search_data.length; i++){
+          if(search_data[i]['id']==searchData['id']) {
+            search_data[i] = searchData;
+          }
+        }
 
-        // Update Status Count
-        UpdateSearchStatusCount(statuses);
+        var arr = [];
+        var statarr = [];
+        if(dataID.length>0) {
+          for(var j=0; j<search_data.length; j++){
+            if(search_data[j]['category']==current_group) {
+              arr.push(search_data[j]);
+              statarr.push(statuses[j]);
+            }
+          }
+        } else {
+          arr = search_data;
+          statarr = statuses
+        }
+        loadSearchData(arr);
+        UpdateSearchStatusCount(statarr);
       }
-
-      $(target).removeAttr("disabled");
-      toggleLoader("hide");
     },
     error: function (xhr) {
       const response = xhr.responseJSON;
@@ -3142,9 +3156,6 @@ function updateSearchStatusOnly(e) {
         title = 'Unexpected Error';
         errorMessage = 'An unexpected error occurred.';
       }
-
-      $(target).removeAttr("disabled");
-      toggleLoader("hide");
 
       Swal.fire({
         icon: 'error',
@@ -3887,16 +3898,6 @@ function displayBooking(json) {
             '</td>';
 
       }
-      StatusBtnVal = StatusArr[Element.status];
-      tr += '<td>' +
-          '<div class="btn-group">' +
-          '<button type="button" class="btn btn-'+StatusBtnVal+'">'+Element.status+'</button><button type="button" class="btn btn-'+StatusBtnVal+' dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>' +
-          '<div class="dropdown-menu" role="menu" style="">' +
-          a +
-          '</div>' +
-          '</div>' +
-          '</td>';
-
     }
 /*
     if (existe == 0) {
@@ -4533,10 +4534,10 @@ function saveCategory(method) {
 function loadSearchData(data) {
   var result = ""
   var colors = {
-    Pending: 'bg-primary',
-    Contacted: 'bg-secondary',
-    Replied: 'bg-success',
-    Rejected: 'bg-warning'
+    Pending: 'primary',
+    Contacted: 'secondary',
+    Replied: 'success',
+    Rejected: 'warning'
   };
 
   for(var i=0;i<data.length;i++){
@@ -4547,7 +4548,20 @@ function loadSearchData(data) {
                 <td class="search-url-table-title">${data[i]['title']}</td>
                 <td><b>Type:</b> ${data[i]['type']}<br><b>Network:</b> ${data[i]['network']}<br><b>Keyword:</b> ${data[i]['keyword']}</td>
                 <td>${data[i]['date']}</td>
-                <td><button style="cursor:pointer;" data-color="bg-primary" class="badge btn ${colors[data[i]['status']]} search-url-table-status">${data[i]['status']}</button></td>
+                <td>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-${colors[data[i]['status']]}">${data[i]['status']}</button>
+                    <button type="button" class="btn btn-${colors[data[i]['status']]} dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                      <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu" role="menu" style="">
+                      <a class="dropdown-item bg-primary" onclick="togglesearchstatut(${data[i]['id']}, 'Pending')">Pending</a>
+                      <a class="dropdown-item bg-secondary" onclick="togglesearchstatut(${data[i]['id']}, 'Contacted')">Contacted</a>
+                      <a class="dropdown-item bg-success" onclick="togglesearchstatut(${data[i]['id']}, 'Replied')">Replied</a>
+                      <a class="dropdown-item bg-warning" onclick="togglesearchstatut(${data[i]['id']}, 'Rejected')">Rejected</a>
+                    </div>
+                  </div>
+                </td>
                 <td>
                     <a href="javascript:void(0);" class="m-1 btn btn-block btn-success btn-sm search-url-table-link"
                         onClick="popupSocial('${data[i]['link']}')"><i class="fas fa-envelope"></i> Contact</a>
@@ -4589,9 +4603,6 @@ $('#search_type').change(function(){
     $("#keyword_field").show();
     $("#search_rss").val("");
   }
-  $("#rss_type").val('');
-  $("#rss_network").val('');
-  $("#rss_keyword").val('');
 })
 $("#select_template_btn").click(function() {
   toggleLoader("show");

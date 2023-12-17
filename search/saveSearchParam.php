@@ -158,7 +158,11 @@ function saveSearchParam()
             'network' => $network
         ] : [
             'id' => $searchId,
-            'search_url' => $rss
+            'search_url' => $rss,
+            'category' => $category,
+            'keyword' => $_POST["rss_keyword"],
+            'type' => $_POST["rss_type"],
+            'network' => $_POST["rss_network"]
         ];
 
         saveSearchParamsInFile($data);

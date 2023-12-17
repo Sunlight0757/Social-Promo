@@ -794,13 +794,13 @@ const dataID = [];
 
 				  <div class="row">
                   <div class="col-4">
-                    <input id="rss_type" name="rss_type" type="text" class="form-control" placeholder="Enter type for reference" readonly>
+                    <input name="rss_type" type="text" class="form-control" placeholder="Enter type for reference">
                   </div>
                   <div class="col-4">
-                    <input id="rss_network" name="rss_network" type="text" class="form-control" placeholder="Enter network for reference" readonly>
+                    <input name="rss_network" type="text" class="form-control" placeholder="Enter network for reference">
                   </div>
                   <div class="col-4">
-                    <input id="rss_keyword" name="rss_keyword" type="text" class="form-control" placeholder="Enter keyword for reference" readonly>
+                    <input name="rss_keyword" type="text" class="form-control" placeholder="Enter keyword for reference">
                   </div>
                 </div>
 
@@ -892,13 +892,26 @@ const dataID = [];
                               <?php 
                                 // Search Status & Colors
                                 $colors = [
-                                  'Pending' => 'bg-primary',
-                                  'Contacted' => 'bg-secondary',
-                                  'Replied' => 'bg-success',
-                                  'Rejected' => 'bg-warning'
+                                  'Pending' => 'primary',
+                                  'Contacted' => 'secondary',
+                                  'Replied' => 'success',
+                                  'Rejected' => 'warning'
                                 ];
                               ?>
-                              <td><button style="cursor:pointer;" data-color="bg-primary" class="badge btn <?= $colors[$data['status']] ?> search-url-table-status"><?php echo $data['status']; ?></button></td>
+                              <td>
+                                <div class="btn-group">
+                                  <button type="button" class="btn btn-<?= $colors[$data['status']] ?>"><?= $data['status'] ?></button>
+                                  <button type="button" class="btn btn-<?= $colors[$data['status']] ?> dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                  </button>
+                                  <div class="dropdown-menu" role="menu" style="">
+                                    <a class="dropdown-item bg-primary" onclick="togglesearchstatut(<?=$data['id']?>, 'Pending')">Pending</a>
+                                    <a class="dropdown-item bg-secondary" onclick="togglesearchstatut(<?=$data['id']?>, 'Contacted')">Contacted</a>
+                                    <a class="dropdown-item bg-success" onclick="togglesearchstatut(<?=$data['id']?>, 'Replied')">Replied</a>
+                                    <a class="dropdown-item bg-warning" onclick="togglesearchstatut(<?=$data['id']?>, 'Rejected')">Rejected</a>
+                                  </div>
+                                </div>
+                              </td>
                               <td>
                                   <a href="javascript:void(0);" class="m-1 btn btn-block btn-success btn-sm search-url-table-link"
                                       onClick="popupSocial('<?php echo $data['link']  ?>')"><i class="fas fa-envelope"></i> Contact</a>

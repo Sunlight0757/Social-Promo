@@ -36,20 +36,22 @@ $total_third = 0;
 $total_forth = 0;
 
 foreach ($search_data as $key => $option) {
-  if ($option['status'] == 'Pending') {
-    $total_first++;
-  }
-
-  if ($option['status'] == 'Contacted') {
-    $total_second++;
-  }
-
-  if ($option['status'] == 'Replied') {
-    $total_third++;
-  }
-
-  if ($option['status'] == 'Rejected') {
-    $total_forth++;
+  if($option['category']==$current_group){
+    if ($option['status'] == 'Pending') {
+      $total_first++;
+    }
+  
+    if ($option['status'] == 'Contacted') {
+      $total_second++;
+    }
+  
+    if ($option['status'] == 'Replied') {
+      $total_third++;
+    }
+  
+    if ($option['status'] == 'Rejected') {
+      $total_forth++;
+    }
   }
 }
 
@@ -123,7 +125,7 @@ $data =json_decode($data,true);
 <script>
 const domain = '<?=domain?>';
 const nbquestion = <?=$nbq?>;
-const search_data = <?=json_encode($search_data)?>;
+var search_data = <?=json_encode($search_data)?>;
 const current_group = '<?=$current_group?>';
 const dataID = <?=json_encode($dataID)?>;
 </script>
@@ -338,13 +340,26 @@ const dataID = <?=json_encode($dataID)?>;
                               <?php
                                 // Search Status & Colors
                                 $colors = [
-                                  'Pending' => 'bg-primary',
-                                  'Contacted' => 'bg-secondary',
-                                  'Replied' => 'bg-success',
-                                  'Rejected' => 'bg-warning'
+                                  'Pending' => 'primary',
+                                  'Contacted' => 'secondary',
+                                  'Replied' => 'success',
+                                  'Rejected' => 'warning'
                                 ];
                               ?>
-                              <td><button style="cursor:pointer;" data-color="bg-primary" class="badge btn <?= $colors[$data['status']] ?> search-url-table-status"><?php echo $data['status']; ?></button></td>
+                              <td>
+                                <div class="btn-group">
+                                  <button type="button" class="btn btn-<?= $colors[$data['status']] ?>"><?= $data['status'] ?></button>
+                                  <button type="button" class="btn btn-<?= $colors[$data['status']] ?> dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                  </button>
+                                  <div class="dropdown-menu" role="menu" style="">
+                                    <a class="dropdown-item bg-primary" onclick="togglesearchstatut(<?=$data['id']?>, 'Pending')">Pending</a>
+                                    <a class="dropdown-item bg-secondary" onclick="togglesearchstatut(<?=$data['id']?>, 'Contacted')">Contacted</a>
+                                    <a class="dropdown-item bg-success" onclick="togglesearchstatut(<?=$data['id']?>, 'Replied')">Replied</a>
+                                    <a class="dropdown-item bg-warning" onclick="togglesearchstatut(<?=$data['id']?>, 'Rejected')">Rejected</a>
+                                  </div>
+                                </div>
+                              </td>
                               <td>
                                   <a href="javascript:void(0);" class="m-1 btn btn-block btn-success btn-sm search-url-table-link"
                                       onClick="popupSocial('<?php echo $data['link']  ?>')"><i class="fas fa-envelope"></i> Contact</a>
