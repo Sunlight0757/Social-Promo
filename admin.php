@@ -1209,8 +1209,8 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
 {WEBSITE} - Replaces website.<br>
 {PHONE} - Replaces phone number.<br>
 {EMAIL} - Replaces email.<br>
-{LOCATION} - Replaces�location.<br>
-{APPOINTMENT} - Replaces�time of appointment.<br>
+{LOCATION} - Replaces location.<br>
+{BOOKING} - Replaces with booking details.<br>
                  </p>
                   
                 </div><!-- /.card-body -->

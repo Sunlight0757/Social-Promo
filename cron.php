@@ -44,7 +44,7 @@ function sendEmailToUser($user, $template,$campaign)
      $task="Sending email to user " . $user['fullName'] . " with template: " . $template['id'] . "\n";
     echo $task;
 
-    $replace = array("{NAME}", "{WEBSITE}", "{PHONE}", "{EMAIL}", "{LOCATION}", "{APPOINTMENT}", "{UNSUBSCRIBE}");
+    $replace = array("{NAME}", "{WEBSITE}", "{PHONE}", "{EMAIL}", "{LOCATION}", "{BOOKING}", "{UNSUBSCRIBE}");
     $replaceby = array($user['fullName'], $user['website'], $user['number'], $user['email'], $user['location'], $Appointment, '<a id="uns" href="'.domain.'unsubscribe.php?index='.$user['id'].'">Unsubscribe</a>' );
     $content = str_ireplace($replace, $replaceby, $template['content']);
     $content = spinText($content);
@@ -249,10 +249,25 @@ function sendEmailToAdmin($user, $template,$campaign)
 
 
 function sendSMSToUser($user, $template,$campaign){
+
+    $Appointment = "";
+    $bookingData = file_get_contents(bookingdatafile);
+    $bookings = json_decode($bookingData, true);
+    if($bookings!=null){
+        foreach ($bookings as $booking){
+            if ($booking['id'] == $user['id']) {
+                $Appointment = $booking['dateofbooking'];
+                $dateTime = DateTime::createFromFormat('d-m-Y/H:i', $Appointment);
+                $Appointment = $booking['booking']." - ".$dateTime->format('D, M j, Y H:i');
+                break;
+            }
+        }
+    }
+
     $task="Sending sms to user " . $user['fullName'] . " with template: " . $template['id'] . "\n";
     echo $task;
-    $replace = array("{NAME}", "{WEBSITE}", "{PHONE}", "{EMAIL}", "{LOCATION}", "{UNSUBSCRIBE}");
-    $replaceby = array($user['fullName'], $user['website'], $user['number'], $user['email'], $user['location'], '<a id="uns" href="'.domain.'unsubscribe.php?index='.$user['id'].'">Unsubscribe</a>');
+    $replace = array("{NAME}", "{WEBSITE}", "{PHONE}", "{EMAIL}", "{LOCATION}", "{BOOKING}", "{UNSUBSCRIBE}");
+    $replaceby = array($user['fullName'], $user['website'], $user['number'], $user['email'], $user['location'], $Appointment, '<a id="uns" href="'.domain.'unsubscribe.php?index='.$user['id'].'">Unsubscribe</a>');
     $content = str_ireplace($replace, $replaceby, $template['content']);
 
     $content=strip_tags($content);

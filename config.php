@@ -43,7 +43,8 @@ define('locationapi', '');
 define('weatherapi', '');
 
 // Email verification // Gmail lets you send up to 500 emails per day.
-define('send_email_verification',true);
+define('send_email_verification', false);
+define('send_booking_verification', true);
 define('address', 'no-reply@socialpromo.biz');
 define('name', 'Social Promo');
 define('subject', 'Social Management & Promotion');
@@ -52,7 +53,7 @@ define('password', 'testing@123');
 define('host','mail.socialpromo.biz');
 define('SMTPAuth', true);
 define('SMTPSecure', 'ssl');
-define('port','465'); // OR TRY 587
+define('port', '465'); // OR TRY 587
 
 // Twilio verification and whatsapp
 define('send_sms', false);
@@ -64,17 +65,16 @@ define('smsMessage', 'Thanks for taking part! Confirm your answers here');
 define('smsbookingMessage', 'Thanks for taking this booking with us');
 
 // Admin alert
-define('send_email_alert', true);
-define('send_sms_alert', true);
-define('email_address', ['message.uk@gmail.com', '', '']); //you can add more email
-define('sms_phoneNumber', ['', '',]); // you can add more number
-define('adminalert', 'has just completed your promotion, visit to view: ');
+define('send_email_alert', false);
+define('send_sms_alert', false);
+define('send_email_alert_booking', true);
+define('send_sms_alert_booking', true);
+define('email_address', ['message.uk@gmail.com','socialsuite.uk@gmail.com']); //you can add more email
+define('sms_phoneNumber', ['+447305800400','',]); // you can add more number
+define('adminalert', '');
+//define('adminalert', 'has just completed your promotion, visit to view: ');
 define('adminbookingalert', 'has just completed your promotion, visit to view: ');
-define('adminbookingreminder', 'booking Reminder for');
-
-// 92.205.9.14 
-// henocvik@socialpromo.biz
-// m29Y9POMPa2M
+define('adminbookingreminder', 'Booking Reminder! for booking of ');
 
 // Firebase push notifications
 define('allow_push', true);
@@ -116,26 +116,26 @@ define('videoDelay', 10);
 define('gameDelay', 10);
 
 // Video 
-define('videoid', 'SV13iUFVfMc');
-define('htmlVideo', 'video.mp4');
+define('videoid', '');
+define('htmlVideo', '');
 
 // Confirm
 define('confirmSlide', '15');
 
-//Gift
+// Gift
 define('giftslide', '20');
 
-//Bookings
-define('bookingslide','1');
-define('afterbookingslide','2');
+// Bookings
+define('bookingslide', '1');
+define('afterbookingslide', '2');
 
-//Badges
+// Badges
 define('badge1', 25);
 define('badge2', 50);
 define('badge3', 75);
 define('badge4', 100);
 
-//Status (Leads)
+// Status (Leads)
 define('status', '[
 {"Warm":"primary"},
 {"Rejected": "warning"},
@@ -144,24 +144,24 @@ define('status', '[
 {"Attended":"success"}
 ]');
 
-//Status (Bookings)
+// Status (Bookings)
 define('bookingstatus', '[
 {"Pending":"warning"},
 {"Attended":"primary"},
 {"Rejected": "danger"}
 ]');
 
-//Share alert
-define('alerttitle', 'Confirm your shared to add points!');
-define('alerttext', 'Did you share it? We check so no cheating please.');
+// Share alert
+define('alerttitle','Confirm you shared to add points!');
+define('alerttext','Did you share it? We check so no cheating please.');
 
-//Files (Email)
+// Files (Email)
 define('sendemailFile', 'send-email.php');
 define('emailFile', 'email.php');
 define('confirmFile', 'confirm.php');
 define('datafile', 'db/data.json');
 
-//Files (Booking)
+// Files (Booking)
 define('bookingdatafile', 'db/bookings.json');
 define('sendemailBookingFile', 'send-email_booking.php');
 define('emailBookingFile', 'email_booking.php');
@@ -182,7 +182,7 @@ define('adminServicesFile', 'db/services.json');
 define('adminSearchCategoriesFile', 'db/search_categories.json');
 define('adminClientLinksFile', 'db/client_links.json');
 
-//Post request;
+// Post request;
 
 if (isset($_POST['apikey'])) {
     echo json_encode(api_key);

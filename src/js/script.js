@@ -621,7 +621,7 @@ if(number[0]!='+')
                         }
                     });
 
-                    if(bookingdata)
+                    if(bookingdata && send_email_alert_booking)
                     {
                     
                         $.ajax({
@@ -663,7 +663,7 @@ if(number[0]!='+')
                             // console.log(twillo_ssid, twillo_token);
                             if(send_sms && update !=='update')
                             {
-                                if(smsMessage!=='') {
+                                if(smsMessage!=='') { //Here is message content goes from confirm file if smsMessage is not null
                                     console.log('Gababa SMS ONLY:'+smsMessage);
                               var link= domain+''+confirmFile+'?index='+uniqueID+'&id='+confirmSlidePosition;
                                 $(document).ready(function () {
@@ -692,9 +692,9 @@ if(number[0]!='+')
                                 });
                                 }
                                 if(bookingdata && smsbookingMessage!=='')
-                                {
+                                { //Here is message content goes from confirmBooking file if smsbookingMessage is not null
                                     console.log('Gababa SMS BOOKING:'+smsbookingMessage);
-                                    var link= domain+''+confirmFile+'?index='+uniqueID+'&id='+confirmSlidePosition;
+                                    var link= domain+''+confirmBookingFile+'?index='+uniqueID+'&id='+confirmSlidePosition;
                                     // var link= domain+''+confirmFile+'?index='+uniqueID+'&id='+confirmSlidePosition;
                                 $(document).ready(function () {
                                     $.ajax({
@@ -817,7 +817,7 @@ if(number[0]!='+')
                                         });
 
 
-                                        if(bookingdata)
+                                        if(bookingdata && send_sms_alert_booking)
                                         {
                                             $.each(sms_phoneNumber, function(index, adminNumber) {
                                           var link= domain+'admin.php';
