@@ -720,7 +720,7 @@ const dataID = [];
 		<div class="col-lg-12">
 		  <div class="card card-info">
 			<div class="card-header">
-			  <h3 class="card-title">New Leads</h3>
+			  <h3 class="card-title mt-1">Social Leads</h3>
 		  <form class="float-right" action="">
 			<input type="text" placeholder="Start typing..." name="keyword" id="keyword2">
 			<button class="btn-dark" id="search2">Search</button>
