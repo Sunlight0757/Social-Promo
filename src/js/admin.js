@@ -702,7 +702,6 @@ editsubmit.addEventListener('click', function (event) {
         },
         success: function () {
           // console.log('Data saved');
-          setTimeout(displayelemnt(json), 1000);
 
           if (searched == true) {
             // console.log(searched);
@@ -720,6 +719,8 @@ editsubmit.addEventListener('click', function (event) {
           editsubmit.innerHTML = '<i class="fas fa-check"></i> Saved';
           editsubmit.classList.remove("btn-primary");
           editsubmit.classList.add("btn-success");
+          
+          setTimeout(displayelemnt(json), 1000);
 
           setTimeout(function () {
             editsubmit.innerText = 'Save changes';
@@ -1413,16 +1414,6 @@ filterselectT.addEventListener('change', () => {
 
 //search
 
-var searchBtn2 = document.getElementById('search2');
-var input2 = document.getElementById('keyword2');
-
-input2.addEventListener('input', function (e) {
-  e.preventDefault();
-  var keyword2 = document.getElementById('keyword2').value;
-  search2(keyword2);
-
-});
-
 function search2(keyword2) {
 
   //get element searched
@@ -1458,20 +1449,6 @@ function filterData2(query, data) {
   return filteredData;
 
 }
-
-var temp_searchBtn = document.getElementById('temp_search');
-var temp_input = document.getElementById('temp_keyword');
-// console.log(searchBtn);
-
-temp_input.addEventListener('input', function (e) {
-
-  e.preventDefault();
-  // alert('done');
-  var temp_keyword = document.getElementById('temp_keyword').value;
-  console.log('searche');
-  temp_search(temp_keyword);
-
-});
 
 function temp_search(temp_keyword) {
 

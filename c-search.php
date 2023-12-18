@@ -248,8 +248,8 @@ const dataID = <?=json_encode($dataID)?>;
 			<div class="card-header">
 			  <h3 class="card-title mt-1">Social Leads</h3>
 		  <form class="float-right" action="">
-			<input type="text" placeholder="Start typing..." name="keyword" id="keyword2">
-			<button class="btn-dark" id="search2">Search</button>
+			<input type="text" placeholder="Start typing..." name="keyword" id="keyword2" oninput="search2(this.value)">
+			<button class="btn-dark">Search</button>
 		  </form>			  
 			</div>
 			<!-- /.card-header -->
