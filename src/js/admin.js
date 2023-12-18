@@ -1219,13 +1219,11 @@ submitTemp.addEventListener('click', function (e) {
   e.preventDefault();
   noteEditor = document.querySelector(".note-editor")
 
-  if (templateGroup.value == '' || templateImage.value == '' || templateTitle.value == '' || summernote.value == '' || templateLink.value == '') {
+  if (templateGroup.value == '' ||  templateTitle.value == '' || summernote.value == '' || templateLink.value == '') {
     if (templateGroup.value == '') {
       templateGroup.style.borderColor = 'red'
     } else { templateGroup.style.borderColor = 'green' }
-    if (templateImage.value == '') {
-      templateImage.style.borderColor = 'red'
-    } else { templateImage.style.borderColor = 'green' }
+    templateImage.style.borderColor = 'green'
     if (templateTitle.value == '') {
       templateTitle.style.borderColor = 'red'
     } else { templateTitle.style.borderColor = 'green' }
