@@ -277,7 +277,7 @@ h5.search-url-table-notes-label{
 <script>
 const domain = '<?=domain?>';
 const nbquestion = <?=$nbq?>;
-const search_data = <?=json_encode($search_data)?>;
+var search_data = <?=json_encode($search_data)?>;
 var data_groups = <?=json_encode($datagroups)?>;
 var categories = <?=json_encode($categories)?>;
 var tempate_groups = <?=json_encode($groups)?>;
@@ -379,20 +379,12 @@ const dataID = [];
       <div class="carousel-card d-none d-md-block" style="width: 100%;">
 	  <div class="card-header bg-info">
 		<h3 class="card-title"><i class="fa-solid fa-search"></i>  Search</h3>
-	  </div>  
-	  
-<?php
-  $allStatus = array_column($search_data, 'status');
-  $total = count($allStatus);
-  $statusCounts = array_count_values($allStatus);
-  $contactedCount = $statusCounts['Contacted'] ?? 0;
-  $repliedCount = $statusCounts['Replied'] ?? 0;
-?>
+	  </div>
 				
-		  <ul class="list-group list-group-flush">
-			<li class="list-group-item">Total <span class="float-right badge bg-info" id="total_search_status"><?php echo $total; ?></span></li>
-			<li class="list-group-item">Contacted <span class="float-right badge bg-info" id="total_search_contacted_status"><?php echo $contactedCount; ?></span></li>
-			<li class="list-group-item">Replied <span class="float-right badge bg-info" id="total_search_replied_status"><?php echo $repliedCount; ?></span></li>
+		  <ul class="list-group list-group-flush" id="search_stats">
+			<li class="list-group-item">Total <span class="float-right badge bg-info" id="total_search_status">0</span></li>
+			<li class="list-group-item">Contacted <span class="float-right badge bg-info" id="total_search_contacted_status">0</span></li>
+			<li class="list-group-item">Replied <span class="float-right badge bg-info" id="total_search_replied_status">0</span></li>
 		  </ul>
 	  
       </div>
@@ -865,7 +857,7 @@ const dataID = [];
               
               <div class="overflow-auto w-100">
                 <table class="table table-bordered table-hover search-data-table">
-                  <thead>
+                  <thead id="searchth">
                     <tr>
                       <th><input type="checkbox" id="search-data-table-selectAll"></th>
                       <th>#</th>
@@ -878,67 +870,6 @@ const dataID = [];
                     </tr>
                   </thead>
                   <tbody id="data-table">
-                    <?php 
-                      if(count($search_data)){
-                        foreach ($search_data as $key => $data) {
-                    ?>
-                          <tr data-widget="expandable-table" aria-expanded="true" data-id="<?php echo $data['id']; ?>" data-link="<?php echo $data['link']  ?>">
-                              <td><input type="checkbox" class="search-url-table-select-row"></td>
-                              <td><?php echo $key + 1 ?></td>
-                              <td class="search-url-table-image"><img width="100px" src="<?php echo $data['imageUrl'] ?>"></td>
-                              <td class="search-url-table-title"><?php echo $data['title'] ?></td>
-                              <td><b>Type:</b> <?php echo $data['type'] ?><br><b>Network:</b> <?php echo $data['network'] ?><br><b>Keyword:</b> <?php echo $data['keyword'] ?></td>
-                              <td><?php echo $data['date']; ?></td>
-                              <?php 
-                                // Search Status & Colors
-                                $colors = [
-                                  'Pending' => 'primary',
-                                  'Contacted' => 'secondary',
-                                  'Replied' => 'success',
-                                  'Rejected' => 'warning'
-                                ];
-                              ?>
-                              <td>
-                                <div class="btn-group">
-                                  <button type="button" class="btn btn-<?= $colors[$data['status']] ?>"><?= $data['status'] ?></button>
-                                  <button type="button" class="btn btn-<?= $colors[$data['status']] ?> dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
-                                    <span class="sr-only">Toggle Dropdown</span>
-                                  </button>
-                                  <div class="dropdown-menu" role="menu" style="">
-                                    <a class="dropdown-item bg-primary" onclick="togglesearchstatut(<?=$data['id']?>, 'Pending')">Pending</a>
-                                    <a class="dropdown-item bg-secondary" onclick="togglesearchstatut(<?=$data['id']?>, 'Contacted')">Contacted</a>
-                                    <a class="dropdown-item bg-success" onclick="togglesearchstatut(<?=$data['id']?>, 'Replied')">Replied</a>
-                                    <a class="dropdown-item bg-warning" onclick="togglesearchstatut(<?=$data['id']?>, 'Rejected')">Rejected</a>
-                                  </div>
-                                </div>
-                              </td>
-                              <td>
-                                  <a href="javascript:void(0);" class="m-1 btn btn-block btn-success btn-sm search-url-table-link"
-                                      onClick="popupSocial('<?php echo $data['link']  ?>')"><i class="fas fa-envelope"></i> Contact</a>
-                                  <button onclick="openSearchEditForm(event)" class="m-1 btn btn-block btn btn-info btn-sm"><i
-                                          class="fas fa-pencil-alt"></i> Edit</button>
-                                  <button onclick="deleteSearchItem(event)" class="m-1 btn btn-block btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button>
-                                  <button data-toggle="modal" data-target="#modal-switch" class="m-1 btn btn-block btn btn-primary btn-sm add-search-item"><i class="fas fa-add"></i> Add</button>
-                              </td>
-
-                          </tr>
-                          <tr class="expandable-body search-url-table-expandable">
-                            <td colspan="8">
-                              <p style="display: none;" class="search-url-table-description"><?php echo $data['description'] ?></p>
-                              <h5 class="search-url-table-notes-label" style="display: none;">Notes:</h5>
-                              <p style="display: none;" class="search-url-table-notes text-muted"><?php echo $data['notes'] ?></p>
-                            </td>
-                          </tr>
-                    <?php
-                      }
-                    }else{
-                      ?>
-                      <tr>
-                        <td colspan="8" class="text-center">No Data Found</td>
-                      </tr>
-                    <?php
-                    }
-                    ?>
                   </tbody>
                 </table>
                 <div id="modal-switch" tabindex="-1" role="dialog" aria-labelledby="modal-switch-label" class="modal fade">
@@ -4961,6 +4892,7 @@ window.open(absoluteURL, title, 'toolbar=no, location=no, directories=no, status
 
 let sts= <?=(status)?>;
 let bookingsts= <?=(bookingstatus)?>;
+let searchsts= <?=(searchstatus)?>;
 let datafile = "<?=datafile?>";
 var calendar_api_key = '<?=calendar_api_key?>';
 var country = '<?=country?>';

@@ -30,30 +30,6 @@ $current_group = "";
 <?php
 // Get Search Data
 $search_data = getSearchData();
-$total_first = 0;
-$total_second = 0;
-$total_third = 0;
-$total_forth = 0;
-
-foreach ($search_data as $key => $option) {
-  if($option['category']==$current_group){
-    if ($option['status'] == 'Pending') {
-      $total_first++;
-    }
-  
-    if ($option['status'] == 'Contacted') {
-      $total_second++;
-    }
-  
-    if ($option['status'] == 'Replied') {
-      $total_third++;
-    }
-  
-    if ($option['status'] == 'Rejected') {
-      $total_forth++;
-    }
-  }
-}
 
 $groups = [];
 $data = file_get_contents(adminTemplatesFile);
@@ -212,7 +188,7 @@ const dataID = <?=json_encode($dataID)?>;
 
               <div class="info-box-content">
                 <span class="info-box-text">Pending</span>
-                <span class="info-box-number" id="search_pending_stat"><?=$total_first?></span>
+                <span class="info-box-number" id="search_pending_stat"></span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -225,7 +201,7 @@ const dataID = <?=json_encode($dataID)?>;
 
               <div class="info-box-content">
                 <span class="info-box-text">Contacted</span>
-                <span class="info-box-number" id="search_contacted_stat"><?=$total_second?></span>
+                <span class="info-box-number" id="search_contacted_stat"></span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -242,7 +218,7 @@ const dataID = <?=json_encode($dataID)?>;
 
               <div class="info-box-content">
                 <span class="info-box-text">Replied</span>
-                <span class="info-box-number" id="search_replied_stat"><?=$total_third?></span>
+                <span class="info-box-number" id="search_replied_stat"></span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -255,7 +231,7 @@ const dataID = <?=json_encode($dataID)?>;
 
               <div class="info-box-content">
                 <span class="info-box-text">Rejected</span>
-                <span class="info-box-number" id="search_rejected_stat"><?=$total_forth?></span>
+                <span class="info-box-number" id="search_rejected_stat"></span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -310,7 +286,7 @@ const dataID = <?=json_encode($dataID)?>;
 
               <div class="overflow-auto w-100">
                 <table class="table table-bordered table-hover search-data-table">
-                  <thead>
+                  <thead id="searchth">
                     <tr>
                       <th><input type="checkbox" id="search-data-table-selectAll"></th>
                       <th>#</th>
@@ -323,71 +299,6 @@ const dataID = <?=json_encode($dataID)?>;
                     </tr>
                   </thead>
                   <tbody id="data-table">
-                    <?php 
-                      if(count($search_data)){
-                        $i = 0;
-                        foreach ($search_data as $key => $data) {
-                          if($data['category']==$current_group) {
-                            $i++;
-                    ?>
-                          <tr data-widget="expandable-table" aria-expanded="true" data-id="<?php echo $data['id']; ?>" data-link="<?php echo $data['link']  ?>">
-                              <td><input type="checkbox" class="search-url-table-select-row"></td>
-                              <td><?php echo $i ?></td>
-                              <td class="search-url-table-image"><img width="100px" src="<?php echo $data['imageUrl'] ?>"></td>
-                              <td class="search-url-table-title"><?php echo $data['title'] ?></td>
-                              <td><b>Type:</b> <?php echo $data['type'] ?><br><b>Network:</b> <?php echo $data['network'] ?><br><b>Keyword:</b> <?php echo $data['keyword'] ?></td>
-                              <td><?php echo $data['date']; ?></td>
-                              <?php
-                                // Search Status & Colors
-                                $colors = [
-                                  'Pending' => 'primary',
-                                  'Contacted' => 'secondary',
-                                  'Replied' => 'success',
-                                  'Rejected' => 'warning'
-                                ];
-                              ?>
-                              <td>
-                                <div class="btn-group">
-                                  <button type="button" class="btn btn-<?= $colors[$data['status']] ?>"><?= $data['status'] ?></button>
-                                  <button type="button" class="btn btn-<?= $colors[$data['status']] ?> dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
-                                    <span class="sr-only">Toggle Dropdown</span>
-                                  </button>
-                                  <div class="dropdown-menu" role="menu" style="">
-                                    <a class="dropdown-item bg-primary" onclick="togglesearchstatut(<?=$data['id']?>, 'Pending')">Pending</a>
-                                    <a class="dropdown-item bg-secondary" onclick="togglesearchstatut(<?=$data['id']?>, 'Contacted')">Contacted</a>
-                                    <a class="dropdown-item bg-success" onclick="togglesearchstatut(<?=$data['id']?>, 'Replied')">Replied</a>
-                                    <a class="dropdown-item bg-warning" onclick="togglesearchstatut(<?=$data['id']?>, 'Rejected')">Rejected</a>
-                                  </div>
-                                </div>
-                              </td>
-                              <td>
-                                  <a href="javascript:void(0);" class="m-1 btn btn-block btn-success btn-sm search-url-table-link"
-                                      onClick="popupSocial('<?php echo $data['link']  ?>')"><i class="fas fa-envelope"></i> Contact</a>
-                                  <button onclick="openSearchEditForm(event)" class="m-1 btn btn-block btn btn-info btn-sm"><i
-                                          class="fas fa-pencil-alt"></i> Edit</button>
-                                  <button onclick="deleteSearchItem(event)" class="m-1 btn btn-block btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button>
-                                  <button data-toggle="modal" data-target="#modal-switch" class="m-1 btn btn-block btn btn-primary btn-sm add-search-item"><i class="fas fa-add"></i> Add</button>
-                              </td>
-
-                          </tr>
-                          <tr class="expandable-body search-url-table-expandable">
-                            <td colspan="8">
-                              <p style="display: none;" class="search-url-table-description"><?php echo $data['description'] ?></p>
-                              <h5 class="search-url-table-notes-label" style="display: none;">Notes:</h5>
-                              <p style="display: none;" class="search-url-table-notes text-muted"><?php echo $data['notes'] ?></p>
-                            </td>
-                          </tr>
-                    <?php
-                          }
-                      }
-                    }else{
-                      ?>
-                      <tr>
-                        <td colspan="8" class="text-center">No Data Found</td>
-                      </tr>
-                    <?php
-                    }
-                    ?>
                   </tbody>
                 </table>
                 <div id="modal-switch" tabindex="-1" role="dialog" aria-labelledby="modal-switch-label" class="modal fade">
@@ -559,6 +470,7 @@ var top = (screen.height / 2) - (h / 2);
 window.open(absoluteURL, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
 }
 
+let searchsts= <?=(searchstatus)?>;
 let datafile = "<?=datafile?>";
 </script>
 

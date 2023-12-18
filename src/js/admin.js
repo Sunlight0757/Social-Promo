@@ -14,21 +14,18 @@ $(document).ready(function () {
     url: domain + "getdata.php",
     dataType: "json",
     success: function (data) {
-      json = [];
-      if(dataID.length!=0) {
-        for(var i=0;i<data.length;i++){
-          if(data[i]['groups'].includes(current_group))
-            json.push(data[i]);
-        }
-      } else {
-        json = data;
-      }
       // console.log(json);
       setTimeout(function () {
+        json = [];
+        if(dataID.length!=0) {
+          for(var i=0;i<data.length;i++){
+            if(data[i]['groups'].includes(current_group))
+              json.push(data[i]);
+          }
+        } else {
+          json = data;
+        }
         displayelemnt(json);
-      }, 1000);
-
-      setTimeout(function () {
         leads_stat(json);
       }, 1000);
     }
@@ -38,25 +35,36 @@ $(document).ready(function () {
     url: domain + "getbooking.php",
     dataType: "json",
     success: function (data) {
-      userbookings = [];
-      if(dataID.length!=0) {
-        for(var i=0;i<data.length;i++){
-          if(data[i]['groups'].includes(current_group))
-            userbookings.push(data[i]);
+      setTimeout(function () {
+        userbookings = [];
+        if(dataID.length!=0) {
+          for(var i=0;i<data.length;i++){
+            if(data[i]['groups'].includes(current_group))
+              userbookings.push(data[i]);
+          }
+        } else {
+          userbookings = data;
         }
-      } else {
-        userbookings = data;
-      }
-      setTimeout(function () {
         displayBooking(userbookings);
-      }, 2000);
-  
-      setTimeout(function () {
         booking_stat(userbookings);
       }, 1000);
   
     }
   });
+
+  setTimeout(function () {
+    searchjson = [];
+    if(dataID.length!=0) {
+      for(var i=0;i<search_data.length;i++){
+        if(search_data[i]['category']==current_group)
+          searchjson.push(search_data[i]);
+      }
+    } else {
+      searchjson = search_data;
+    }
+    displaySearch(searchjson);
+    search_stat(searchjson);
+  }, 1000);
 
   $.ajax({
     url: domain + "getquestion.php",
@@ -130,6 +138,20 @@ function datajson() {
     }
   });
 
+  setTimeout(function () {
+    searchjson = [];
+    if(dataID.length!=0) {
+      for(var i=0;i<search_data.length;i++){
+        if(search_data[i]['category']==current_group)
+          searchjson.push(search_data[i]);
+      }
+    } else {
+      searchjson = search_data;
+    }
+    displaySearch(searchjson);
+    search_stat(searchjson);
+  }, 1000);
+
   $.ajax({
     url: domain + "getquestion.php",
     dataType: "json",
@@ -148,8 +170,6 @@ function datajson() {
 }
 
 function displayelemnt(json) {
-
-  console.log("first")
   //var data = JSON.parse(json);
   var thead = document.querySelector('#leadth');
   var tbody = document.querySelector('#leadtab');
@@ -2562,19 +2582,62 @@ function booking_stat(booking) {
   
   booking_stats.innerHTML = li;
 }
+
+function search_stat(json) {
+  var total_contact = json.length;
+  // var total_stat = document.getElementById('total_stat');
+  // total_stat.textContent = total_contact;
+
+  const firstStatusg = searchsts[0];
+  const secondStatusg = searchsts[1];
+  const thirdStatusg = searchsts[2];
+  const forthStatusg = searchsts[3];
+
+  const firstStatusKey = Object.keys(firstStatusg)[0];
+  const secondStatusKey = Object.keys(secondStatusg)[0];
+  const thirdStatusKey = Object.keys(thirdStatusg)[0];
+  const forthStatusKey = Object.keys(forthStatusg)[0];
+
+  var total_first = 0; var total_second = 0; var total_third = 0; var total_forth = 0;
+  // var total_hot = 0;
+  json.forEach(element => {
+    if (element.status == firstStatusKey) {
+      total_first++;
+    }
+
+    if (element.status == secondStatusKey) {
+      total_second++;
+    }
+
+    if (element.status == thirdStatusKey) {
+      total_third++;
+    }
+
+    if (element.status == forthStatusKey) {
+      total_forth++;
+    }
+  })
+
+  $("#search_pending_stat").text(total_first);
+  $("#search_contacted_stat").text(total_second);
+  $("#search_replied_stat").text(total_third);
+  $("#search_rejected_stat").text(total_forth);
+
+  var search_stat = document.getElementById('search_stats');
+
+  var li = '';
+  li += '<li class="list-group-item">Total <span class="float-right badge bg-info" id="total_search_status">' + total_contact + '</span></li>'
+
+  li += '<li class="list-group-item">' + secondStatusKey + ' <span class="float-right badge bg-info" id="total_search_contacted_status">' + total_first + '</span></li>';
+
+  li += ' <li class="list-group-item">' + thirdStatusKey + ' <span class="float-right badge bg-info" id="total_search_replied_status">' + total_second + '</span></li>';
+  search_stat.innerHTML = li;
+}
 /*
     Search Related
                     */
 
 
-// Status Colors
-
-colors = {
-  'Pending': 'bg-primary',
-  'Contacted': 'bg-secondary',
-  'Replied': 'bg-success',
-  'Rejected': 'bg-warning'
-};
 
 
 // Toggle Loader
@@ -2707,9 +2770,7 @@ function saveSearchData() {
       contentType: false,
       success: function (xhr) {
         if (xhr.searchData) {
-          var searchData = xhr.searchData;
-          // Update Table Data
-          updateSearchDataTable(searchData);
+          search_data = xhr.searchData;
         }
         resolve(xhr.message);
       },
@@ -2724,69 +2785,71 @@ function saveSearchData() {
   });
 }
 
-// Function for Updating the Saved Data Table
-
-function updateSearchDataTable(searchData) {
-  var searchDataTableBody = $('.search-data-table > tbody');
-  var searchDataTableRow = '';
-
-  // Update Table
-  searchDataTableBody.empty();
-  if (searchData.length != 0) {
-    searchData.forEach((data, key) => {
-      searchDataTableRow += `
-        <tr data-widget="expandable-table" aria-expanded="true" data-id="${data['id']}" data-link="${data['link']}">
-          <td><input type="checkbox" class="search-url-table-select-row"></td>
-          <td>${key + 1}</td>
-          <td class="search-url-table-image"><img width="100px" src="${data['imageUrl']}"></td>
-          <td class="search-url-table-title">${data['title']}</td>
-          <td><b>Type:</b> ${data['type']}<br><b>Network:</b> ${data['network']}<br><b>Keyword:</b> ${data['keyword']}</td>
-          <td>${data['date']}</td>
-          <td>
-            <div class="btn-group">
-              <button type="button" class="btn btn-${colors[data['status']]}">${data['status']}</button>
-              <button type="button" class="btn btn-${colors[data['status']]} dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
-                <span class="sr-only">Toggle Dropdown</span>
-              </button>
-              <div class="dropdown-menu" role="menu" style="">
-                <a class="dropdown-item bg-primary" onclick="togglesearchstatut(${data['id']}, 'Pending')">Pending</a>
-                <a class="dropdown-item bg-secondary" onclick="togglesearchstatut(${data['id']}, 'Contacted')">Contacted</a>
-                <a class="dropdown-item bg-success" onclick="togglesearchstatut(${data['id']}, 'Replied')">Replied</a>
-                <a class="dropdown-item bg-warning" onclick="togglesearchstatut(${data['id']}, 'Rejected')">Rejected</a>
-              </div>
-            </div>
-          </td>
-          <td>
-              <a href="javascript:void(0);" class="m-1 btn btn-block btn-success btn-sm search-url-table-link"
-                  onClick="popupSocial('${data['link']}')"><i class="fas fa-envelope"></i> Contact</a>
-              <button onclick="openSearchEditForm(event)" class="m-1 btn btn-block btn btn-info btn-sm"><i
-                      class="fas fa-pencil-alt"></i> Edit</button>
-              <button onclick="deleteSearchItem(event)" class="m-1 btn btn-block btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button>
-              <button data-toggle="modal" data-target="#modal-switch" class="m-1 btn btn-block btn btn-primary btn-sm add-search-item"><i class="fas fa-add"></i> Add</button>
-          </td>
-        </tr>
-        <tr class="expandable-body search-url-table-expandable">
-          <td colspan="8">
-            <p class="search-url-table-description" style="display: none;">${data['description']}</p>
-            <h5 class="search-url-table-notes-label" style="display: none;">Notes:</h5>
-            <p class="search-url-table-notes" style="display: none;">${data['notes']}</p>
-          </td>
-        </tr>
-      `;
-    });
-  } else {
-    searchDataTableRow += `
-      <tr>
-        <td colspan="8" class="text-center">No Data Found</td>
-      </tr>
-    `;
+function displaySearch(json) {
+  var category = $('#search_category_select').val();
+  if(dataID.length == 0 && category != ""){
+    var searchjson = [];
+    for(var i=0;i<json.length;i++){
+      if(json[i]['category']==category)
+        searchjson.push(json[i]);
+    }
+    json = searchjson;
   }
 
-  searchDataTableBody.append(searchDataTableRow);
+  var thead = document.querySelector('#searchth');
+  var tbody = document.querySelector('#data-table');
+  var tr = '';
+  var StatusBtnVal = '';
+  json.forEach((Element, index) => {
+    var a = '';
+    var StatusArr = [];
+    if (index == 0) {
+      tr += '<tr data-widget="expandable-table" class="' + (index + 1) + '" aria-expanded="true" data-id="' + Element.id + '" data-link="' + Element.link + '">';
+    } else {
+      tr += ' <tr data-widget="expandable-table" class="' + (index + 1) + '" aria-expanded="false" data-id="' + Element.id + '" data-link="' + Element.link + '">';
+    }
+    tr += '<td><input type="checkbox" class="search-url-table-select-row"></td><td>' + (index + 1) + '</td>';
+    if(dataID.length==0||dataID.includes('0')) tr += '<td class="search-url-table-image"><img width="100px" src="' + Element.imageUrl + '"></td>';
+    if(dataID.length==0||dataID.includes('1')) tr += '<td class="search-url-table-title">'+ Element.title + '</td>';
+    if(dataID.length==0||dataID.includes('2')) tr += '<td><b>Type:</b> ' + Element.type + '<br><b>Network:</b> ' + Element.network + '<br><b>Keyword:</b> ' + Element.keyword + '</td>';
+    if(dataID.length==0||dataID.includes('3')) tr += '<td>' + Element.date + '</td>';
 
-  // Update Counts
-  const allStatus = searchData.map(item => item.status);
-  UpdateSearchStatusCount(allStatus);
+    if(dataID.length==0||dataID.includes('4')) {
+      for (let i = 0; i < searchsts.length; i++) {
+        const statusObj = searchsts[i];
+        const statusKey = Object.keys(statusObj)[0];
+        const statusValue = statusObj[statusKey];
+        StatusArr[statusKey] = statusValue;
+        a += '<a class="dropdown-item bg-' + statusValue + '" onclick="togglesearchstatut(' + Element.id + ', \'' + statusKey + '\')">'+statusKey+'</a>';
+      }
+
+      StatusBtnVal = StatusArr[Element.status];
+      tr += '<td>' +
+            '<div class="btn-group">' +
+              '<button type="button" class="btn btn-'+StatusBtnVal+'">'+Element.status+'</button><button type="button" class="btn btn-'+StatusBtnVal+' dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>' +
+              '<div class="dropdown-menu" role="menu" style="">' +
+                a +
+              '</div>' +
+            '</div>' +
+          '</td>';
+    }
+
+    if(dataID.length==0||dataID.includes('5')) tr += '<td><a href="javascript:void(0);" class="m-1 btn btn-block btn-success btn-sm search-url-table-link" onClick="popupSocial(' + Element.link + ')"><i class="fas fa-envelope"></i> Contact</a><button onclick="openSearchEditForm(event)" class="m-1 btn btn-block btn btn-info btn-sm"><i class="fas fa-pencil-alt"></i> Edit</button><button onclick="deleteSearchItem(event)" class="m-1 btn btn-block btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button><button data-toggle="modal" data-target="#modal-switch" class="m-1 btn btn-block btn btn-primary btn-sm add-search-item"><i class="fas fa-add"></i> Add</button></td>';
+    tr += '</tr>';
+    tr += '<tr class="expandable-body search-url-table-expandable"><td colspan="8"><p style="display: none;" class="search-url-table-description">' + Element.description + '</p><h5 class="search-url-table-notes-label" style="display: none;">Notes:</h5><p style="display: none;" class="search-url-table-notes text-muted">' + Element.notes + '</p></td></tr> ';
+
+  });
+  tbody.innerHTML = tr;
+  var thr = '';
+  thr += '<tr><th><input type="checkbox" id="allleads" name="delete-all" value="lead" title="select all"></th><th>#</th>';
+  if(dataID.length==0||dataID.includes('0')) thr += '<td>Picture</td>';
+  if(dataID.length==0||dataID.includes('1')) thr += '<td>Title</td>';
+  if(dataID.length==0||dataID.includes('2')) thr += '<td>Settings</td>';
+  if(dataID.length==0||dataID.includes('3')) thr += '<td>Date</td>';
+  if(dataID.length==0||dataID.includes('4')) thr += '<td>Status</td>';
+  if(dataID.length==0||dataID.includes('5')) thr += '<td>Actions</td>';
+  thr += '</tr>';
+  thead.innerHTML = thr;
 }
 
 // Function For Updating the Counts
@@ -2813,8 +2876,6 @@ function UpdateSearchStatusCount(allStatus) {
 }
 
 // Delete Search Param
-
-$(document).on("click", ".search-param-item", deleteSearchParam);
 
 function deleteSearchParam(e) {
   e.preventDefault();
@@ -2885,8 +2946,6 @@ function deleteSearchParam(e) {
 
 // Delete Search Item
 
-$(document).on("click", ".delete-search-item", deleteSearchItem);
-
 function deleteSearchItem(e) {
   e.preventDefault();
 
@@ -2918,9 +2977,7 @@ function deleteSearchItem(e) {
         contentType: false,
         success: function (xhr) {
           if (xhr.searchData) {
-            var searchData = Object.values(xhr.searchData);
-            // Update Table Data
-            updateSearchDataTable(searchData);
+            search_data = xhr.searchData;
           }
 
           toggleLoader("hide");
@@ -2959,8 +3016,6 @@ function deleteSearchItem(e) {
 }
 
 // Add Post to Template
-
-$(document).on("click", ".add-search-item", addSearchItem);
 
 function addSearchItem(e) {
   e.preventDefault();
@@ -3135,21 +3190,19 @@ function togglesearchstatut(id,status) {
           }
         }
 
-        var arr = [];
-        var statarr = [];
-        if(dataID.length>0) {
-          for(var j=0; j<search_data.length; j++){
-            if(search_data[j]['category']==current_group) {
-              arr.push(search_data[j]);
-              statarr.push(statuses[j]);
+        setTimeout(function () {
+          searchjson = [];
+          if(dataID.length!=0) {
+            for(var i=0;i<search_data.length;i++){
+              if(search_data[i]['category']==current_group)
+                searchjson.push(search_data[i]);
             }
+          } else {
+            searchjson = search_data;
           }
-        } else {
-          arr = search_data;
-          statarr = statuses
-        }
-        loadSearchData(arr);
-        UpdateSearchStatusCount(statarr);
+          displaySearch(searchjson);
+          search_stat(searchjson);
+        }, 1000);
       }
     },
     error: function (xhr) {
@@ -3242,9 +3295,7 @@ function deleteSelectedSearchRows(target, ids) {
         contentType: false,
         success: function (xhr) {
           if (xhr.searchData) {
-            var searchData = Object.values(xhr.searchData);
-            // Update Table Data
-            updateSearchDataTable(searchData);
+            search_data = xhr.searchData;
           }
 
           $('#search-data-table-selectAll').prop('checked', false);
@@ -3305,11 +3356,22 @@ function getSearchDataForCron() {
     contentType: false,
     success: function (xhr) {
       if (xhr.data) {
-        var searchData = xhr.data;
-
-        // Update Table Data
-        updateSearchDataTable(searchData);
+        search_data = xhr.data;
       }
+
+      setTimeout(function () {
+        searchjson = [];
+        if(dataID.length!=0) {
+          for(var i=0;i<search_data.length;i++){
+            if(search_data[i]['category']==current_group)
+              searchjson.push(search_data[i]);
+          }
+        } else {
+          searchjson = search_data;
+        }
+        displaySearch(searchjson);
+        search_stat(searchjson);
+      }, 1000);
     },
     error: function (xhr) {
       const response = xhr.responseJSON;
@@ -3320,7 +3382,7 @@ function getSearchDataForCron() {
 
 setInterval(() => {
   getSearchDataForCron();
-}, 1000 * 60 * 5);
+}, 6000);
 
 ///------------------------------------ VOTING ------------------------------------------------///
 
@@ -4509,14 +4571,13 @@ function saveCategory(method) {
         // Append Categories
         var category = xhr.category;
         categories = category;
-        var data = xhr.data;
+        if(xhr.data) search_data = xhr.data;
         var categorySelectItems ="";
         for(var i=0;i<category.length;i++){
           categorySelectItems+= `<option value="${category[i]}">${category[i]}</option>`;
         }
         $('#search_category_select').html(categorySelectItems);
         $('#linkfiltergroup').html('<option value="">- SELECT CATEGORY OR RESET-</option>'+categorySelectItems);
-        data&&loadSearchData(data)
 
         resolve(xhr.message);
       },
@@ -4539,66 +4600,7 @@ function saveCategory(method) {
     });
   });
 }
-function loadSearchData(data) {
-  var result = ""
-  var colors = {
-    Pending: 'primary',
-    Contacted: 'secondary',
-    Replied: 'success',
-    Rejected: 'warning'
-  };
 
-  for(var i=0;i<data.length;i++){
-    result += `<tr data-widget="expandable-table" aria-expanded="true" data-id="${data[i]['id']}" data-link="${data[i]['link']}">
-                <td><input type="checkbox" class="search-url-table-select-row"></td>
-                <td>${i + 1}</td>
-                <td class="search-url-table-image"><img width="100px" src="${data[i]['imageUrl']}"></td>
-                <td class="search-url-table-title">${data[i]['title']}</td>
-                <td><b>Type:</b> ${data[i]['type']}<br><b>Network:</b> ${data[i]['network']}<br><b>Keyword:</b> ${data[i]['keyword']}</td>
-                <td>${data[i]['date']}</td>
-                <td>
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-${colors[data[i]['status']]}">${data[i]['status']}</button>
-                    <button type="button" class="btn btn-${colors[data[i]['status']]} dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
-                      <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <div class="dropdown-menu" role="menu" style="">
-                      <a class="dropdown-item bg-primary" onclick="togglesearchstatut(${data[i]['id']}, 'Pending')">Pending</a>
-                      <a class="dropdown-item bg-secondary" onclick="togglesearchstatut(${data[i]['id']}, 'Contacted')">Contacted</a>
-                      <a class="dropdown-item bg-success" onclick="togglesearchstatut(${data[i]['id']}, 'Replied')">Replied</a>
-                      <a class="dropdown-item bg-warning" onclick="togglesearchstatut(${data[i]['id']}, 'Rejected')">Rejected</a>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                    <a href="javascript:void(0);" class="m-1 btn btn-block btn-success btn-sm search-url-table-link"
-                        onClick="popupSocial('${data[i]['link']}')"><i class="fas fa-envelope"></i> Contact</a>
-                    <button onclick="openSearchEditForm(event)" class="m-1 btn btn-block btn btn-info btn-sm"><i
-                            class="fas fa-pencil-alt"></i> Edit</button>
-                    <button onclick="deleteSearchItem(event)" class="m-1 btn btn-block btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button>
-                    <button data-toggle="modal" data-target="#modal-switch" class="m-1 btn btn-block btn btn-primary btn-sm add-search-item"><i class="fas fa-add"></i> Add</button>
-                </td>
-              </tr>
-              <tr class="expandable-body search-url-table-expandable">
-                <td colspan="8">
-                  <p style="display: none;" class="search-url-table-description">${data[i]['description']}</p>
-                  <h5 class="search-url-table-notes-label" style="display: none;">Notes:</h5>
-                  <p style="display: none;" class="search-url-table-notes text-muted">${data[i]['notes']}</p>
-                </td>
-              </tr>`;
-  }
-  $("#data-table").html(result)
-}
-$('#search_category_select').change(function(){
-  var category=$(this).val()
-  var arr=[]
-  for(var i=0;i<search_data.length;i++){
-    if(search_data[i].category==category){
-      arr.push(search_data[i])
-    }
-  }
-  loadSearchData(arr)
-})
 $("#RSS_feed_field").hide();
 $('#search_type').change(function(){
   if($(this).val()=="rss"){
@@ -4919,149 +4921,27 @@ function loaddatalist(group, arr=[]) {
 }
 
 $("#custom-tabs-one-leads-tab").click(function(){
-  var datalist = `
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="0" name="name" id="todoCheck0">
-          <label for="todoCheck0"></label>
-        </div>
-        <span class="text">Name</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="1" name="age" id="todoCheck1">
-          <label for="todoCheck1"></label>
-        </div>
-        <span class="text">Age</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="2" name="website" id="todoCheck2">
-          <label for="todoCheck2"></label>
-        </div>
-        <span class="text">Website</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="3" name="phone" id="todoCheck3">
-          <label for="todoCheck3"></label>
-        </div>
-        <span class="text">Phone</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="4" name="email" id="todoCheck4">
-          <label for="todoCheck4"></label>
-        </div>
-        <span class="text">Email</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="5" name="location" id="todoCheck5">
-          <label for="todoCheck5"></label>
-        </div>
-        <span class="text">Location</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="6" name="date" id="todoCheck6">
-          <label for="todoCheck6"></label>
-        </div>
-        <span class="text">Date</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="7" name="confirmed" id="todoCheck7">
-          <label for="todoCheck7"></label>
-        </div>
-        <span class="text">Confirmed</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="8" name="status" id="todoCheck8">
-          <label for="todoCheck8"></label>
-        </div>
-        <span class="text">Status</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="9" name="group" id="todoCheck9">
-          <label for="todoCheck9"></label>
-        </div>
-        <span class="text">Actions</span>					
-      </li>
-  `;
-  $("#data-list").html(datalist);
+  var options = '';
+  for(var i=0;i<data_groups.length;i++){
+    options += '<option value="' + data_groups[i] + '">' + data_groups[i] + '</option>';
+  }
+  var groupform = '<label for="InputGroup">1. Select Group</label><select style="width:100%" class="form-control" id="linkfiltergroup" name="filtergroup" onchange="linkfilterchange(this)"><option value="">- SELECT GROUP OR RESET-</option>' + options + '</select>';
+  $("#group-form").html(groupform);
+  $("#data-list").html(loaddatalist('leads'));
+  $("#cplLink").val('');
   $("#create-link-type").val("leads");
 })
 
 $("#custom-tabs-one-bookings-tab").click(function(){
-  var datalist = `
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="0" name="name" id="todoCheck0">
-          <label for="todoCheck0"></label>
-        </div>
-        <span class="text">Name</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="1" name="website" id="todoCheck1">
-          <label for="todoCheck1"></label>
-        </div>
-        <span class="text">Website</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="2" name="phone" id="todoCheck2">
-          <label for="todoCheck2"></label>
-        </div>
-        <span class="text">Phone</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="3" name="email" id="todoCheck3">
-          <label for="todoCheck3"></label>
-        </div>
-        <span class="text">Email</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="4" name="location" id="todoCheck4">
-          <label for="todoCheck4"></label>
-        </div>
-        <span class="text">Location</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="5" name="booking" id="todoCheck5">
-          <label for="todoCheck5"></label>
-        </div>
-        <span class="text">Booking</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="6" name="confirmed" id="todoCheck6">
-          <label for="todoCheck6"></label>
-        </div>
-        <span class="text">Confirmed</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="7" name="status" id="todoCheck7">
-          <label for="todoCheck7"></label>
-        </div>
-        <span class="text">Status</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="8" name="group" id="todoCheck8">
-          <label for="todoCheck8"></label>
-        </div>
-        <span class="text">Actions</span>					
-      </li>
-  `;
-  $("#data-list").html(datalist);
+  var options = '';
+  for(var i=0;i<data_groups.length;i++){
+    options += '<option value="' + data_groups[i] + '">' + data_groups[i] + '</option>';
+  }
+  var groupform = '<label for="InputGroup">1. Select Group</label><select style="width:100%" class="form-control" id="linkfiltergroup" name="filtergroup" onchange="linkfilterchange(this)"><option value="">- SELECT GROUP OR RESET-</option>' + options + '</select>';
+  console.log(groupform)
+  $("#group-form").html(groupform);
+  $("#data-list").html(loaddatalist('bookings'));
+  $("#cplLink").val('');
   $("#create-link-type").val("bookings");
 })
 
@@ -5076,6 +4956,7 @@ $("#custom-tabs-one-search-tab").click(function(){
   $("#cplLink").val('');
   $("#create-link-type").val("search");
 })
+
 var cplBtn = document.getElementById("cplBtn");
 var cplLink = document.getElementById("cplLink");
 
@@ -5138,144 +5019,7 @@ function creatingLink() {
 function loadLinkData(linkdata){
   linkdata = linkdata.length!=0 ? linkdata : {'key':'',link:''};
   var arr = linkdata['key'].split('');
-  
-  var list = $("#create-link-type").val()=="leads" ? `
-    <li>
-      <div class="icheck-primary d-inline ml-2">
-        <input type="checkbox" value="0" name="name" id="todoCheck0" ${arr.includes('0')?"checked":""}>
-        <label for="todoCheck0"></label>
-      </div>
-      <span class="text">Name</span>
-    </li>
-    <li>
-      <div class="icheck-primary d-inline ml-2">
-        <input type="checkbox" value="1" name="age" id="todoCheck1" ${arr.includes('1')?"checked":""}>
-        <label for="todoCheck1"></label>
-      </div>
-      <span class="text">Age</span>
-    </li>
-    <li>
-      <div class="icheck-primary d-inline ml-2">
-        <input type="checkbox" value="2" name="website" id="todoCheck2" ${arr.includes('2')?"checked":""}>
-        <label for="todoCheck2"></label>
-      </div>
-      <span class="text">Website</span>
-    </li>
-    <li>
-      <div class="icheck-primary d-inline ml-2">
-        <input type="checkbox" value="3" name="phone" id="todoCheck3" ${arr.includes('3')?"checked":""}>
-        <label for="todoCheck3"></label>
-      </div>
-      <span class="text">Phone</span>
-    </li>
-    <li>
-      <div class="icheck-primary d-inline ml-2">
-        <input type="checkbox" value="4" name="email" id="todoCheck4" ${arr.includes('4')?"checked":""}>
-        <label for="todoCheck4"></label>
-      </div>
-      <span class="text">Email</span>
-    </li>
-    <li>
-      <div class="icheck-primary d-inline ml-2">
-        <input type="checkbox" value="5" name="location" id="todoCheck5" ${arr.includes('5')?"checked":""}>
-        <label for="todoCheck5"></label>
-      </div>
-      <span class="text">Location</span>
-    </li>
-    <li>
-      <div class="icheck-primary d-inline ml-2">
-        <input type="checkbox" value="6" name="date" id="todoCheck6" ${arr.includes('6')?"checked":""}>
-        <label for="todoCheck6"></label>
-      </div>
-      <span class="text">Date</span>
-    </li>
-    <li>
-      <div class="icheck-primary d-inline ml-2">
-        <input type="checkbox" value="7" name="confirmed" id="todoCheck7" ${arr.includes('7')?"checked":""}>
-        <label for="todoCheck7"></label>
-      </div>
-      <span class="text">Confirmed</span>
-    </li>
-    <li>
-      <div class="icheck-primary d-inline ml-2">
-        <input type="checkbox" value="8" name="status" id="todoCheck8" ${arr.includes('8')?"checked":""}>
-        <label for="todoCheck8"></label>
-      </div>
-      <span class="text">Status</span>
-    </li>
-    <li>
-      <div class="icheck-primary d-inline ml-2">
-        <input type="checkbox" value="9" name="group" id="todoCheck9" ${arr.includes('9')?"checked":""}>
-        <label for="todoCheck9"></label>
-      </div>
-      <span class="text">Actions</span>					
-    </li>
-  ` : `
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="0" name="name" id="todoCheck0" ${arr.includes('0')?"checked":""}>
-          <label for="todoCheck0"></label>
-        </div>
-        <span class="text">Name</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="1" name="website" id="todoCheck1" ${arr.includes('1')?"checked":""}>
-          <label for="todoCheck1"></label>
-        </div>
-        <span class="text">Website</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="2" name="phone" id="todoCheck2" ${arr.includes('2')?"checked":""}>
-          <label for="todoCheck2"></label>
-        </div>
-        <span class="text">Phone</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="3" name="email" id="todoCheck3" ${arr.includes('3')?"checked":""}>
-          <label for="todoCheck3"></label>
-        </div>
-        <span class="text">Email</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="4" name="location" id="todoCheck4" ${arr.includes('4')?"checked":""}>
-          <label for="todoCheck4"></label>
-        </div>
-        <span class="text">Location</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="5" name="booking" id="todoCheck5" ${arr.includes('5')?"checked":""}>
-          <label for="todoCheck5"></label>
-        </div>
-        <span class="text">Booking</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="6" name="confirmed" id="todoCheck6" ${arr.includes('6')?"checked":""}>
-          <label for="todoCheck6"></label>
-        </div>
-        <span class="text">Confirmed</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="7" name="status" id="todoCheck7" ${arr.includes('7')?"checked":""}>
-          <label for="todoCheck7"></label>
-        </div>
-        <span class="text">Status</span>
-      </li>
-      <li>
-        <div class="icheck-primary d-inline ml-2">
-          <input type="checkbox" value="8" name="group" id="todoCheck8" ${arr.includes('8')?"checked":""}>
-          <label for="todoCheck8"></label>
-        </div>
-        <span class="text">Actions</span>					
-      </li>
-  `;
-  $("#data-list").html(list);
+  $("#data-list").html(loaddatalist($("#create-link-type").val(), arr));
   $("#cplLink").val(linkdata['link'].replace(/\\/g, ''));
   $("#cplVisitBtn").attr("href", linkdata['link'].replace(/\\/g, ''));
 }
