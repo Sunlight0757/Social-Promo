@@ -48,22 +48,19 @@ $data =json_decode($data,true);
 
 <?php
 	
-	/// WEBSITE
-	$websiteURL = 'https://socialpromo.biz';
+/// WEBSITE
+$websiteURL = 'https://socialpromo.biz';
 
 ?>
 
 <html lang="en">
 
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Admin</title>
+	
+<?php require 'meta.php';?>
 
-<!-- Google Font: Source Sans Pro -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-<!-- Font Awesome Icons -->
-<link rel="stylesheet" href="src/fonts/fontawesome/css/all.min.css">
+<!-------- PLUGINS -------->
+
 <!-- Watermark -->
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600|Material+Icons" rel="stylesheet">
 <!-- iCheck -->
@@ -78,7 +75,7 @@ $data =json_decode($data,true);
 <link rel="stylesheet" href="src/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
 <!-- Social -->
 <link rel="stylesheet" href="src/css/social-buttons.css">
-<link rel="stylesheet" href="src/css/social-colors.css">
+<!--<link rel="stylesheet" href="src/css/social-colors.css">-->
 <!-- Grid -->
 <link rel="stylesheet" href="src/css/grid.css">
 <!-- Booking -->
