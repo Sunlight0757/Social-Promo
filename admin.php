@@ -1081,14 +1081,21 @@ const dataID = [];
 	  <div class="row">
 		<div class="col-lg-12"><!-- /.col-lg-12 -->
 		
-		  <div class="card card-info">
-			<div class="card-header">
-			  <h3 class="card-title">Create Template</h3>		  
-			</div><!-- /.card-header -->
-			
+            <div class="card card-info collapsed-card">
+              <div class="card-header pt-2 pb-2">
+                <h3 class="card-title mt-2">Create Template</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                  </button>
+                </div>
+                <!-- /.card-tools -->
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+
               <!-- form start -->
               <form>
-                <div class="card-body">
                   <div class="form-group">
                     <label for="templateGroup">Group</label>
 				    <input id="templateGroup" type="text" name="group"  class="form-control form-control-lg" placeholder="Enter group">
@@ -1144,21 +1151,29 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
 {BOOKING} - Replaces with booking details.<br>
                  </p>
                   
-                </div><!-- /.card-body -->
+
                 <div class="card-footer">
                   <button type="submit" id="btnTemplate" class="btn btn-primary">Submit</button>
                 </div>
               </form>
 
-		  </div><!-- /.card -->
-		  
-            <div class="card card-info">
+              </div>
+              <!-- /.card-body -->
+			  
+            </div>
+            <!-- /.card -->
 			
-			<div class="card-header">
-			  <h3 class="card-title">All templates</h3>
-			</div>
-			<!-- /.card-header -->
+            <div class="card card-info">
+              <div class="card-header pt-2 pb-2">
+                <h3 class="card-title mt-2">All templates</h3>
 
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                  </button>
+                </div>
+                <!-- /.card-tools -->
+              </div>
+              <!-- /.card-header -->
 			<div class="card-body">
 				
 			  <form class="float-right" action="">
@@ -1204,7 +1219,7 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
                  <button class="m-3 btn btn btn-danger float-right" id="deleteTemplate"><i class="fa-solid fa-trash"></i> Delete</button>		
 				 
 				 </div><!-- /.card-body -->
-				 
+
 				 <div class="card-body p-0">
 				 
 			<div class="table-responsive">				 				 
@@ -1239,8 +1254,9 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
 			</div>				 
 
 			</div><!-- /.card-body -->
-		
-            </div><!-- /.card -->
+
+            </div>
+            <!-- /.card -->
 
 		</div><!-- /.col-md-12 -->
 	  </div><!-- /.row -->
