@@ -391,7 +391,7 @@ const dataID = [];
 	  </div>  
 	  
 		  <ul class="list-group list-group-flush" id="booking_stats">
-      <li class="list-group-item">Total <span class="float-right badge bg-info" id="total_booking_status">0</span></li>
+            <li class="list-group-item">Total <span class="float-right badge bg-info" id="total_booking_status">0</span></li>
 			<li class="list-group-item">Pending <span class="float-right badge bg-info" id="warm_stat">0</span></li>
 			<li class="list-group-item">Attended <span class="float-right badge bg-info" id="hot_stat">0</li>
 		  </ul>
