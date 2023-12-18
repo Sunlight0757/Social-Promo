@@ -2,8 +2,8 @@
 
 
 var json = '';
-var userbookings='';
 var questions = '';
+var searchjson = '';
 var searched = false;
 
 var seachdtbgroup = false;
@@ -28,27 +28,6 @@ $(document).ready(function () {
         displayelemnt(json);
         leads_stat(json);
       }, 1000);
-    }
-  });
-
-  $.ajax({
-    url: domain + "getbooking.php",
-    dataType: "json",
-    success: function (data) {
-      setTimeout(function () {
-        userbookings = [];
-        if(dataID.length!=0) {
-          for(var i=0;i<data.length;i++){
-            if(data[i]['groups'].includes(current_group))
-              userbookings.push(data[i]);
-          }
-        } else {
-          userbookings = data;
-        }
-        displayBooking(userbookings);
-        booking_stat(userbookings);
-      }, 1000);
-  
     }
   });
 
@@ -137,20 +116,6 @@ function datajson() {
       }, 1000);
     }
   });
-
-  setTimeout(function () {
-    searchjson = [];
-    if(dataID.length!=0) {
-      for(var i=0;i<search_data.length;i++){
-        if(search_data[i]['category']==current_group)
-          searchjson.push(search_data[i]);
-      }
-    } else {
-      searchjson = search_data;
-    }
-    displaySearch(searchjson);
-    search_stat(searchjson);
-  }, 1000);
 
   $.ajax({
     url: domain + "getquestion.php",
@@ -1450,6 +1415,51 @@ filterselectT.addEventListener('change', () => {
 
 //search
 
+var searchBtn2 = document.getElementById('search2');
+var input2 = document.getElementById('keyword2');
+
+input2.addEventListener('input', function (e) {
+  e.preventDefault();
+  var keyword2 = document.getElementById('keyword2').value;
+  search2(keyword2);
+
+});
+
+function search2(keyword2) {
+
+  //get element searched
+
+  var seached2 = filterData2(keyword2, searchjson);
+  searchjson.forEach((element, index) => {
+
+    let exist = 0;
+    for (let i = 0; i < seached2.length; i++) {
+      if (seached2[i].id == element.id) {
+        exist += 1;
+        break;
+      }
+    }
+    if (exist == 0) {
+      $('.search' + (index + 1)).hide();
+    }
+    else {
+      $('.search' + (index + 1)).show();
+    }
+
+  });
+  searched = true;
+}
+
+// Function to filter data by name and return a new JSON containing the results
+function filterData2(query, data) {
+  var filteredData = data.filter(function (entry) {
+    var TitleMatch = entry.title.toLowerCase().includes(query.toLowerCase());
+    return TitleMatch;
+  });
+
+  return filteredData;
+
+}
 
 var temp_searchBtn = document.getElementById('temp_search');
 var temp_input = document.getElementById('temp_keyword');
@@ -2804,9 +2814,9 @@ function displaySearch(json) {
     var a = '';
     var StatusArr = [];
     if (index == 0) {
-      tr += '<tr data-widget="expandable-table" class="' + (index + 1) + '" aria-expanded="true" data-id="' + Element.id + '" data-link="' + Element.link + '">';
+      tr += '<tr data-widget="expandable-table" class="search' + (index + 1) + '" aria-expanded="true" data-id="' + Element.id + '" data-link="' + Element.link + '">';
     } else {
-      tr += ' <tr data-widget="expandable-table" class="' + (index + 1) + '" aria-expanded="false" data-id="' + Element.id + '" data-link="' + Element.link + '">';
+      tr += ' <tr data-widget="expandable-table" class="search' + (index + 1) + '" aria-expanded="false" data-id="' + Element.id + '" data-link="' + Element.link + '">';
     }
     tr += '<td><input type="checkbox" class="search-url-table-select-row"></td><td>' + (index + 1) + '</td>';
     if(dataID.length==0||dataID.includes('0')) tr += '<td class="search-url-table-image"><img width="100px" src="' + Element.imageUrl + '"></td>';
@@ -3359,19 +3369,19 @@ function getSearchDataForCron() {
         search_data = xhr.data;
       }
 
-      setTimeout(function () {
-        searchjson = [];
-        if(dataID.length!=0) {
-          for(var i=0;i<search_data.length;i++){
-            if(search_data[i]['category']==current_group)
-              searchjson.push(search_data[i]);
-          }
-        } else {
-          searchjson = search_data;
-        }
-        displaySearch(searchjson);
-        search_stat(searchjson);
-      }, 1000);
+      // setTimeout(function () {
+      //   searchjson = [];
+      //   if(dataID.length!=0) {
+      //     for(var i=0;i<search_data.length;i++){
+      //       if(search_data[i]['category']==current_group)
+      //         searchjson.push(search_data[i]);
+      //     }
+      //   } else {
+      //     searchjson = search_data;
+      //   }
+      //   displaySearch(searchjson);
+      //   search_stat(searchjson);
+      // }, 1000);
     },
     error: function (xhr) {
       const response = xhr.responseJSON;
@@ -3875,16 +3885,22 @@ bookings[0].slot=slot_editbooking.value;
 
 
 var userbookings='';
+
 $.ajax({
   url: domain + "getbooking.php",
   dataType: "json",
   success: function (data) {
-    userbookings = data;
     setTimeout(function () {
+      userbookings = [];
+      if(dataID.length!=0) {
+        for(var i=0;i<data.length;i++){
+          if(data[i]['groups'].includes(current_group))
+            userbookings.push(data[i]);
+        }
+      } else {
+        userbookings = data;
+      }
       displayBooking(userbookings);
-    }, 2000);
-
-    setTimeout(function () {
       booking_stat(userbookings);
     }, 1000);
 
