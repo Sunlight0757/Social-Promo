@@ -108,6 +108,7 @@ define('survey', 10);
 define('share', 5);
 define('memory', 10);
 define('game', 10);
+
 // Delays
 define('shareDelay', 20);
 define('shareDelay2', 5);
@@ -149,6 +150,14 @@ define('bookingstatus', '[
 {"Pending":"warning"},
 {"Attended":"primary"},
 {"Rejected": "danger"}
+]');
+
+//Status (Search)
+define('searchstatus', '[
+{"Pending":"primary"},
+{"Contacted":"secondary"},
+{"Replied": "success"},
+{"Rejected": "warning"}
 ]');
 
 // Share alert
