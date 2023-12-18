@@ -3907,16 +3907,6 @@ function displayBooking(json) {
             '</td>';
 
       }
-      StatusBtnVal = StatusArr[Element.status];
-      tr += '<td>' +
-          '<div class="btn-group">' +
-          '<button type="button" class="btn btn-'+StatusBtnVal+'">'+Element.status+'</button><button type="button" class="btn btn-'+StatusBtnVal+' dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>' +
-          '<div class="dropdown-menu" role="menu" style="">' +
-          a +
-          '</div>' +
-          '</div>' +
-          '</td>';
-
     }
 /*
     if (existe == 0) {
