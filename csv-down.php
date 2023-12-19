@@ -1,4 +1,5 @@
 <?php
+require 'config.php';
 
 $json = file_get_contents(datafile);
 $data_json = json_decode($json);
