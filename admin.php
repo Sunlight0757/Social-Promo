@@ -3990,18 +3990,6 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
 			</button>
 		  </div>
 		  <div class="modal-body">
-		    <div class="form-group">
-          <label for="exampleInputFile">1. Select Group</label>
-          <div class="input-group">
-            <div class="custom-file">
-              <input type="file" name="csvFile" class="custom-file-input" id="exampleInputFile">
-              <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-            </div>
-            <div class="input-group-append">
-              <span class="input-group-text">Upload</span>
-            </div>
-          </div>
-        </div>
 		  </div>
 		  <div class="modal-footer justify-content-between">
 			<button type="button" id="closemodale" class="btn btn-default" data-dismiss="modal">Close</button>
