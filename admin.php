@@ -1243,6 +1243,7 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
 					<th>Link</th>
                     <th>Title</th>
                     <th>Content</th>					
+                    <th>Status</th>					
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -1257,6 +1258,7 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
 					<th>Link</th>
                     <th>Title</th>
                     <th>Content</th>					
+                    <th>Status</th>					
                     <th>Actions</th>
                   </tr>
                   </tfoot>

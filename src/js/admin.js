@@ -1022,11 +1022,12 @@ function displayTemplate(templates) {
     var StatusArr = [];
 
     tr += '<tr class="template' + (index + 1) + '"><td><input type="checkbox" name="delete-template" value="' + index + ' " class="delete-template" /></td><td>' + (index + 1) + ' </td>';
-    if(dataID.length==0||dataID.includes('0')) tr += '<td><img width="100%" src = "' + Element.image + '"/></td>';
-    if(dataID.length==0||dataID.includes('1')) tr += '<td><a href="//' + Element.url + '" target="_blank">' + Element.url + '</a></td>';
-    if(dataID.length==0||dataID.includes('2')) tr += '<td>' + Element.title + '</td>';
-    if(dataID.length==0||dataID.includes('3')) tr += '<td>' + Element.content + '</td>';
-    if(dataID.length==0||dataID.includes('4')) {
+    if(dataID.length==0||dataID.includes('0')) tr += '<td>' + Element.group + '</td>';
+    if(dataID.length==0||dataID.includes('1')) tr += '<td><img width="100%" src = "' + Element.image + '"/></td>';
+    if(dataID.length==0||dataID.includes('2')) tr += '<td><a href="//' + Element.url + '" target="_blank">' + Element.url + '</a></td>';
+    if(dataID.length==0||dataID.includes('3')) tr += '<td>' + Element.title + '</td>';
+    if(dataID.length==0||dataID.includes('4')) tr += '<td>' + Element.content + '</td>';
+    if(dataID.length==0||dataID.includes('5')) {
       var len = dataID.length==0?templatests.length:templatests.length-1;
       for (let i = 0; i < len; i++) {
         const statusObj = templatests[i];
@@ -1046,7 +1047,7 @@ function displayTemplate(templates) {
             '</div>' +
           '</td>';
     }
-    if(dataID.length==0||dataID.includes('5')) {
+    if(dataID.length==0||dataID.includes('6')) {
       tr += '<td><a href="view.php?index=' + Element.id + '" class="m-1 btn btn-block btn-primary btn-sm"><i class="fas fa-eye"></i> View</a>';
       tr += '<button class="m-1 btn btn-block btn-success btn-sm" onclick="postTemplate(' + index + ')"  data-toggle="modal" data-target="#post"><i class="fas fa-share-alt"></i> Post</button>';
       tr += '<button class="m-1 btn btn-block btn btn-info btn-sm" onclick="editTemplate(' + index + ')" data-toggle="modal" data-target="#edit-template"><i class="fas fa-pencil-alt"></i> Edit</button>';
@@ -1058,12 +1059,13 @@ function displayTemplate(templates) {
   tbody.innerHTML = tr;
   var thr = '';
   thr += '<tr><th><input type="checkbox" id="alltemplate" name="delete-all" value="template" title="select all"></th><th>No</th>';
-  if(dataID.length==0||dataID.includes('0')) thr += '<td>Image</td>';
-  if(dataID.length==0||dataID.includes('1')) thr += '<td>Link</td>';
-  if(dataID.length==0||dataID.includes('2')) thr += '<td>Title</td>';
-  if(dataID.length==0||dataID.includes('3')) thr += '<td>Content</td>';
-  if(dataID.length==0||dataID.includes('4')) thr += '<td>Status</td>';
-  if(dataID.length==0||dataID.includes('5')) thr += '<td>Actions</td>';
+  if(dataID.length==0||dataID.includes('0')) thr += '<td>Group</td>';
+  if(dataID.length==0||dataID.includes('1')) thr += '<td>Image</td>';
+  if(dataID.length==0||dataID.includes('2')) thr += '<td>Link</td>';
+  if(dataID.length==0||dataID.includes('3')) thr += '<td>Title</td>';
+  if(dataID.length==0||dataID.includes('4')) thr += '<td>Content</td>';
+  if(dataID.length==0||dataID.includes('5')) thr += '<td>Status</td>';
+  if(dataID.length==0||dataID.includes('6')) thr += '<td>Actions</td>';
   thr += '</tr>';
   thead.innerHTML = thr;
 
@@ -2595,12 +2597,14 @@ function message_stats() {
   const firstStatusg = templatests[0];
   const secondStatusg = templatests[1];
   const thirdStatusg = templatests[2];
+  const forthStatusg = templatests[3];
 
   const firstStatusKey = Object.keys(firstStatusg)[0];
   const secondStatusKey = Object.keys(secondStatusg)[0];
   const thirdStatusKey = Object.keys(thirdStatusg)[0];
+  const forthStatusKey = Object.keys(forthStatusg)[0];
 
-  var total_first = 0; var total_second = 0; var total_third = 0;
+  var total_first = 0; var total_second = 0; var total_third = 0; var total_forth = 0;
 
   templates.forEach(element => {
     if (element.status == firstStatusKey) {
@@ -2614,11 +2618,19 @@ function message_stats() {
     if (element.status == thirdStatusKey) {
       total_third++;
     }
+
+    if (element.status == forthStatusKey) {
+      total_forth++;
+    }
   })
 
   $("#template_pending_stat").text(total_first);
   $("#template_approved_stat").text(total_second);
   $("#template_rejected_stat").text(total_third);
+
+  $("#templates_approved").text(total_second);
+  $("#templates_rejected").text(total_third);
+  $("#templates_published").text(total_forth);
   
   var templates_stat = document.getElementById('templates_stat');
   templates_stat.textContent = templates.length;
@@ -4990,52 +5002,52 @@ function loaddatalist(group, arr=[]) {
       datalist = `
         <li>
           <div class="icheck-primary d-inline ml-2">
-            <input type="checkbox" value="0" name="image" id="todoCheck0" ${arr.includes('0')?"checked":""}>
+            <input type="checkbox" value="0" name="group" id="todoCheck0" ${arr.includes('0')?"checked":""}>
             <label for="todoCheck0"></label>
+          </div>
+          <span class="text">Group</span>
+        </li>
+        <li>
+          <div class="icheck-primary d-inline ml-2">
+            <input type="checkbox" value="1" name="image" id="todoCheck1" ${arr.includes('1')?"checked":""}>
+            <label for="todoCheck1"></label>
           </div>
           <span class="text">Image</span>
         </li>
         <li>
           <div class="icheck-primary d-inline ml-2">
-            <input type="checkbox" value="1" name="ulink" id="todoCheck1" ${arr.includes('1')?"checked":""}>
-            <label for="todoCheck1"></label>
+            <input type="checkbox" value="2" name="ulink" id="todoCheck2" ${arr.includes('2')?"checked":""}>
+            <label for="todoCheck2"></label>
           </div>
           <span class="text">Link</span>
         </li>
         <li>
           <div class="icheck-primary d-inline ml-2">
-            <input type="checkbox" value="2" name="title" id="todoCheck2" ${arr.includes('2')?"checked":""}>
-            <label for="todoCheck2"></label>
+            <input type="checkbox" value="3" name="title" id="todoCheck3" ${arr.includes('3')?"checked":""}>
+            <label for="todoCheck3"></label>
           </div>
           <span class="text">Title</span>
         </li>
         <li>
           <div class="icheck-primary d-inline ml-2">
-            <input type="checkbox" value="3" name="Content" id="todoCheck3" ${arr.includes('3')?"checked":""}>
-            <label for="todoCheck3"></label>
+            <input type="checkbox" value="4" name="Content" id="todoCheck4" ${arr.includes('4')?"checked":""}>
+            <label for="todoCheck4"></label>
           </div>
           <span class="text">Content</span>
         </li>
         <li>
           <div class="icheck-primary d-inline ml-2">
-            <input type="checkbox" value="4" name="status" id="todoCheck4" ${arr.includes('4')?"checked":""}>
-            <label for="todoCheck4"></label>
+            <input type="checkbox" value="5" name="status" id="todoCheck5" ${arr.includes('5')?"checked":""}>
+            <label for="todoCheck5"></label>
           </div>
           <span class="text">status</span>
         </li>
         <li>
           <div class="icheck-primary d-inline ml-2">
-            <input type="checkbox" value="5" name="actions" id="todoCheck5" ${arr.includes('5')?"checked":""}>
-            <label for="todoCheck5"></label>
+            <input type="checkbox" value="6" name="actions" id="todoCheck6" ${arr.includes('6')?"checked":""}>
+            <label for="todoCheck6"></label>
           </div>
           <span class="text">Actions</span>
-        </li>
-        <li>
-          <div class="icheck-primary d-inline ml-2">
-            <input type="checkbox" value="5" name="rss" id="todoCheck5" ${arr.includes('6')?"checked":""}>
-            <label for="todoCheck5"></label>
-          </div>
-          <span class="text">RSS link</span>
         </li>
       `;
       break;
