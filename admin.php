@@ -375,18 +375,6 @@ const dataID = [];
       </div>
       <div class="carousel-card d-none d-md-block" style="width: 100%;">
 	  <div class="card-header bg-info">
-		<h3 class="card-title"><i class="fa-solid fa-search"></i>  Search</h3>
-	  </div>
-				
-		  <ul class="list-group list-group-flush" id="search_stats">
-			<li class="list-group-item">Total <span class="float-right badge bg-info" id="total_search_status">0</span></li>
-			<li class="list-group-item">Contacted <span class="float-right badge bg-info" id="total_search_contacted_status">0</span></li>
-			<li class="list-group-item">Replied <span class="float-right badge bg-info" id="total_search_replied_status">0</span></li>
-		  </ul>
-	  
-      </div>
-      <div class="carousel-card d-none d-md-block" style="width: 100%;">
-	  <div class="card-header bg-info">
 		<h3 class="card-title"><i class="fa-solid fa-calendar"></i>  Bookings</h3>
 	  </div>  
 	  
@@ -396,6 +384,18 @@ const dataID = [];
 			<li class="list-group-item">Attended <span class="float-right badge bg-info" id="hot_stat">0</li>
 		  </ul>
 		  	  
+      </div>
+      <div class="carousel-card d-none d-md-block" style="width: 100%;">
+	  <div class="card-header bg-info">
+		<h3 class="card-title"><i class="fa-solid fa-search"></i>  Search</h3>
+	  </div>
+				
+		  <ul class="list-group list-group-flush" id="search_stats">
+			<li class="list-group-item">Total <span class="float-right badge bg-info" id="total_search_status">0</span></li>
+			<li class="list-group-item">Contacted <span class="float-right badge bg-info" id="total_search_contacted_status">0</span></li>
+			<li class="list-group-item">Replied <span class="float-right badge bg-info" id="total_search_replied_status">0</span></li>
+		  </ul>
+	  
       </div>
     </div>
     </div>
@@ -412,6 +412,18 @@ const dataID = [];
 			<li class="list-group-item">Unsubscribed <span class="float-right badge bg-info" id="unsubscribed_stat">0</span></li>
 		  </ul>
 		    
+        </div>
+        <div class="carousel-card d-none d-md-block" style="width: 100%;">
+	  <div class="card-header bg-info">
+		<h3 class="card-title"><i class="fa-solid fa-edit"></i>  Templates</h3>
+	  </div>  
+	  
+		  <ul class="list-group list-group-flush">
+			<li class="list-group-item">Approved <span class="float-right badge bg-info" id="templates_approved">0</span></li>
+			<li class="list-group-item">Rejected <span class="float-right badge bg-info" id="templates_rejected">0</span></li>
+			<li class="list-group-item">Published <span class="float-right badge bg-info" id="templates_published">0</span></li>	
+			
+		  </ul>
         </div>
         <div class="carousel-card d-none d-md-block" style="width: 100%;">
 	  <div class="card-header bg-info">
