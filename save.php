@@ -169,6 +169,19 @@ if (isset($_POST['template'])) {
 	file_put_contents(adminTemplatesFile, $data_json);
 }
 
+if (isset($_POST['editTemplate'])) {
+	# code...
+	$jsonData = $_POST['editTemplate'];
+
+	$fileName = adminTemplatesFile;
+
+	$file = fopen($fileName, 'w');
+
+	fwrite($file, $jsonData);
+
+	fclose($file);
+}
+
 if (isset($_POST['deleteTemplate'])) {
 	# code...
 	$jsonData = $_POST['deleteTemplate'];

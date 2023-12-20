@@ -4895,6 +4895,7 @@ window.open(absoluteURL, title, 'toolbar=no, location=no, directories=no, status
 let sts= <?=(status)?>;
 let bookingsts= <?=(bookingstatus)?>;
 let searchsts= <?=(searchstatus)?>;
+let templatests= <?=(templatestatus)?>;
 let datafile = "<?=datafile?>";
 var calendar_api_key = '<?=calendar_api_key?>';
 var country = '<?=country?>';

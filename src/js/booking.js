@@ -623,7 +623,7 @@ submitTemp.addEventListener('click', function (e) {
       data: { template: JSON.stringify(formData) },
       success: function (response) {
         // console.log(response);
-        updateTempate();
+        updateTemplate();
         Swal.fire({
           icon: 'success',
           title: 'Congratulation',

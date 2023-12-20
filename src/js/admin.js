@@ -143,29 +143,6 @@ function datajson() {
   });
 
   $.ajax({
-    url: domain + "gettemplate.php",
-    dataType: "json",
-    success: function (data) {
-      templates = [];
-      if(dataID.length!=0) {
-        for(var i=0;i<data.length;i++){
-          if(data[i]['group']==current_group)
-            templates.push(data[i]);
-        }
-      } else {
-        templates = data;
-      }
-      setTimeout(function () {
-        displayTemplate(templates);
-      }, 1000);
-  
-      setTimeout(function () {
-        message_stats();
-      }, 1000);
-    }
-  });
-
-  $.ajax({
     url: domain + "getquestion.php",
     dataType: "json",
     success: function (data) {
@@ -991,7 +968,7 @@ function formatUrl(url) {
 
 /////////// --------------------- TEMPLATES -------------------- ///////////
 
-function updateTempate() {
+function updateTemplate() {
   $.ajax({
     url: domain + "gettemplate.php",
     dataType: "json",
@@ -1039,7 +1016,10 @@ function displayTemplate(templates) {
   var thead = document.querySelector('#templateth');
   var tbody = document.querySelector('#templateBody');
   var tr = '';
+  var StatusBtnVal = '';
   templates.forEach((Element, index) => {
+    var a = '';
+    var StatusArr = [];
 
     tr += '<tr class="template' + (index + 1) + '"><td><input type="checkbox" name="delete-template" value="' + index + ' " class="delete-template" /></td><td>' + (index + 1) + ' </td>';
     if(dataID.length==0||dataID.includes('0')) tr += '<td><img width="100%" src = "' + Element.image + '"/></td>';
@@ -1047,6 +1027,26 @@ function displayTemplate(templates) {
     if(dataID.length==0||dataID.includes('2')) tr += '<td>' + Element.title + '</td>';
     if(dataID.length==0||dataID.includes('3')) tr += '<td>' + Element.content + '</td>';
     if(dataID.length==0||dataID.includes('4')) {
+      var len = dataID.length==0?templatests.length:templatests.length-1;
+      for (let i = 0; i < len; i++) {
+        const statusObj = templatests[i];
+        const statusKey = Object.keys(statusObj)[0];
+        const statusValue = statusObj[statusKey];
+        StatusArr[statusKey] = statusValue;
+        a += '<a class="dropdown-item bg-' + statusValue + '" onclick="toggletemplatestatut(' + index + ', \'' + statusKey + '\')">'+statusKey+'</a>';
+      }
+
+      StatusBtnVal = StatusArr[Element.status];
+      tr += '<td>' +
+            '<div class="btn-group">' +
+              '<button type="button" class="btn btn-'+StatusBtnVal+'">'+Element.status+'</button><button type="button" class="btn btn-'+StatusBtnVal+' dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>' +
+              '<div class="dropdown-menu" role="menu" style="">' +
+                a +
+              '</div>' +
+            '</div>' +
+          '</td>';
+    }
+    if(dataID.length==0||dataID.includes('5')) {
       tr += '<td><a href="view.php?index=' + Element.id + '" class="m-1 btn btn-block btn-primary btn-sm"><i class="fas fa-eye"></i> View</a>';
       tr += '<button class="m-1 btn btn-block btn-success btn-sm" onclick="postTemplate(' + index + ')"  data-toggle="modal" data-target="#post"><i class="fas fa-share-alt"></i> Post</button>';
       tr += '<button class="m-1 btn btn-block btn btn-info btn-sm" onclick="editTemplate(' + index + ')" data-toggle="modal" data-target="#edit-template"><i class="fas fa-pencil-alt"></i> Edit</button>';
@@ -1062,13 +1062,59 @@ function displayTemplate(templates) {
   if(dataID.length==0||dataID.includes('1')) thr += '<td>Link</td>';
   if(dataID.length==0||dataID.includes('2')) thr += '<td>Title</td>';
   if(dataID.length==0||dataID.includes('3')) thr += '<td>Content</td>';
-  if(dataID.length==0||dataID.includes('4')) thr += '<td>Actions</td>';
+  if(dataID.length==0||dataID.includes('4')) thr += '<td>Status</td>';
+  if(dataID.length==0||dataID.includes('5')) thr += '<td>Actions</td>';
   thr += '</tr>';
   thead.innerHTML = thr;
 
 }
 
+function toggletemplatestatut(id,st) {
+  var surveyt = templates[id];
 
+  surveyt.status = st;
+  templates[id] = surveyt;
+  data = templates;
+  $.ajax({
+    type: 'POST',
+    url: 'save.php',
+    data: {
+      editTemplate: JSON.stringify(data)
+    },
+    success: function () {
+      updateTemplate();
+    },
+    error: function () {
+      console.error('Error issue');
+    }
+  });
+
+}
+
+setInterval(() => {
+  $.ajax({
+    url: domain + "gettemplate.php",
+    dataType: "json",
+    success: function (data) {
+      templates = [];
+      if(dataID.length!=0) {
+        for(var i=0;i<data.length;i++){
+          if(data[i]['group']==current_group)
+            templates.push(data[i]);
+        }
+      } else {
+        templates = data;
+      }
+      setTimeout(function () {
+        displayTemplate(templates);
+      }, 1000);
+  
+      setTimeout(function () {
+        message_stats();
+      }, 1000);
+    }
+  });
+}, 4000)
 
 //delete template
 
@@ -1307,7 +1353,7 @@ submitTemp.addEventListener('click', function (e) {
       data: { template: JSON.stringify(formData) },
       success: function (response) {
         // console.log(response);
-        updateTempate();
+        updateTemplate();
         Swal.fire({
           icon: 'success',
           title: 'Congratulation',
@@ -3919,7 +3965,7 @@ bookings[0].slot=slot_editbooking.value;
       data: { booking: JSON.stringify(bookings[0]) },
       success: function (response) {
         //  console.log(response);
-        //updateTempate();
+        //updateTemplate();
         Swal.fire({
           icon: 'success',
           title: 'Congratulation',
@@ -4726,7 +4772,7 @@ function saveTemplate() {
           type: "POST",
           data: { template: JSON.stringify(formData) },
           success: function (response) {
-            updateTempate();
+            updateTemplate();
             Swal.fire({
               icon: 'success',
               title: 'Congratulation',
@@ -4951,7 +4997,7 @@ function loaddatalist(group, arr=[]) {
         </li>
         <li>
           <div class="icheck-primary d-inline ml-2">
-            <input type="checkbox" value="1" name="link" id="todoCheck1" ${arr.includes('1')?"checked":""}>
+            <input type="checkbox" value="1" name="ulink" id="todoCheck1" ${arr.includes('1')?"checked":""}>
             <label for="todoCheck1"></label>
           </div>
           <span class="text">Link</span>
@@ -4972,14 +5018,21 @@ function loaddatalist(group, arr=[]) {
         </li>
         <li>
           <div class="icheck-primary d-inline ml-2">
-            <input type="checkbox" value="4" name="actions" id="todoCheck4" ${arr.includes('4')?"checked":""}>
+            <input type="checkbox" value="4" name="status" id="todoCheck4" ${arr.includes('4')?"checked":""}>
             <label for="todoCheck4"></label>
+          </div>
+          <span class="text">status</span>
+        </li>
+        <li>
+          <div class="icheck-primary d-inline ml-2">
+            <input type="checkbox" value="5" name="actions" id="todoCheck5" ${arr.includes('5')?"checked":""}>
+            <label for="todoCheck5"></label>
           </div>
           <span class="text">Actions</span>
         </li>
         <li>
           <div class="icheck-primary d-inline ml-2">
-            <input type="checkbox" value="5" name="rss" id="todoCheck5" ${arr.includes('5')?"checked":""}>
+            <input type="checkbox" value="5" name="rss" id="todoCheck5" ${arr.includes('6')?"checked":""}>
             <label for="todoCheck5"></label>
           </div>
           <span class="text">RSS link</span>
