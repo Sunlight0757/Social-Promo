@@ -1063,7 +1063,7 @@ function displayTemplate(templates) {
       }
 
       StatusBtnVal = StatusArr[Element.status];
-      if(Element.status == 'Published')
+      if(Element.status == 'Published'&&dataID.length>0)
         tr += '<td><span class=" badge badge-success">Published</span></td>'
       else
         tr += '<td>' +
