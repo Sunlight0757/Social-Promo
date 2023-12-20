@@ -265,7 +265,6 @@ const dataID = <?=json_encode($dataID)?>;
 			  <table class="table table-bordered table-striped table-hover">
 				<thead id="leadth">
 				  <tr>
-              <th><input type="checkbox" id="allleads" name="delete-all" value="lead" title="select all"></th> 
 					<th>#</th>
 					<td>Name</td>
 					<td>Age</td>

@@ -287,7 +287,6 @@ const dataID = <?=json_encode($dataID)?>;
                 <table class="table table-bordered table-hover search-data-table">
                   <thead id="searchth">
                     <tr>
-                      <th><input type="checkbox" id="search-data-table-selectAll"></th>
                       <th>#</th>
 					  <th>Picture</th>
                       <th>Title</th>

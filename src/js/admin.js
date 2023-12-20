@@ -3,6 +3,7 @@
 
 var json = '';
 var questions = '';
+var userbookings='';
 var searchjson = '';
 var templates = '';
 var searched = false;
@@ -29,6 +30,27 @@ $(document).ready(function () {
         displayelemnt(json);
         leads_stat(json);
       }, 1000);
+    }
+  });
+
+  $.ajax({
+    url: domain + "getbooking.php",
+    dataType: "json",
+    success: function (data) {
+      setTimeout(function () {
+        userbookings = [];
+        if(dataID.length!=0) {
+          for(var i=0;i<data.length;i++){
+            if(data[i]['groups'].includes(current_group))
+              userbookings.push(data[i]);
+          }
+        } else {
+          userbookings = data;
+        }
+        displayBooking(userbookings);
+        booking_stat(userbookings);
+      }, 1000);
+  
     }
   });
 
@@ -175,7 +197,8 @@ function displayelemnt(json) {
     } else {
       tr += ' <tr data-widget="expandable-table" class="' + (index + 1) + '" aria-expanded="false">';
     }
-    tr += '<td><input type="checkbox" name="delete-lead" id="" value="' + index + ' " class="delete-lead" /></td><td>' + (index + 1) + '</td>';
+    if(dataID.length==0) tr += '<td><input type="checkbox" name="delete-lead" id="" value="' + index + ' " class="delete-lead" /></td>';
+    tr += '<td>' + (index + 1) + '</td>';
     if(dataID.length==0||dataID.includes('0')) tr += '<td><p style="width:90px;">' + Element.fullName + '</p></td>';
     if(dataID.length==0||dataID.includes('1')) tr += '<td><p style="width:30px;">' + age + '</p></td>';
     if(dataID.length==0||dataID.includes('2')) tr += '<td><p style="width:90px;"><a href="' + Element.website + '" target="_blank"onclick="openWebsitePopup(event)">' + Element.website + ' </a></p></td>';
@@ -259,8 +282,9 @@ function displayelemnt(json) {
 
   });
   tbody.innerHTML = tr;
-  var thr = '';
-  thr += '<tr><th><input type="checkbox" id="allleads" name="delete-all" value="lead" title="select all"></th><th>#</th>';
+  var thr = '<tr>';
+  if(dataID.length==0) thr += '<th><input type="checkbox" id="allleads" name="delete-all" value="lead" title="select all"></th>';
+  thr += '<th>#</th>';
   if(dataID.length==0||dataID.includes('0')) thr += '<td>Name</td>';
   if(dataID.length==0||dataID.includes('1')) thr += '<td>Age</td>';
   if(dataID.length==0||dataID.includes('2')) thr += '<td>Website</td>';
@@ -1021,33 +1045,37 @@ function displayTemplate(templates) {
     var a = '';
     var StatusArr = [];
 
-    tr += '<tr class="template' + (index + 1) + '"><td><input type="checkbox" name="delete-template" value="' + index + ' " class="delete-template" /></td><td>' + (index + 1) + ' </td>';
-    if(dataID.length==0||dataID.includes('0')) tr += '<td>' + Element.group + '</td>';
-    if(dataID.length==0||dataID.includes('1')) tr += '<td><img width="100%" src = "' + Element.image + '"/></td>';
-    if(dataID.length==0||dataID.includes('2')) tr += '<td><a href="//' + Element.url + '" target="_blank">' + Element.url + '</a></td>';
-    if(dataID.length==0||dataID.includes('3')) tr += '<td>' + Element.title + '</td>';
-    if(dataID.length==0||dataID.includes('4')) tr += '<td>' + Element.content + '</td>';
-    if(dataID.length==0||dataID.includes('5')) {
-      var len = dataID.length==0?templatests.length:templatests.length-1;
-      for (let i = 0; i < len; i++) {
+    tr += '<tr class="template' + (index + 1) + '">';
+    if(dataID.length==0) tr += '<td><input type="checkbox" name="delete-template" value="' + index + ' " class="delete-template" /></td>';
+    tr += '<td>' + (index + 1) + ' </td>';
+    tr += '<td>' + Element.group + '</td>';
+    if(dataID.length==0||dataID.includes('0')) tr += '<td><img width="100%" src = "' + Element.image + '"/></td>';
+    if(dataID.length==0||dataID.includes('1')) tr += '<td><a href="//' + Element.url + '" target="_blank">' + Element.url + '</a></td>';
+    if(dataID.length==0||dataID.includes('2')) tr += '<td>' + Element.title + '</td>';
+    if(dataID.length==0||dataID.includes('3')) tr += '<td>' + Element.content + '</td>';
+    if(dataID.length==0||dataID.includes('4')) {
+      for (let i = 0; i < templatests.length; i++) {
         const statusObj = templatests[i];
         const statusKey = Object.keys(statusObj)[0];
         const statusValue = statusObj[statusKey];
         StatusArr[statusKey] = statusValue;
-        a += '<a class="dropdown-item bg-' + statusValue + '" onclick="toggletemplatestatut(' + index + ', \'' + statusKey + '\')">'+statusKey+'</a>';
+        a += '<a class="dropdown-item bg-' + statusValue + '" onclick="toggletemplatestatut(' + index + ', \'' + statusKey + '\')" style="cursor: pointer;">'+statusKey+'</a>';
       }
 
       StatusBtnVal = StatusArr[Element.status];
-      tr += '<td>' +
-            '<div class="btn-group">' +
-              '<button type="button" class="btn btn-'+StatusBtnVal+'">'+Element.status+'</button><button type="button" class="btn btn-'+StatusBtnVal+' dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>' +
-              '<div class="dropdown-menu" role="menu" style="">' +
-                a +
-              '</div>' +
+      if(Element.status == 'Published')
+        tr += '<td><span class=" badge badge-success">Published</span></td>'
+      else
+        tr += '<td>' +
+          '<div class="btn-group">' +
+            '<button type="button" class="btn btn-'+StatusBtnVal+'">'+Element.status+'</button><button type="button" class="btn btn-'+StatusBtnVal+' dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>' +
+            '<div class="dropdown-menu" role="menu" style="">' +
+              a +
             '</div>' +
-          '</td>';
+          '</div>' +
+        '</td>';
     }
-    if(dataID.length==0||dataID.includes('6')) {
+    if(dataID.length==0||dataID.includes('5')) {
       tr += '<td><a href="view.php?index=' + Element.id + '" class="m-1 btn btn-block btn-primary btn-sm"><i class="fas fa-eye"></i> View</a>';
       tr += '<button class="m-1 btn btn-block btn-success btn-sm" onclick="postTemplate(' + index + ')"  data-toggle="modal" data-target="#post"><i class="fas fa-share-alt"></i> Post</button>';
       tr += '<button class="m-1 btn btn-block btn btn-info btn-sm" onclick="editTemplate(' + index + ')" data-toggle="modal" data-target="#edit-template"><i class="fas fa-pencil-alt"></i> Edit</button>';
@@ -1057,15 +1085,15 @@ function displayTemplate(templates) {
 
   });
   tbody.innerHTML = tr;
-  var thr = '';
-  thr += '<tr><th><input type="checkbox" id="alltemplate" name="delete-all" value="template" title="select all"></th><th>No</th>';
-  if(dataID.length==0||dataID.includes('0')) thr += '<td>Group</td>';
-  if(dataID.length==0||dataID.includes('1')) thr += '<td>Image</td>';
-  if(dataID.length==0||dataID.includes('2')) thr += '<td>Link</td>';
-  if(dataID.length==0||dataID.includes('3')) thr += '<td>Title</td>';
-  if(dataID.length==0||dataID.includes('4')) thr += '<td>Content</td>';
-  if(dataID.length==0||dataID.includes('5')) thr += '<td>Status</td>';
-  if(dataID.length==0||dataID.includes('6')) thr += '<td>Actions</td>';
+  var thr = '<tr>';
+  if(dataID.length==0) thr += '<th><input type="checkbox" id="alltemplate" name="delete-all" value="template" title="select all"></th>';
+  thr += '<th>No</th><td>Group</td>';
+  if(dataID.length==0||dataID.includes('0')) thr += '<td>Image</td>';
+  if(dataID.length==0||dataID.includes('1')) thr += '<td>Link</td>';
+  if(dataID.length==0||dataID.includes('2')) thr += '<td>Title</td>';
+  if(dataID.length==0||dataID.includes('3')) thr += '<td>Content</td>';
+  if(dataID.length==0||dataID.includes('4')) thr += '<td>Status</td>';
+  if(dataID.length==0||dataID.includes('5')) thr += '<td>Actions</td>';
   thr += '</tr>';
   thead.innerHTML = thr;
 
@@ -1116,7 +1144,7 @@ setInterval(() => {
       }, 1000);
     }
   });
-}, 4000)
+}, 30000)
 
 //delete template
 
@@ -2627,6 +2655,7 @@ function message_stats() {
   $("#template_pending_stat").text(total_first);
   $("#template_approved_stat").text(total_second);
   $("#template_rejected_stat").text(total_third);
+  $("#template_published_stat").text(total_forth);
 
   $("#templates_approved").text(total_second);
   $("#templates_rejected").text(total_third);
@@ -2932,7 +2961,8 @@ function displaySearch(json) {
     } else {
       tr += ' <tr data-widget="expandable-table" class="search' + (index + 1) + '" aria-expanded="false" data-id="' + Element.id + '" data-link="' + Element.link + '">';
     }
-    tr += '<td><input type="checkbox" class="search-url-table-select-row"></td><td>' + (index + 1) + '</td>';
+    if(dataID.length==0) tr += '<td><input type="checkbox" class="search-url-table-select-row"></td>';
+    tr += '<td>' + (index + 1) + '</td>';
     if(dataID.length==0||dataID.includes('0')) tr += '<td class="search-url-table-image"><img width="100px" src="' + Element.imageUrl + '"></td>';
     if(dataID.length==0||dataID.includes('1')) tr += '<td class="search-url-table-title">'+ Element.title + '</td>';
     if(dataID.length==0||dataID.includes('2')) tr += '<td><b>Type:</b> ' + Element.type + '<br><b>Network:</b> ' + Element.network + '<br><b>Keyword:</b> ' + Element.keyword + '</td>';
@@ -2964,8 +2994,9 @@ function displaySearch(json) {
 
   });
   tbody.innerHTML = tr;
-  var thr = '';
-  thr += '<tr><th><input type="checkbox" id="allleads" name="delete-all" value="lead" title="select all"></th><th>#</th>';
+  var thr = '<tr>';
+  if(dataID.length==0) thr += '<th><input type="checkbox" id="allleads" name="delete-all" value="lead" title="select all"></th>';
+  thr += '<th>#</th>';
   if(dataID.length==0||dataID.includes('0')) thr += '<td>Picture</td>';
   if(dataID.length==0||dataID.includes('1')) thr += '<td>Title</td>';
   if(dataID.length==0||dataID.includes('2')) thr += '<td>Settings</td>';
@@ -3997,9 +4028,6 @@ bookings[0].slot=slot_editbooking.value;
 });
 });
 
-
-var userbookings='';
-
 $.ajax({
   url: domain + "getbooking.php",
   dataType: "json",
@@ -4038,7 +4066,8 @@ function displayBooking(json) {
     } else {
       tr += ' <tr data-widget="expandable-table" class="booking' + (index + 1) + '" aria-expanded="false">';
     }
-    tr += '<td><input type="checkbox" name="delete-booking" id="" value="' + index + ' " class="delete-booking" /></td><td>' + (index + 1) + '</td>';
+    if(dataID.length==0) tr += '<td><input type="checkbox" name="delete-booking" id="" value="' + index + ' " class="delete-booking" /></td>';
+    tr += '<td>' + (index + 1) + '</td>';
     if(dataID.length==0||dataID.includes('0')) tr += '<td><p style="width:90px;">' + Element.fullName + '</p></td>';
    
     if(dataID.length==0||dataID.includes('1')) tr += '<td><p style="width:90px;"><a href="' + Element.website + '" target="_blank"onclick="openWebsitePopup(event)">' + Element.website + ' </a></p></td>';
@@ -4134,8 +4163,9 @@ function displayBooking(json) {
   });
   tbody.innerHTML = tr;
 
-  var thr = '';
-  thr += '<tr><th><input type="checkbox" id="allleads" name="delete-all" value="lead" title="select all"></th><th>#</th>';
+  var thr = '<tr>';
+  if(dataID.length==0) thr += '<th><input type="checkbox" id="allleads" name="delete-all" value="lead" title="select all"></th>';
+  thr += '<th>#</th>';
   if(dataID.length==0||dataID.includes('0')) thr += '<td>Name</td>';
   if(dataID.length==0||dataID.includes('1')) thr += '<td>Website</td>';
   if(dataID.length==0||dataID.includes('2')) thr += '<td>Phone</td>';
@@ -5002,50 +5032,43 @@ function loaddatalist(group, arr=[]) {
       datalist = `
         <li>
           <div class="icheck-primary d-inline ml-2">
-            <input type="checkbox" value="0" name="group" id="todoCheck0" ${arr.includes('0')?"checked":""}>
+            <input type="checkbox" value="0" name="image" id="todoCheck0" ${arr.includes('0')?"checked":""}>
             <label for="todoCheck0"></label>
-          </div>
-          <span class="text">Group</span>
-        </li>
-        <li>
-          <div class="icheck-primary d-inline ml-2">
-            <input type="checkbox" value="1" name="image" id="todoCheck1" ${arr.includes('1')?"checked":""}>
-            <label for="todoCheck1"></label>
           </div>
           <span class="text">Image</span>
         </li>
         <li>
           <div class="icheck-primary d-inline ml-2">
-            <input type="checkbox" value="2" name="ulink" id="todoCheck2" ${arr.includes('2')?"checked":""}>
-            <label for="todoCheck2"></label>
+            <input type="checkbox" value="1" name="ulink" id="todoCheck1" ${arr.includes('1')?"checked":""}>
+            <label for="todoCheck1"></label>
           </div>
           <span class="text">Link</span>
         </li>
         <li>
           <div class="icheck-primary d-inline ml-2">
-            <input type="checkbox" value="3" name="title" id="todoCheck3" ${arr.includes('3')?"checked":""}>
-            <label for="todoCheck3"></label>
+            <input type="checkbox" value="2" name="title" id="todoCheck2" ${arr.includes('2')?"checked":""}>
+            <label for="todoCheck2"></label>
           </div>
           <span class="text">Title</span>
         </li>
         <li>
           <div class="icheck-primary d-inline ml-2">
-            <input type="checkbox" value="4" name="Content" id="todoCheck4" ${arr.includes('4')?"checked":""}>
-            <label for="todoCheck4"></label>
+            <input type="checkbox" value="3" name="Content" id="todoCheck3" ${arr.includes('3')?"checked":""}>
+            <label for="todoCheck3"></label>
           </div>
           <span class="text">Content</span>
         </li>
         <li>
           <div class="icheck-primary d-inline ml-2">
-            <input type="checkbox" value="5" name="status" id="todoCheck5" ${arr.includes('5')?"checked":""}>
-            <label for="todoCheck5"></label>
+            <input type="checkbox" value="4" name="status" id="todoCheck4" ${arr.includes('4')?"checked":""}>
+            <label for="todoCheck4"></label>
           </div>
-          <span class="text">status</span>
+          <span class="text">Status</span>
         </li>
         <li>
           <div class="icheck-primary d-inline ml-2">
-            <input type="checkbox" value="6" name="actions" id="todoCheck6" ${arr.includes('6')?"checked":""}>
-            <label for="todoCheck6"></label>
+            <input type="checkbox" value="5" name="actions" id="todoCheck5" ${arr.includes('5')?"checked":""}>
+            <label for="todoCheck5"></label>
           </div>
           <span class="text">Actions</span>
         </li>

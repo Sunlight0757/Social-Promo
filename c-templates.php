@@ -274,7 +274,7 @@ const dataID = <?=json_encode($dataID)?>;
 	  
         <!-- Info boxes -->
         <div class="row">
-          <div class="col-12 col-sm-6 col-md-4">
+          <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box">
               <span class="info-box-icon bg-warning elevation-1"><i class="fa-solid fa-hourglass-half"></i></span>
 
@@ -287,7 +287,7 @@ const dataID = <?=json_encode($dataID)?>;
             <!-- /.info-box -->
           </div>
           <!-- /.col -->
-          <div class="col-12 col-sm-6 col-md-4">
+          <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box mb-3">
               <span class="info-box-icon bg-primary elevation-1"><i class="fa-solid fa-square-check"></i></span>
 
@@ -304,13 +304,27 @@ const dataID = <?=json_encode($dataID)?>;
           <!-- fix for small devices only -->
           <div class="clearfix hidden-md-up"></div>
 
-          <div class="col-12 col-sm-6 col-md-4">
+          <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box mb-3">
               <span class="info-box-icon bg-danger elevation-1"><i class="fa-solid fa-thumbs-down"></i></span>
 
               <div class="info-box-content">
                 <span class="info-box-text">Rejected</span>
                 <span class="info-box-number" id="template_rejected_stat"></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-success elevation-1"><i class="fa-solid fa-calendar-days"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Published</span>
+                <span class="info-box-number" id="template_published_stat"></span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -336,8 +350,8 @@ const dataID = <?=json_encode($dataID)?>;
                  <table id="example1" class="table table-bordered table-striped">
                   <thead id="templateth">
                   <tr>
-                  <th><input type="checkbox" id="alltemplate" name="delete-all" value="template" id="" title="select all"></th>
                     <th>No</th>
+					<th>Group</th>
 					<th>Image</th>
 					<th>Link</th>
                     <th>Title</th>
@@ -348,9 +362,9 @@ const dataID = <?=json_encode($dataID)?>;
                   <tbody id="templateBody">			  
                   </tbody>
                   <tfoot>
-                  <tr> 
-                    <th> </th>
+                  <tr>
                     <th>No</th>
+					<th>Group</th>
 					<th>Image</th>
 					<th>Link</th>
                     <th>Title</th>
