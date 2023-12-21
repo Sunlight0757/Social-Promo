@@ -83,9 +83,6 @@ $(document).ready(function () {
       }
       setTimeout(function () {
         displayTemplate(templates);
-      }, 1000);
-
-      setTimeout(function () {
         message_stats();
       }, 1000);
 
@@ -107,6 +104,8 @@ $(document).ready(function () {
       }, 1000);
     }
   });
+
+  setInterval(updateTemplate, 6000)
 });
 
 
@@ -1008,16 +1007,13 @@ function updateTemplate() {
       }
       setTimeout(function () {
         displayTemplate(templates);
-      }, 1000);
-  
-      setTimeout(function () {
         message_stats();
       }, 1000);
     }
   });
 }
 
-
+setInterval(updateTemplate, 6000)
 
 
 //uniq id : 
@@ -1121,31 +1117,6 @@ function toggletemplatestatut(id,st) {
 
 }
 
-setInterval(() => {
-  $.ajax({
-    url: domain + "gettemplate.php",
-    dataType: "json",
-    success: function (data) {
-      templates = [];
-      if(dataID.length!=0) {
-        for(var i=0;i<data.length;i++){
-          if(data[i]['group']==current_group)
-            templates.push(data[i]);
-        }
-      } else {
-        templates = data;
-      }
-      setTimeout(function () {
-        displayTemplate(templates);
-      }, 1000);
-  
-      setTimeout(function () {
-        message_stats();
-      }, 1000);
-    }
-  });
-}, 30000)
-
 //delete template
 
 function deleteTemplate(id) {
@@ -1173,11 +1144,11 @@ function deleteTemplate(id) {
         success: function () {
 
           setTimeout(displayTemplate(templates), 1000);
-
+          
           setTimeout(function () {
             message_stats();
           }, 1000);
-
+              
           updateSelectOptions();
 
 
@@ -1383,13 +1354,13 @@ submitTemp.addEventListener('click', function (e) {
       data: { template: JSON.stringify(formData) },
       success: function (response) {
         // console.log(response);
-        updateTemplate();
         Swal.fire({
           icon: 'success',
           title: 'Congratulation',
           text: 'Template added',
         });
-
+        
+        updateTemplate();
         // Call the function 
         updateSelectOptions();
 
@@ -4814,13 +4785,13 @@ function saveTemplate() {
           type: "POST",
           data: { template: JSON.stringify(formData) },
           success: function (response) {
-            updateTemplate();
             Swal.fire({
               icon: 'success',
               title: 'Congratulation',
               text: 'Template added',
             });
-    
+            
+            updateTemplate();
             // Call the function 
             updateSelectOptions();
     
@@ -5069,8 +5040,8 @@ function loaddatalist(group, arr=[]) {
           <div class="icheck-primary d-inline ml-2">
             <input type="checkbox" value="5" name="actions" id="todoCheck5" ${arr.includes('5')?"checked":""}>
             <label for="todoCheck5"></label>
-          </div>
-          <span class="text">Actions</span>
+            </div>
+            <span class="text">Actions</span>
         </li>
       `;
       break;
