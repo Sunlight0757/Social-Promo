@@ -119,10 +119,6 @@ $('.deselect-date').on('click', function (e) {
 });
 
 $('.deselect-slot').on('click', function (e) {
-  $('.submit').val('Confirm Booking');
-  $('.submit').prop('disabled', false);
-  $('.submit').css('background-color', '#0069d9');
-  $('.submit').css('font-weight', '700');
   $('.wrap').removeClass('slot-selected');
   $('.slots *').removeClass('selected');
   $('.hours').show();
@@ -138,7 +134,6 @@ $('.form').on('submit', function (e) {
 
 })
 var month = '';
-var slotIndex = null;
 
 // var locationUser = '';
 // var api_location = '8705b56ff5920952268a8d4ed5ec8883ae91d185c46e685ac17e74bc';
@@ -176,98 +171,52 @@ $('.submit').on('click', function (e) {
     datibook = day +'/'+hour ;
   }
 
-//Checking for already taken slot
-  if(booking.type!='event') {
-    const url = "../../db/bookings.json?timestamp=" + new Date().getTime();
-    fetch(url)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("File detection was not ok or connecting issue");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          data = data.filter(item => item.status !== "Rejected");
-          var count = 0;
-          data.forEach((dataDate) => {
-            //console.log("JSON:", dataDate.dateofbooking);
-            AlreadyBookedDate[count] = dataDate.dateofbooking;
-            count++;
-          });
-          var dateofbookinandtime = '';
-          dateofbookinandtime = datibook;
-          var bookingCount = 0;
-          setTimeout(function () {
-            console.log("Gababa: "+dateofbookinandtime);
-            for (var j = 0; j < AlreadyBookedDate.length; j++) {
-              //console.log(dateofbookinandtime+' - '+AlreadyBookedDate[j]);
-              if (dateofbookinandtime === AlreadyBookedDate[j]) {
-                bookingCount++;
-              }
-            }
-            //console.log(dateofbookinandtime+' Gababa '+activeServiceinfo.ticketsevent);
-            if (bookingCount >= activeServiceinfo.ticketsevent) {
-              $('.submit').val('SOLD OUT!');
-              $('.submit').prop('disabled', true);
-              $('.submit').css('background-color', '#dc3545');
-              $('.submit').css('font-weight', '700');
-              $(".slots .hours").eq(slotIndex).remove();
-              return;
-            }else {
-              const generateID = () => {
-                const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                let id = "";
-                for (let i = 0; i < 7; i++) {
-                  id += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-                }
-                return id;
+
+  const generateID = () => {
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let id = "";
+    for (let i = 0; i < 7; i++) {
+      id += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+    }
+    return id;
 
 
-              };
+  };
 
 
-              // var name = document.getElementById("name").value;
-              // var email = document.getElementById("email").value;
-              // var phone = document.getElementById("phone").value;
-              var coupon = '';
+  // var name = document.getElementById("name").value;
+  // var email = document.getElementById("email").value;
+  // var phone = document.getElementById("phone").value;
+  var coupon = '';
+ 
+  uniqueID = generateID();
 
-              uniqueID = generateID();
 
-
-              formData = {
-                id: uniqueID,
-                fullName: '',
-                website: '',
-                number: '',
-                email: '',
-                verified: "",
-                dateofbooking: datibook,
-                status: 'Pending',
-                birthday: "",
-                location: "",
-                booking: service,
-                device: "",
-                groups:[service],
-                // device: userToken,
-                // question1Comment: question1Comment,
-                // question2: question2,
-                // question2Comment: question2Comment,
-                // question3: question3,
-                // question3Comment: question3Comment,
-                // trustpilotToolsComment: trustpilotToolsComment,
-                notes: coupon
-              };
-              console.log('Booking saved');
-              window.parent.postMessage(JSON.stringify(formData), '*');
-            }
-          }, 100)
-          //console.log("Gababa:", AlreadyBookedDate);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-  }
-
+  formData = {
+    id: uniqueID,
+    fullName: '',
+    website: '',
+    number: '',
+    email: '',
+    verified: "",
+    dateofbooking: datibook,
+    status: 'Pending',
+    birthday: "",
+    location: "",
+    booking: service,
+    device: "",
+    groups:[service],
+    // device: userToken,
+    // question1Comment: question1Comment,
+    // question2: question2,
+    // question2Comment: question2Comment,
+    // question3: question3,
+    // question3Comment: question3Comment,
+    // trustpilotToolsComment: trustpilotToolsComment,
+    notes: coupon
+  };
+ console.log('Booking saved');
+  window.parent.postMessage(JSON.stringify(formData), '*');
 })
 
 function invokeCalendarListener() {
@@ -276,12 +225,10 @@ function invokeCalendarListener() {
     day = booking.days[value];
     //console.log(day);
     var days = $(this).html();
-    month = $('.member.selected .month').text();
+    month = $('.month').text();
     month = monthsName.indexOf(month) + 1;
-    year = $('.member.selected .year').text();
-    var dateofbooking = '';
-    dateofbooking = days + '-' + month + '-' + year;
-    console.log("Gababa: "+dateofbooking);
+    year = $('.year').text();
+    var dateofbooking = days + '-' + month + '-' + year;
     addSlots(dateofbooking,day.times, booking.slot);
     var date = $(this).html();
     var day = $(this).data('day');
@@ -298,7 +245,6 @@ function invokeCalendarListener() {
 
 function invokeSlotsListener() {
   $('.slots .hours').on('click', function (e) {
-    slotIndex = $(this).index();
     $(this).addClass('selected');
     $('.wrap').addClass('slot-selected');
     hour =  $(this).text();
@@ -469,9 +415,9 @@ function addCalendar(container) {
       if (specifiedDays.indexOf(dayName) === -1) {
         dayClasses += ' disabled deselected';
       } else {
-        // if (today.getDay() == 0 || today.getDay() == 6) {
-        //   dayClasses += ' disabled';
-        // }
+        if (today.getDay() == 0 || today.getDay() == 6) {
+          dayClasses += ' disabled';
+        }
         if (current < date) {
           dayClasses += ' disabled';
         }
