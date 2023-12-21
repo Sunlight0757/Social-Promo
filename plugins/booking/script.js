@@ -177,7 +177,7 @@ $('.submit').on('click', function (e) {
   }
 
 //Checking for already taken slot
-  if(booking.type!='event') {
+  // if(booking.type!='event') {
     const url = "../../db/bookings.json?timestamp=" + new Date().getTime();
     fetch(url)
         .then((response) => {
@@ -266,7 +266,7 @@ $('.submit').on('click', function (e) {
         .catch((error) => {
           console.error("Error:", error);
         });
-  }
+  // }
 
 })
 
