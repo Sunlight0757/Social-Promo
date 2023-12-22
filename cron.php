@@ -876,7 +876,6 @@ foreach ($campaigns as $key => $campaign) {
           }
 
           elseif($campaign['days'] == 'Bookings'){
-
             if (!$template_by_group[$i]['sendemail']) {
                 $currentTime = new DateTime();
                 $currentTime->setTimezone($timezone);
@@ -890,9 +889,11 @@ foreach ($campaigns as $key => $campaign) {
                                         $Appointment = $booking['dateofbooking'];
                                         echo $Appointment."<br>";
                                         $dateTime = DateTime::createFromFormat('d-m-Y/H:i', $Appointment);
-                                        $dateTime->sub(new DateInterval('PT'.$campaign['time'].'M'));
+                                        // $dateTime->sub(new DateInterval('PT'.$campaign['time'].'M'));
+                                        // $dateTime->modify('+30 minutes');
                                         $cronTime = $dateTime->format('Y-m-d H:i');
                                         $currentDateTime = new DateTime();
+                                        $currentDateTime->modify('+1 hour');
                                         $currentDateTime = $currentDateTime->format('Y-m-d H:i');
                                             echo "User: ".$user['fullName']." - Booking Time: ".$Appointment." - Cron Time: ".$cronTime." - Current Time: ".$currentDateTime."<br>";
                                         if($cronTime==$currentDateTime){
@@ -1074,9 +1075,11 @@ foreach ($campaigns as $key => $campaign) {
                                         $Appointment = $booking['dateofbooking'];
                                         echo $Appointment."<br>";
                                         $dateTime = DateTime::createFromFormat('d-m-Y/H:i', $Appointment);
-                                        $dateTime->sub(new DateInterval('PT'.$campaign['time'].'M'));
+                                        // $dateTime->sub(new DateInterval('PT'.$campaign['time'].'M'));
+                                        // $dateTime->modify('+15 minutes');
                                         $cronTime = $dateTime->format('Y-m-d H:i');
                                         $currentDateTime = new DateTime();
+                                        $currentDateTime->modify('+1 hour');
                                         $currentDateTime = $currentDateTime->format('Y-m-d H:i');
                                         echo "User: ".$user['fullName']." - Booking Time: ".$Appointment." - Cron Time: ".$cronTime." - Current Time: ".$currentDateTime."<br>";
                                         if($cronTime==$currentDateTime){

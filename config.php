@@ -43,8 +43,7 @@ define('locationapi', '');
 define('weatherapi', '');
 
 // Email verification // Gmail lets you send up to 500 emails per day.
-define('send_email_verification', false);
-define('send_booking_verification', true);
+define('send_email_verification', true);
 define('address', 'no-reply@socialpromo.biz');
 define('name', 'Social Promo');
 define('subject', 'Social Management & Promotion');
@@ -56,17 +55,16 @@ define('SMTPSecure', 'ssl');
 define('port', '465'); // OR TRY 587
 
 // Twilio verification and whatsapp
-define('send_sms', false);
+define('send_sms', true);
 define('twilo_ssid', '');
 define('twilo_token', '');
 define('twilo_phoneNumber', '');
 define('twilo_whatsapp_sender', '');
 define('smsMessage', 'Thanks for taking part! Confirm your answers here');
-define('smsbookingMessage', 'Thanks for taking this booking with us');
 
 // Admin alert
-define('send_email_alert', false);
-define('send_sms_alert', false);
+define('send_email_alert', true);
+define('send_sms_alert', true);
 define('send_email_alert_booking', true);
 define('send_sms_alert_booking', true);
 define('email_address', ['message.uk@gmail.com','socialsuite.uk@gmail.com']); //you can add more email
@@ -74,7 +72,11 @@ define('sms_phoneNumber', ['+447305800400','',]); // you can add more number
 define('adminalert', '');
 //define('adminalert', 'has just completed your promotion, visit to view: ');
 define('adminbookingalert', 'has just completed your promotion, visit to view: ');
-define('adminbookingreminder', 'Booking Reminder! for booking of ');
+define('send_email_booking_reminder', true);
+define('send_sms_booking_reminder', true);
+define('send_email_booking_reminder_admin', true);
+define('send_sms_booking_reminder_admin', true);
+define('adminbookingreminder', 'Booking Reminder for ');
 
 // Firebase push notifications
 define('allow_push', true);
@@ -181,8 +183,6 @@ define('datafile', 'db/data.json');
 // Files (Booking)
 define('bookingdatafile', 'db/bookings.json');
 define('sendemailBookingFile', 'send-email_booking.php');
-define('emailBookingFile', 'email_booking.php');
-define('confirmBookingFile', 'confirm_booking.php');
 
 //Files (Support)
 /*

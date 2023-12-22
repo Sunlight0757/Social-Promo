@@ -1157,7 +1157,7 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
 {PHONE} - Replaces phone number.<br>
 {EMAIL} - Replaces email.<br>
 {LOCATION} - Replaces location.<br>
-{BOOKING} - Replaces with booking details.<br>
+{BOOKING} - Replaces time of booking.<br>
                  </p>
                   
 
@@ -1428,8 +1428,6 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
                     <option>SMS</option>
                     <option>Push</option>	
                     <option>Whatsapp</option>
-					<option>RSS</option>
-					<option>Social</option>
                   </select>
                 </div>
                 <!-- /.form-group -->				
@@ -1437,14 +1435,14 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
                 <div class="form-group">
                    <label for="InputBookingTime">Select Time</label>
                   <select class="form-control" id="BookingRTime">
-                    <option value="1440">24 hours before</option>
-                    <option value="720">12 hours before</option>
-                    <option value="360">6 hours before</option>
-                    <option value="180">3 hours before</option>
-                    <option value="60">1 hour before</option>
-                    <option value="30">30 mins before</option>
-                    <option value="15">15 mins before</option>
-                    <option value="5">5 mins before</option>				
+                    <option value="1440">24 hours before (select template)</option>
+                    <option value="720">12 hours before (select template)</option>
+                    <option value="360">6 hours before (select template)</option>
+                    <option value="180">3 hours before (select template)</option>
+                    <option value="60">1 hour before (select template)</option>
+                    <option value="30">30 mins before (select template)</option>
+                    <option value="15">15 mins before (select template)</option>
+                    <option value="5">0 mins left (select template with link?)</option>				
                   </select>
                 </div>
                 <!-- /.form-group -->
@@ -4106,8 +4104,9 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
 		  <div class="modal-body">
 		  <?php
 			$type 		= '';
+      $lastid = count($books)-1;
 			try {
-				$type 	= isset($books[0]["type"]) ? $books[0]["type"] : '';
+				$type 	= isset($books[$lastid]["type"]) ? $books[$lastid]["type"] : '';
 			} 
 			catch (\Exception $th) {}
 		?>
@@ -4124,18 +4123,18 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
 
  <h5 class="text-muted users_booking">Number of users for slot?</h5>
   <div class="form-group users_booking">
-      <input type="number" id="user_per_slot" class="form-control">
+      <input type="number" id="user_per_slot" class="form-control" value="<?=$books[$lastid]['users']?>">
   </div>
 
 
     <div class="form-group" id="slot">
 	<label>Select slot</label>
 	<select id="slot_booking" class="form-control">
-	  <option value="00:15">15 mins</option>
-	  <option value="00:30">30 mins</option>
-	  <option value="01:00">1 hour</option>
-	  <option value="1:30">1.5 hours</option>
-	  <option value="02:00">2 hours</option>
+	  <option value="00:15" <?php if($books[$lastid]['slot']=='00:15') echo 'selected'?>>15 mins</option>
+	  <option value="00:30" <?php if($books[$lastid]['slot']=='00:30') echo 'selected'?>>30 mins</option>
+	  <option value="01:00" <?php if($books[$lastid]['slot']=='01:00') echo 'selected'?>>1 hour</option>
+	  <option value="1:30" <?php if($books[$lastid]['slot']=='1:30') echo 'selected'?>>1.5 hours</option>
+	  <option value="02:00" <?php if($books[$lastid]['slot']=='02:00') echo 'selected'?>>2 hours</option>
 	</select>
   </div>
 
@@ -4171,7 +4170,7 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
         </tr>
     </thead>
     <tbody>
-      <?php foreach($books[0]['services'] as $key => $service):?>
+      <?php foreach($books[$lastid]['services'] as $key => $service):?>
 		<?php
 			$dateString 	= '';
 			try {

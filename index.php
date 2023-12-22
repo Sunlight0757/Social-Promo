@@ -932,10 +932,8 @@ video {
 	//console.log(apiKey);
 	const api_location = '<?=api_location?>';
 	const send_email_verification = '<?=send_email_verification?>';
-	const send_booking_verification = '<?=send_booking_verification?>';
 	const send_sms = '<?=send_sms?>';
 	const smsMessage = '<?=smsMessage?>';
-	const smsbookingMessage = '<?=smsbookingMessage?>';
 	const domain = '<?=domain?>';
 	let download = <?=download?>;
 	let visitpoint = <?=visit?>;
@@ -980,8 +978,6 @@ video {
 	let emailFile ='<?=emailFile?>';
 
 	sendemailBookingFile  = '<?=sendemailBookingFile?>';
-    emailBookingFile  = '<?=emailBookingFile?>';
-    confirmBookingFile  = '<?=confirmBookingFile?>';
 </script>
 
 <!-- Promo-->

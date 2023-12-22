@@ -578,7 +578,7 @@ if(number[0]!='+')
                         }
                     });
 
-                    if(bookingdata && send_booking_verification)
+                    if(bookingdata)
                     {
                         $.ajax({
                             type: 'POST',
@@ -691,10 +691,9 @@ if(number[0]!='+')
                                     
                                 });
                                 }
-                                if(bookingdata && smsbookingMessage!=='')
+                                if(bookingdata)
                                 { //Here is message content goes from confirmBooking file if smsbookingMessage is not null
-                                    console.log('Gababa SMS BOOKING:'+smsbookingMessage);
-                                    var link= domain+''+confirmBookingFile+'?index='+uniqueID+'&id='+confirmSlidePosition;
+                                    var link= domain+'email_booking.php?index='+uniqueID+'&id='+confirmSlidePosition;
                                     // var link= domain+''+confirmFile+'?index='+uniqueID+'&id='+confirmSlidePosition;
                                 $(document).ready(function () {
                                     $.ajax({
@@ -703,7 +702,7 @@ if(number[0]!='+')
                                         data: {
                                             To: number,
                                             From: twillo_phonenumber,
-                                            Body: smsbookingMessage+': '+link
+                                            Body: 'Thanks for taking this booking with us'+': '+link
                                         },
                                         beforeSend: function (xhr) {
                                             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(twillo_ssid+':'+twillo_token));
@@ -767,7 +766,7 @@ if(number[0]!='+')
                                         data: {
                                             To: number,
                                             From:'whatsapp:'+ twilo_whatsapp_sender,
-                                            Body: smsbookingMessage
+                                            Body: 'Thanks for taking this booking with us'
                                         },
                                         beforeSend: function (xhr) {
                                             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(twillo_ssid+':'+twillo_token));
