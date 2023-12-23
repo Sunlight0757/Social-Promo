@@ -1685,7 +1685,9 @@ function displayCampaign(campaigns) {
 
     tr += '<td><button class="m-1 btn btn btn-info btn-sm" data-toggle="modal" data-target="#edit-campaign" onclick="editCampaign(' + index + ')"><i class="fas fa-pencil-alt"></i> Edit</button>';
     tr += '<button class="m-1 btn btn btn-danger btn-sm" onclick="deleteCampaign(' + index + ')" ><i class="fas fa-trash"></i> Delete</button>';
-    tr += '<button class="m-1 btn btn btn-success btn-sm" data-toggle="modal" data-target="#status-campaign" onclick="statusCampaign(' + index + ')" ><i class="fas fa-chart-line"></i> Status</button></td>';
+    tr += '<button class="m-1 btn btn btn-success btn-sm" data-toggle="modal" data-target="#status-campaign" onclick="statusCampaign(' + index + ')" ><i class="fas fa-chart-line"></i> Status</button>';
+    if(Element.type=='RSS') tr += '<a class="m-1 btn btn btn-warning btn-sm" href="db/rss.xml" target="_blank"><i class="fa-solid fa-rss"></i> RSS</a>';
+    tr += '</td>';
     tr += '</tr>';
 
   });

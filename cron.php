@@ -1543,6 +1543,25 @@ foreach ($campaigns as $key => $campaign) {
     
 }
 
+$templateData = file_get_contents(adminTemplatesFile);
+$templates = json_decode($templateData, true);
+$templateData = [];
+
+$rss = "<?xml version='1.0' encoding='UTF-8'?><rss version='2.0'><channel><title>Social Promo</title><link>https://www.socialpromo.biz/</link><description>All-in-one Social Management, Marketing, Monitoring, Messaging and Merchant Platform!</description>";
+
+foreach ($templates as $key => $template) {
+    if ($template['status'] == 'Approved') {
+        $rss .= "<item><title>" . $template['title'] . "</title><link>" . $template['url'] . "</link><description><a href='" . $template['url'] . "'><img src='" . $template['image'] . "'></a>" . $template['content'] . "</description><pubDate>" . $template['date'] . "</pubDate><guid>https://www.socialpromo.biz</guid></item>";
+        $template['status'] = 'Published';
+    }
+    
+    array_push($templateData, $template);
+}
+$rss .= "</channel></rss>";
+
+file_put_contents("db/rss.xml", $rss);
+file_put_contents(adminTemplatesFile, json_encode($templateData));
+
 // Tableau d'utilisateurs
 
 
