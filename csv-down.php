@@ -14,17 +14,19 @@ if (count($data_json) > 0) {
     $f = fopen('php://memory', 'w');
 
     // Set column headers 
-    $fields = array('first_name', 'last_name', 'phone_number', 'email');
+    $fields = array('Name', 'Website', 'Phone', 'Email', 'Location', 'Status', 'Groups');
     fputcsv($f, $fields, $delimiter);
 
     // Output each row of the data, format line as csv and write to file pointer 
     foreach ($data_json as $res) {
         $tab = array();
-        $fullname = explode(' ', $res->fullName);
-        array_push($tab, $fullname[0]);
-        array_push($tab, $fullname[1]);
+        array_push($tab, $res->fullName);
+        array_push($tab, $res->website);
         array_push($tab, $res->number);
         array_push($tab, $res->email);
+        array_push($tab, $res->location);
+        array_push($tab, $res->status);
+        array_push($tab, implode(',', $res->groups));
 
 
 

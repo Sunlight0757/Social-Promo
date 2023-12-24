@@ -602,7 +602,7 @@ const dataID = [];
 			<!-- /.card-header -->
 			<div class="card-body p-0">
 			  <button class="m-3 btn btn btn-danger float-right" id="deleteBooking"><i class="fa-solid fa-trash"></i> Delete</button>
-			  <button class="m-3 btn btn btn-success float-right" id="csv"><i class="fa-solid fa-file-csv"></i> Export CSV</button>
+			  <button class="m-3 btn btn btn-success float-right" id="booking_csv"><i class="fa-solid fa-file-csv"></i> Export CSV</button>
 			  <button data-toggle="modal" data-target="#import" class="m-3 btn btn btn-primary float-right" id="csv-import"><i class="fa-solid fa-file-import"></i> Import CSV</button>
 			  <button data-toggle="modal" on data-target="#booking" class="m-3 btn btn btn-dark float-right"><i class="fa-solid fa-clock"></i> Create Booking</button>
         <button data-toggle="modal" data-target="#client" class="m-3 btn btn btn-warning float-right" id="booking-client-link"><i class="fa-solid fa-link"></i> Client Link</button>

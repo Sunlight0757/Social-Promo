@@ -325,6 +325,10 @@ const downloadBtn = document.getElementById('csv');
 downloadBtn.addEventListener('click', () => {
   downloadCSV(json);
 });
+const bookingdownloadBtn = document.getElementById('booking_csv');
+bookingdownloadBtn.addEventListener('click', () => {
+  downloadCSV(json);
+});
 
 
 function deleteit(id) {
