@@ -55,8 +55,6 @@ define('SMTPSecure', 'ssl');
 define('port', '465'); // OR TRY 587
 
 // Booking settings
-define('send_email_alert_booking', true);
-define('send_sms_alert_booking', true);
 //define('adminalert', 'has just completed your promotion, visit to view: ');
 define('adminbookingalert', 'has just completed your promotion, visit to view: ');
 define('send_email_booking_reminder', true);
