@@ -577,28 +577,6 @@ if(number[0]!='+')
                             console.log('An error is occured during email sending.');
                         }
                     });
-
-                    if(bookingdata)
-                    {
-                        $.ajax({
-                            type: 'POST',
-                            url: sendemailBookingFile,
-                            data: { bookingdata: JSON.stringify(bookingdata) },
-                            success: function (response) {
-                               //
-                                if (response == 'success') {
-                                   // console.log('Email envoyé avec succès!');
-                                }
-                                else {
-                                    console.log(response);
-                                }
-                            },
-                            error: function () {
-                                // ajax error
-                                console.log('An error is occured during email sending.');
-                            }
-                        });
-                    }
 }
                     //admin alert
                     if (send_email_alert) 
@@ -691,35 +669,6 @@ if(number[0]!='+')
                                     
                                 });
                                 }
-                                if(bookingdata)
-                                { //Here is message content goes from confirmBooking file if smsbookingMessage is not null
-                                    var link= domain+'email_booking.php?index='+uniqueID+'&id='+confirmSlidePosition;
-                                    // var link= domain+''+confirmFile+'?index='+uniqueID+'&id='+confirmSlidePosition;
-                                $(document).ready(function () {
-                                    $.ajax({
-                                        url: 'https://api.twilio.com/2010-04-01/Accounts/'+twillo_ssid+'/Messages.json',
-                                        type: 'POST',
-                                        data: {
-                                            To: number,
-                                            From: twillo_phonenumber,
-                                            Body: 'Thanks for taking this booking with us'+': '+link
-                                        },
-                                        beforeSend: function (xhr) {
-                                            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(twillo_ssid+':'+twillo_token));
-                                        },
-                                        success: function (response) {
-                                            console.log(response);
-                                        },
-                                        error: function (xhr, status, error) {
-                                            // errors AJAX
-                                            console.log(xhr.responseText);
-                                            //$('.response').text(xhr.responseText);
-                                        }
-                                    });
-                                    
-                                    
-                                });
-  }
 
 
                             }
@@ -753,35 +702,6 @@ if(number[0]!='+')
                                         }
                                     });
                                 });
-
-                                if(bookingdata)
-                                {
-                                
-                            //   var link= domain+''+confirmBookingFile+'?index='+uniqueID+'&id='+confirmSlidePosition;
-                                $(document).ready(function () {
-            
-                                    $.ajax({
-                                        url: 'https://api.twilio.com/2010-04-01/Accounts/'+twillo_ssid+'/Messages.json',
-                                        type: 'POST',
-                                        data: {
-                                            To: number,
-                                            From:'whatsapp:'+ twilo_whatsapp_sender,
-                                            Body: 'Thanks for taking this booking with us'
-                                        },
-                                        beforeSend: function (xhr) {
-                                            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(twillo_ssid+':'+twillo_token));
-                                        },
-                                        success: function (response) {
-                                            console.log(response);
-                                        },
-                                        error: function (xhr, status, error) {
-                                            // errors AJAX
-                                            console.log(xhr.responseText);
-                                            //$('.response').text(xhr.responseText);
-                                        }
-                                    });
-                                });
-                                }
                             }
             
             
