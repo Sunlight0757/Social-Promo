@@ -1545,22 +1545,39 @@ foreach ($campaigns as $key => $campaign) {
 
 $templateData = file_get_contents(adminTemplatesFile);
 $templates = json_decode($templateData, true);
-$templateData = [];
+$groups = [];
 
-$rss = "<?xml version='1.0' encoding='UTF-8'?><rss version='2.0'><channel><title>Social Promo</title><link>https://www.socialpromo.biz/</link><description>All-in-one Social Management, Marketing, Monitoring, Messaging and Merchant Platform!</description>";
-
-foreach ($templates as $key => $template) {
-    if ($template['status'] == 'Approved') {
-        $rss .= "<item><title>" . $template['title'] . "</title><link>" . $template['url'] . "</link><description><a href='" . $template['url'] . "'><img src='" . $template['image'] . "'></a>" . $template['content'] . "</description><pubDate>" . $template['date'] . "</pubDate><guid>https://www.socialpromo.biz</guid></item>";
-        $template['status'] = 'Published';
+foreach ($templates as $key => $value) {
+    if (!in_array($value['group'], $groups) and $value['group'] != '') {
+        array_push($groups, $value['group']);
     }
-    
-    array_push($templateData, $template);
 }
-$rss .= "</channel></rss>";
 
-file_put_contents("db/rss.xml", $rss);
-file_put_contents(adminTemplatesFile, json_encode($templateData));
+foreach ($groups as $group) {
+    $rss = "<?xml version='1.0' encoding='UTF-8'?><rss version='2.0'><channel><title>Social Promo</title><link>https://www.socialpromo.biz/</link><description>All-in-one Social Management, Marketing, Monitoring, Messaging and Merchant Platform!</description>";
+
+    $items_flag = false;
+    foreach ($templates as $key => $template) {
+        if($group == $template['group']) {
+            if ($template['status'] == 'Approved') {
+                $template['status'] = 'Published';
+                $templates[$key] = $template;
+            }
+            if ($template['status'] == 'Published') {
+                $items_flag = true;
+                $rss .= "<item><title>" . $template['title'] . "</title><link>" . $template['url'] . "</link><description>&lt;a href=&quot;" . $template['url'] . "'&quot;&gt; &lt;img src=&quot;" . $template['image'] . "&quot;&gt;&lt;/a&gt;" . $template['content'] . "</description><pubDate>" . $template['date'] . "</pubDate><guid>https://www.socialpromo.biz</guid></item>";
+            }
+        }
+    }
+    $rss .= "</channel></rss>";
+
+    if($items_flag) {
+        $direct = "RSS/".$group.".xml";
+        file_put_contents($direct, $rss);
+    }
+}
+
+file_put_contents(adminTemplatesFile, json_encode($templates));
 
 // Tableau d'utilisateurs
 
