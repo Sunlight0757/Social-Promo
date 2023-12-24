@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["csvFile"])) {
         $email = $data[3];
         $location = $data[4];
         $status = $data[5];
-        $group = [$data[6]];
+        $group = $data[6];
 
         // Check if an entry with the same website, phone or email already exists in the JSON
         $existingEntry = false;
@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["csvFile"])) {
               $entry["fullName"] = $name;
               $entry["location"] = $location;
               $entry["status"] = $status;
-              $entry["groups"] = $group;
+              $entry["groups"] = explode(";", $group);
               $existingEntry = true;
               break;
           }
@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["csvFile"])) {
             "number" => $phone,
             "email" => $email,
             "location" => $location,
-            "groups" => $group,
+            "groups" => explode(";", $group),
             "verified" => "",
             "date" => $dateandhours,
             "birthday" => 'false',

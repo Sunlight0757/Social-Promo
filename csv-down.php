@@ -26,7 +26,7 @@ if (count($data_json) > 0) {
         array_push($tab, $res->email);
         array_push($tab, $res->location);
         array_push($tab, $res->status);
-        array_push($tab, implode(',', $res->groups));
+        array_push($tab, implode(';', $res->groups));
 
 
 
