@@ -54,6 +54,22 @@ define('SMTPAuth', true);
 define('SMTPSecure', 'ssl');
 define('port', '465'); // OR TRY 587
 
+// Booking settings
+define('send_email_alert_booking', true);
+define('send_sms_alert_booking', true);
+//define('adminalert', 'has just completed your promotion, visit to view: ');
+define('adminbookingalert', 'has just completed your promotion, visit to view: ');
+define('send_email_booking_reminder', true);
+define('send_sms_booking_reminder', true);
+define('send_email_booking_reminder_admin', true);
+define('send_sms_booking_reminder_admin', true);
+define('adminbookingreminder', 'Booking Reminder for ');
+define('bookingslide', '1');
+define('afterbookingslide', '2');
+define('bookingstatus', '[{"Pending":"warning"},{"Attended":"primary"},{"Rejected": "danger"}]');
+define('bookingdatafile', 'db/bookings.json');
+define('sendemailBookingFile', 'send-email_booking.php');
+
 // Twilio verification and whatsapp
 define('send_sms', true);
 define('twilo_ssid', '');
@@ -65,18 +81,9 @@ define('smsMessage', 'Thanks for taking part! Confirm your answers here');
 // Admin alert
 define('send_email_alert', true);
 define('send_sms_alert', true);
-define('send_email_alert_booking', true);
-define('send_sms_alert_booking', true);
 define('email_address', ['message.uk@gmail.com','socialsuite.uk@gmail.com']); //you can add more email
 define('sms_phoneNumber', ['+447305800400','',]); // you can add more number
 define('adminalert', '');
-//define('adminalert', 'has just completed your promotion, visit to view: ');
-define('adminbookingalert', 'has just completed your promotion, visit to view: ');
-define('send_email_booking_reminder', true);
-define('send_sms_booking_reminder', true);
-define('send_email_booking_reminder_admin', true);
-define('send_sms_booking_reminder_admin', true);
-define('adminbookingreminder', 'Booking Reminder for ');
 
 // Firebase push notifications
 define('allow_push', true);
@@ -128,10 +135,6 @@ define('confirmSlide', '15');
 // Gift
 define('giftslide', '20');
 
-// Bookings
-define('bookingslide', '1');
-define('afterbookingslide', '2');
-
 // Badges
 define('badge1', 25);
 define('badge2', 50);
@@ -145,13 +148,6 @@ define('status', '[
 {"Hot": "danger"}, 
 {"Contacted":"success"},
 {"Attended":"success"}
-]');
-
-// Status (Bookings)
-define('bookingstatus', '[
-{"Pending":"warning"},
-{"Attended":"primary"},
-{"Rejected": "danger"}
 ]');
 
 //Status (Search)
@@ -179,10 +175,6 @@ define('sendemailFile', 'send-email.php');
 define('emailFile', 'email.php');
 define('confirmFile', 'confirm.php');
 define('datafile', 'db/data.json');
-
-// Files (Booking)
-define('bookingdatafile', 'db/bookings.json');
-define('sendemailBookingFile', 'send-email_booking.php');
 
 //Files (Support)
 /*
