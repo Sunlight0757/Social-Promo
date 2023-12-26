@@ -1283,6 +1283,8 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
 {EMAIL} - Replaces email.<br>
 {LOCATION} - Replaces location.<br>
 {BOOKING} - Replaces time of booking.<br>
+{UNSUBSCRIBE} - Unsubscribes user (so they no longer get messages).<br>
+
                  </p>
                   
 
