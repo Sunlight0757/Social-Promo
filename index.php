@@ -950,7 +950,6 @@ video {
 	let gameDelay = <?=gameDelay?>;
 	const  send_email_alert = '<?=send_email_alert?>';
 	const  adminalert = '<?=adminalert?>';
-	const  adminbookingalert = '<?=adminbookingalert?>';
 	const  adminbookingreminder = '<?=adminbookingreminder?>';
 	const  send_sms_alert = '<?=send_sms_alert?>';
 	const  sms_phoneNumber = '<?=json_encode(sms_phoneNumber)?>';

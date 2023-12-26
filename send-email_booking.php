@@ -102,9 +102,6 @@ try {
   $mail->isHTML(true);
   $mail->Subject = subject;
   $mail->Body = $name.' '. adminalert;
-  if(isset($_POST['booking'])){
-  $mail->Body = $name.' '. adminbookingalert;
-  }
   if ($mail->send()) {
     
     echo 'success';

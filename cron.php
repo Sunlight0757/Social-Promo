@@ -1570,7 +1570,7 @@ foreach ($groups as $group) {
     $rss .= "</channel></rss>";
 
     if($items_flag) {
-        $direct = "RSS/".$group.".xml";
+        $direct = "rss/".$group.".xml";
         file_put_contents($direct, $rss);
     }
 }

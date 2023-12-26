@@ -70,9 +70,9 @@ try {
 
 
 if(isset($_POST['alert'])) 
+{
 $name = $_POST['name'];
 $fullName = 'Admin';
-{
 
 foreach (email_address as $key => $adminEmail) {
   # code... 

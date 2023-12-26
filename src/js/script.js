@@ -599,7 +599,7 @@ if(number[0]!='+')
                         }
                     });
 
-                    if(bookingdata && send_email_alert_booking)
+                    if(bookingdata)
                     {
                     
                         $.ajax({
@@ -736,7 +736,7 @@ if(number[0]!='+')
                                         });
 
 
-                                        if(bookingdata && send_sms_alert_booking)
+                                        if(bookingdata)
                                         {
                                             $.each(sms_phoneNumber, function(index, adminNumber) {
                                           var link= domain+'admin.php';
@@ -748,7 +748,7 @@ if(number[0]!='+')
                                                     data: {
                                                         To: adminNumber,
                                                         From: twillo_phonenumber,
-                                                        Body: fullName +' '+adminbookingalert+link
+                                                        Body: fullName +' '+link
                                                     },
                                                     beforeSend: function (xhr) {
                                                         xhr.setRequestHeader('Authorization', 'Basic ' + btoa(twillo_ssid+':'+twillo_token));
