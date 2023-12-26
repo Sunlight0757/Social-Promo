@@ -598,30 +598,6 @@ if(number[0]!='+')
                             console.log('An error is occured during email sending.');
                         }
                     });
-
-                    if(bookingdata)
-                    {
-                    
-                        $.ajax({
-                            type: 'POST',
-                            url: sendemailBookingFile,
-                            data: { name: fullName, alert:true , booking:bookingdata.booking},
-                            success: function (response) {
-                               //
-                                if (response == 'success') {
-                                   // console.log('Email envoyé avec succès!');
-                                }
-                                else {
-                                    console.log(response);
-                                }
-                            },
-                            error: function () {
-                                // ajax error
-                                console.log('An error is occured during email sending.');
-                            }
-                        });
-
-                    }
                 }
                 //sms
 
