@@ -46,7 +46,7 @@ define('weatherapi', '');
 define('send_email_verification', true);
 define('address', 'no-reply@socialpromo.biz');
 define('name', 'Social Promo');
-define('subject', 'Social Management & Promotion');
+define('subject', 'Social Promo');
 define('username', 'test@socialpromo.biz');
 define('password', 'testing@123');
 define('host','mail.socialpromo.biz');
@@ -55,8 +55,7 @@ define('SMTPSecure', 'ssl');
 define('port', '465'); // OR TRY 587
 
 // Booking settings
-//define('adminalert', 'has just completed your promotion, visit to view: ');
-define('adminbookingalert', 'has just completed your promotion, visit to view: ');
+//define('adminbookingalert', 'has just completed your promotion, visit to view: ');
 define('send_email_booking_reminder', true);
 define('send_sms_booking_reminder', true);
 define('send_email_booking_reminder_admin', true);
@@ -81,7 +80,7 @@ define('send_email_alert', true);
 define('send_sms_alert', true);
 define('email_address', ['message.uk@gmail.com','socialsuite.uk@gmail.com']); //you can add more email
 define('sms_phoneNumber', ['+447305800400','',]); // you can add more number
-define('adminalert', '');
+define('adminalert', 'has just completed your promotion, visit to view: ');
 
 // Firebase push notifications
 define('allow_push', true);

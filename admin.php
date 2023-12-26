@@ -467,7 +467,7 @@ const dataID = [];
                     <a class="nav-link" id="custom-tabs-one-bookings-tab" data-toggle="pill" href="#custom-tabs-one-bookings" role="tab" aria-controls="custom-tabs-one-bookings" aria-selected="true">Bookings</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-one-promo-tab" data-toggle="pill" href="#custom-tabs-one-promo" role="tab" aria-controls="custom-tabs-one-promo" aria-selected="true">Promotions</a>
+                    <a class="nav-link" id="custom-tabs-one-support-tab" data-toggle="pill" href="#custom-tabs-one-support" role="tab" aria-controls="custom-tabs-one-support" aria-selected="true">Support</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" id="custom-tabs-one-search-tab" data-toggle="pill" href="#custom-tabs-one-search" role="tab" aria-controls="custom-tabs-one-search" aria-selected="true">Search</a>
@@ -643,7 +643,7 @@ const dataID = [];
 
                   </div>
 				  
-                  <div class="tab-pane fade" id="custom-tabs-one-promo" role="tabpanel" aria-labelledby="custom-tabs-one-promo-tab">
+                  <div class="tab-pane fade" id="custom-tabs-one-support" role="tabpanel" aria-labelledby="custom-tabs-one-support-tab">
 
         <div class="row">
           <!-- /.col-md-6 -->
@@ -651,29 +651,151 @@ const dataID = [];
 	
 			<div class="card card-white">
               <div class="card-header">
-                <h3 class="card-title">Create Promotion</h3>
+                <h3 class="card-title">Support Tickets</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
               <form>
-                <div class="card-body">
-                  <div class="form-group">
-                    <label for="PromoGroup">Name</label>
-				    <input id="PromoGroup" type="text" name="name"  class="form-control form-control-lg" placeholder="Enter name">
+              <div class="card-body">
+                <table class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th></th>
+					  <th>#</th>
+                      <th>Name</th>
+                      <th>Age</th>
+                      <th>Website</th>
+                      <th>Phone (+Area Code)</th>
+					  <th>Email</th>
+					  <th>Location</th>
+					  <th>Date</th>
+					  <th>Confirmed</th>
+					  <th>Status</th>
+					  <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr data-widget="expandable-table" aria-expanded="true">
+                      <td></td>
+					  <td>1</td>
+                      <td>John Doe</td>
+                      <td>24</td>
+                      <td>google.com</td>
+                      <td>+447779001234</td>
+					  <td>john@gmail.com</td>
+					  <td>London</td>
+					  <td>24/12/23</td>
+					  <td></td>
+					  <td></td>
+					  <td></td>
+                    </tr>
+                    <tr class="expandable-body">
+                      <td colspan="12">
+					  
+		<div class="direct-chat direct-chat-success">
+              <div class="card-body">
+                <!-- Conversations are loaded here -->
+                <div class="direct-chat-messages">
+                  <!-- Message. Default to the left -->
+                  <div class="direct-chat-msg">
+                    <div class="direct-chat-infos clearfix">
+                      <span class="direct-chat-name float-left">Alexander Pierce</span>
+                      <span class="direct-chat-timestamp float-right">23 Jan 2:00 pm</span>
+                    </div>
+                    <!-- /.direct-chat-infos -->
+                    <img class="direct-chat-img" src="<?php $input_array = array("https://randomuser.me/api/portraits/women/", "https://xsgames.co/randomusers/assets/avatars/female/","https://randomuser.me/api/portraits/men/", "https://xsgames.co/randomusers/assets/avatars/male/");echo $input_array[rand(0,sizeof($input_array)-1)];?><?php $min=1; $max=78; echo rand($min,$max);?>.jpg" alt="message user image">
+                    <!-- /.direct-chat-img -->
+                    <div class="direct-chat-text">
+                      Is this template really for free? That's unbelievable!
+                    </div>
+                    <!-- /.direct-chat-text -->
                   </div>
-                  <div class="form-group">
-                    <label for="PromoLogo">Logo</label>
-				    <input id="PromoLogo" type="url" name="logo" class="form-control form-control-lg" placeholder="Enter logo">
+                  <!-- /.direct-chat-msg -->
+
+                  <!-- Message to the right -->
+                  <div class="direct-chat-msg right">
+                    <div class="direct-chat-infos clearfix">
+                      <span class="direct-chat-name float-right">Sarah Bullock</span>
+                      <span class="direct-chat-timestamp float-left">23 Jan 2:05 pm</span>
+                    </div>
+                    <!-- /.direct-chat-infos -->
+                    <img class="direct-chat-img" src="<?php $input_array = array("https://randomuser.me/api/portraits/women/", "https://xsgames.co/randomusers/assets/avatars/female/","https://randomuser.me/api/portraits/men/", "https://xsgames.co/randomusers/assets/avatars/male/");echo $input_array[rand(0,sizeof($input_array)-1)];?><?php $min=1; $max=78; echo rand($min,$max);?>.jpg" alt="message user image">
+                    <!-- /.direct-chat-img -->
+                    <div class="direct-chat-text">
+                      You better believe it!
+                    </div>
+                    <!-- /.direct-chat-text -->
+                    <div class="tools text-muted">
+                      <i class="fa-solid fa-edit"></i>
+                      <i class="fa-solid fa-trash"></i>
+					  <i class="fa-solid fa-floppy-disk"></i>
+                    </div>					
                   </div>
-                  <div class="form-group">
-                    <label for="PromoPassword">Password</label>
-				    <input id="PromoPassword" type="password" name="password" class="form-control form-control-lg" placeholder="Enter password">
-                  </div>				            
+                  <!-- /.direct-chat-msg -->
+
+                  <!-- Message. Default to the left -->
+                  <div class="direct-chat-msg">
+                    <div class="direct-chat-infos clearfix">
+                      <span class="direct-chat-name float-left">Alexander Pierce</span>
+                      <span class="direct-chat-timestamp float-right">23 Jan 5:37 pm</span>
+                    </div>
+                    <!-- /.direct-chat-infos -->
+                    <img class="direct-chat-img" src="<?php $input_array = array("https://randomuser.me/api/portraits/women/", "https://xsgames.co/randomusers/assets/avatars/female/","https://randomuser.me/api/portraits/men/", "https://xsgames.co/randomusers/assets/avatars/male/");echo $input_array[rand(0,sizeof($input_array)-1)];?><?php $min=1; $max=78; echo rand($min,$max);?>.jpg" alt="message user image">
+                    <!-- /.direct-chat-img -->
+                    <div class="direct-chat-text">
+                      Working with AdminLTE on a great new app! Wanna join?
+                    </div>
+                    <!-- /.direct-chat-text -->
+                  </div>
+                  <!-- /.direct-chat-msg -->
+
+                  <!-- Message to the right -->
+                  <div class="direct-chat-msg right">
+                    <div class="direct-chat-infos clearfix">
+                      <span class="direct-chat-name float-right">Sarah Bullock</span>
+                      <span class="direct-chat-timestamp float-left">23 Jan 6:10 pm</span>
+                    </div>
+                    <!-- /.direct-chat-infos -->
+                    <img class="direct-chat-img" src="<?php $input_array = array("https://randomuser.me/api/portraits/women/", "https://xsgames.co/randomusers/assets/avatars/female/","https://randomuser.me/api/portraits/men/", "https://xsgames.co/randomusers/assets/avatars/male/");echo $input_array[rand(0,sizeof($input_array)-1)];?><?php $min=1; $max=78; echo rand($min,$max);?>.jpg" alt="message user image">
+                    <!-- /.direct-chat-img -->
+                    <div class="direct-chat-text">
+                      I would love to.
+                    </div>
+                    <!-- /.direct-chat-text -->
+                    <div class="tools text-muted">
+                      <i class="fa-solid fa-edit"></i>
+                      <i class="fa-solid fa-trash"></i>
+					  <i class="fa-solid fa-floppy-disk"></i>
+                    </div>					
+                  </div>
+                  <!-- /.direct-chat-msg -->
+
                 </div>
-                <!-- /.card-body -->
-                <div class="card-footer">
-                  <button type="submit" id="btnPromo" class="btn btn-primary">Submit</button>
-                </div>
+                <!--/.direct-chat-messages-->
+				
+              </div>
+              <!-- /.card-body -->
+			  
+              <div class="card-footer ">
+                <form action="#" method="post">
+                  <div class="input-group">
+                    <input style="width: auto;" type="text" name="message" placeholder="Type Message..." class="form-control">
+                    <span class="input-group-append">
+                      <button type="button" class="btn btn-success">Send</button>
+                    </span>
+                  </div>
+                </form>
+              </div>
+              <!-- /.card-footer-->			  
+			  
+            </div>
+
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
               </form>
             </div>			
             <div class="card card-dark">
@@ -1433,7 +1555,7 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
                 <!-- /.form-group -->				
 							  
                 <div class="form-group">
-                   <label for="InputBookingTime">Select Time</label>
+					<label for="InputBookingTime">Select Time</label>
                   <select class="form-control" id="BookingRTime">
                     <option value="1440">24 hours before (select template)</option>
                     <option value="720">12 hours before (select template)</option>
