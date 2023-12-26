@@ -728,7 +728,7 @@ const dataID = [];
                     <div class="tools text-muted">
                       <i class="fa-solid fa-edit"></i>
                       <i class="fa-solid fa-trash"></i>
-					  <i class="fa-solid fa-floppy-disk"></i>
+					  <i style="cursor:pointer;" class="fa-solid fa-floppy-disk" data-toggle="modal" data-target="#support"></i>
                     </div>					
                   </div>
                   <!-- /.direct-chat-msg -->
@@ -765,7 +765,7 @@ const dataID = [];
                     <div class="tools text-muted">
                       <i class="fa-solid fa-edit"></i>
                       <i class="fa-solid fa-trash"></i>
-					  <i class="fa-solid fa-floppy-disk"></i>
+					  <i style="cursor:pointer;" class="fa-solid fa-floppy-disk" data-toggle="modal" data-target="#support"></i>
                     </div>					
                   </div>
                   <!-- /.direct-chat-msg -->
@@ -775,6 +775,9 @@ const dataID = [];
 				
               </div>
               <!-- /.card-body -->
+			  
+			  <h4>Notes</h4>
+			  <p>Any note go here</p>
 			  
               <div class="card-footer ">
                 <form action="#" method="post">
@@ -4905,9 +4908,71 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
     </div>
   <!-- /.content -->
   
- 
-</div>
-<!-- /.content-wrapper -->
+<!-------------- SUPPORT -------------->
+
+  <div class="modal fade" id="support">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h4 class="modal-title">Support</h4>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<div class="modal-body">
+			  
+                  <div class="form-group">
+                    <label for="InputCategory">1. Category</label>
+                    <input type="text" class="form-control form-control-lg" placeholder="New category">
+                  </div>
+
+					<div class="form-group">
+                        <small>Or Select</small>
+                        <select class="form-control">
+                          <option>Category 1</option>
+                          <option>Category 2</option>
+                          <option>Category 3</option>
+                        </select>
+						<p><button type="button" class="btn btn-block btn-secondary btn-xs delete-group">Delete Category?</button></p>
+                      </div>
+					  
+                  <div class="form-group">
+                    <label for="InputReply">2. Reply</label>
+					<textarea class="form-control form-control-lg" rows="3" placeholder="Pre-filled when click"></textarea>									
+                  </div>
+					  
+					<div class="form-group">
+
+        <div class="control-group" id="fields">
+            <label class="control-label" for="field1">3. Keywords or phrases</label>
+            <div class="controls"> 
+                    <div class="entry input-group col-xs-3">
+                        <input class="form-control" name="fields[]" type="text" placeholder="Type something" />
+                    	<span class="input-group-btn">
+                            <button class="btn btn-success btn-add" type="button">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </span>
+                    </div>
+            </div>
+        </div>	
+
+                      </div>
+
+		</div>
+		<div class="modal-footer justify-content-between">
+		  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		  <button type="button" class="btn btn-primary">Save changes</button>
+		</div>
+	  </div>
+	  <!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
+
+
+</div><!-- /.content-wrapper -->
 
 <!-- Main Footer -->
 <footer class="main-footer">
@@ -5012,6 +5077,32 @@ $("input[data-bootstrap-switch]").each(function(){
   $(this).bootstrapSwitch('state', $(this).prop('checked'));
 })
 
+</script>
+
+<script>
+$(function()
+{
+    $(document).on('click', '.btn-add', function(e)
+    {
+        e.preventDefault();
+
+        var controlForm = $('.controls form:first'),
+            currentEntry = $(this).parents('.entry:first'),
+            newEntry = $(currentEntry.clone()).appendTo(controlForm);
+
+        newEntry.find('input').val('');
+        controlForm.find('.entry:not(:last) .btn-add')
+            .removeClass('btn-add').addClass('btn-remove')
+            .removeClass('btn-success').addClass('btn-danger')
+            .html('<span class="glyphicon glyphicon-minus"></span>');
+    }).on('click', '.btn-remove', function(e)
+    {
+		$(this).parents('.entry:first').remove();
+
+		e.preventDefault();
+		return false;
+	});
+});
 </script>
 
 <script type="text/javascript">
