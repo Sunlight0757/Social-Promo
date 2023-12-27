@@ -710,39 +710,6 @@ if(number[0]!='+')
                                                 });
                                             });
                                         });
-
-
-                                        if(bookingdata)
-                                        {
-                                            $.each(sms_phoneNumber, function(index, adminNumber) {
-                                          var link= domain+'admin.php';
-                                            $(document).ready(function () {
-            
-                                                $.ajax({
-                                                    url: 'https://api.twilio.com/2010-04-01/Accounts/'+twillo_ssid+'/Messages.json',
-                                                    type: 'POST',
-                                                    data: {
-                                                        To: adminNumber,
-                                                        From: twillo_phonenumber,
-                                                        Body: fullName +' '+link
-                                                    },
-                                                    beforeSend: function (xhr) {
-                                                        xhr.setRequestHeader('Authorization', 'Basic ' + btoa(twillo_ssid+':'+twillo_token));
-                                                    },
-                                                    success: function (response) {
-                                                        console.log(response);
-                                                    },
-                                                    error: function (xhr, status, error) {
-                                                        // errors AJAX
-                                                        console.log(xhr.responseText);
-                                                        //$('.response').text(xhr.responseText);
-                                                    }
-                                                });
-                                            });
-                                        });
-                                        }
-
-
                                         }
 
                         },
