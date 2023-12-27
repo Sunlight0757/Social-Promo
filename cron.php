@@ -80,7 +80,7 @@ function sendEmailToUser($user, $template,$campaign)
         $mail->Subject = $template['title'];
         $body="";
         if(isset($template['image']) || $template['image'] != 'default.png'){
-        $body.='<p><img src="'.$template['image'].'" /></p><br>';
+        $body.='<p><img width="100%" src="'.$template['image'].'" /></p>';
         }
         $body.=$content;
         $mail->Body = $body;
