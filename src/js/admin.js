@@ -2075,7 +2075,7 @@ submitCamp.addEventListener('click', function (e) {
       type: type,
       days: days,
       time: time,
-      group: groups[0],
+      group: groups,
       status: [],
       // emailsignature: templateEmail.value,
       date: formattedDate

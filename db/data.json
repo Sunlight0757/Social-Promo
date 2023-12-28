@@ -1,1 +1,285 @@
-[]
+[
+    {
+        "id": "yi04TLJ",
+        "fullName": "test test",
+        "website": "https:\/\/instagram.com\/",
+        "number": "+380970412757",
+        "email": "sunlight0757@gmail.com",
+        "verified": "",
+        "date": "12\/28\/2023 \/ 17:29",
+        "status": "Warm",
+        "question": [
+            {
+                "question": "What is your feedback so we can make improvements?",
+                "answers": [
+                    "\ud83d\udc4e I don't like it (enter comment below)"
+                ],
+                "comment": ""
+            },
+            {
+                "question": "What area do you live in?",
+                "answers": [
+                    "4. Liverpool"
+                ],
+                "comment": ""
+            }
+        ],
+        "birthday": "07-08-1987",
+        "location": "",
+        "groups": [
+            "Blaze Fletcher"
+        ],
+        "device": "",
+        "notes": ""
+    },
+    {
+        "id": "658da5116802d",
+        "fullName": "Test1",
+        "website": "",
+        "number": "",
+        "email": "sunlight0757+Test1@gmail.com",
+        "location": "",
+        "groups": [
+            "TEST"
+        ],
+        "verified": "",
+        "date": "28\/12\/2023 \/17:40",
+        "birthday": "false",
+        "unsubscribed": "",
+        "status": "",
+        "device": "",
+        "question": [
+            {
+                "question": "",
+                "answers": [],
+                "comment": ""
+            }
+        ],
+        "notes": ""
+    },
+    {
+        "id": "658da51168035",
+        "fullName": "Test2",
+        "website": "",
+        "number": "",
+        "email": "sunlight0757+Test2@gmail.com",
+        "location": "",
+        "groups": [
+            "TEST"
+        ],
+        "verified": "",
+        "date": "28\/12\/2023 \/17:40",
+        "birthday": "false",
+        "unsubscribed": "",
+        "status": "",
+        "device": "",
+        "question": [
+            {
+                "question": "",
+                "answers": [],
+                "comment": ""
+            }
+        ],
+        "notes": ""
+    },
+    {
+        "id": "658da51168039",
+        "fullName": "Test3",
+        "website": "",
+        "number": "",
+        "email": "sunlight0757+Test3@gmail.com",
+        "location": "",
+        "groups": [
+            "TEST"
+        ],
+        "verified": "",
+        "date": "28\/12\/2023 \/17:40",
+        "birthday": "false",
+        "unsubscribed": "",
+        "status": "",
+        "device": "",
+        "question": [
+            {
+                "question": "",
+                "answers": [],
+                "comment": ""
+            }
+        ],
+        "notes": ""
+    },
+    {
+        "id": "658da5116803d",
+        "fullName": "Test4",
+        "website": "",
+        "number": "",
+        "email": "sunlight0757+Test4@gmail.com",
+        "location": "",
+        "groups": [
+            "TEST"
+        ],
+        "verified": "",
+        "date": "28\/12\/2023 \/17:40",
+        "birthday": "false",
+        "unsubscribed": "",
+        "status": "",
+        "device": "",
+        "question": [
+            {
+                "question": "",
+                "answers": [],
+                "comment": ""
+            }
+        ],
+        "notes": ""
+    },
+    {
+        "id": "658da51168041",
+        "fullName": "Test5",
+        "website": "",
+        "number": "",
+        "email": "sunlight0757+Test5@gmail.com",
+        "location": "",
+        "groups": [
+            "TEST"
+        ],
+        "verified": "",
+        "date": "28\/12\/2023 \/17:40",
+        "birthday": "false",
+        "unsubscribed": "",
+        "status": "",
+        "device": "",
+        "question": [
+            {
+                "question": "",
+                "answers": [],
+                "comment": ""
+            }
+        ],
+        "notes": ""
+    },
+    {
+        "id": "658da51168045",
+        "fullName": "Test6",
+        "website": "",
+        "number": "",
+        "email": "sunlight0757+Test6@gmail.com",
+        "location": "",
+        "groups": [
+            "TEST"
+        ],
+        "verified": "",
+        "date": "28\/12\/2023 \/17:40",
+        "birthday": "false",
+        "unsubscribed": "",
+        "status": "",
+        "device": "",
+        "question": [
+            {
+                "question": "",
+                "answers": [],
+                "comment": ""
+            }
+        ],
+        "notes": ""
+    },
+    {
+        "id": "658da51168049",
+        "fullName": "Test7",
+        "website": "",
+        "number": "",
+        "email": "sunlight0757+Test7@gmail.com",
+        "location": "",
+        "groups": [
+            "TEST"
+        ],
+        "verified": "",
+        "date": "28\/12\/2023 \/17:40",
+        "birthday": "false",
+        "unsubscribed": "",
+        "status": "",
+        "device": "",
+        "question": [
+            {
+                "question": "",
+                "answers": [],
+                "comment": ""
+            }
+        ],
+        "notes": ""
+    },
+    {
+        "id": "658da5116804e",
+        "fullName": "Test8",
+        "website": "",
+        "number": "",
+        "email": "sunlight0757+Test8@gmail.com",
+        "location": "",
+        "groups": [
+            "TEST"
+        ],
+        "verified": "",
+        "date": "28\/12\/2023 \/17:40",
+        "birthday": "false",
+        "unsubscribed": "",
+        "status": "",
+        "device": "",
+        "question": [
+            {
+                "question": "",
+                "answers": [],
+                "comment": ""
+            }
+        ],
+        "notes": ""
+    },
+    {
+        "id": "658da51168052",
+        "fullName": "Test9",
+        "website": "",
+        "number": "",
+        "email": "sunlight0757+Test9@gmail.com",
+        "location": "",
+        "groups": [
+            "TEST"
+        ],
+        "verified": "",
+        "date": "28\/12\/2023 \/17:40",
+        "birthday": "false",
+        "unsubscribed": "",
+        "status": "",
+        "device": "",
+        "question": [
+            {
+                "question": "",
+                "answers": [],
+                "comment": ""
+            }
+        ],
+        "notes": ""
+    },
+    {
+        "id": "658da51168060",
+        "fullName": "Test10",
+        "website": "",
+        "number": "",
+        "email": "sunlight0757+Test10@gmail.com",
+        "location": "",
+        "groups": [
+            "TEST"
+        ],
+        "verified": "",
+        "date": "28\/12\/2023 \/17:40",
+        "birthday": "false",
+        "unsubscribed": "",
+        "status": "",
+        "device": "",
+        "question": [
+            {
+                "question": "",
+                "answers": [],
+                "comment": ""
+            }
+        ],
+        "notes": ""
+    }
+]

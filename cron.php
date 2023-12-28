@@ -760,12 +760,12 @@ $bookingData = file_get_contents(bookingdatafile);
 $bookings = json_decode($bookingData, true);
 foreach ($campaigns as $key => $campaign) {
     # code...
-    $group =  $campaign['group'];
+    $groups =  $campaign['group'];
     $template_by_group = [];
     foreach ($templateData as $template) {
         # code..
 // var_dump($campaign);
-        if ($group == $template['group']) {
+        if (in_array($template['group'], $groups)) {
             array_push($template_by_group, $template);
         }
     }
@@ -806,8 +806,6 @@ foreach ($campaigns as $key => $campaign) {
                         }
 
                         file_put_contents(adminTemplatesFile, json_encode($templateData));
-               
-                    break;
                 } else {
 
                     if (count($template_by_group) == 1) {

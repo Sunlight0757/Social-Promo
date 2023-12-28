@@ -1,1 +1,1 @@
-[{"id":1,"type":"Email","days":"Bookings","time":"30","group":"Blaze Fletcher","status":[{"id":"hMz4atW","state":"Failed","date":"Friday 22 - Dec- 2023  09:36"}],"date":"12\/22\/2023 \/ 9:57"},{"id":2,"type":"RSS","days":["Monday","Wednesday","Friday"],"time":"13:00","group":"Blaze Fletcher","status":[],"date":"12\/22\/2023 \/ 20:44"}]
+[{"id":1,"type":"Email","days":["Thursday"],"time":"19:38","group":["Blaze Fletcher","TEST"],"status":[],"date":"12\/28\/2023 \/ 19:11"}]
