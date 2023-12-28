@@ -690,7 +690,6 @@ foreach ($campaignData as $key => $campaign) {
     $currentDayOfWeek = date('l');
     $currentTime = new DateTime();
     $currentTime->setTimezone($timezone);
-    $currentTime->modify('+1 hour');
     $currentTime->format('H:i');
      if($campaign['days'] != 'Bookings' && $campaign['days'] != 'Birthdays' && is_array($campaign['days']) &&!isset($campaign['holiday']) && !isset($campaign['forecast'])){
          echo $currentDayOfWeek." -  Current Day<br>";
