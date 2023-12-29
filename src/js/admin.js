@@ -2902,6 +2902,8 @@ function saveSearchData() {
         if (xhr.searchData) {
           search_data = xhr.searchData;
         }
+        displaySearch(search_data);
+        search_stat(search_data);
         resolve(xhr.message);
       },
       error: function (xhr) {
