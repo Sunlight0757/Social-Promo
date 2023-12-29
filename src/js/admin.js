@@ -2916,6 +2916,16 @@ function saveSearchData() {
 }
 
 function displaySearch(json) {
+  var category = $('#search_category_select').val();
+  if(dataID.length == 0 && category != ""){
+    var searchjson = [];
+    for(var i=0;i<json.length;i++){
+      if(json[i]['category']==category)
+        searchjson.push(json[i]);
+    }
+    json = searchjson;
+  }
+
   var thead = document.querySelector('#searchth');
   var tbody = document.querySelector('#data-table');
   var tr = '';
@@ -3481,19 +3491,19 @@ function getSearchDataForCron() {
         search_data = xhr.data;
       }
 
-      setTimeout(function () {
-        searchjson = [];
-        if(dataID.length!=0) {
-          for(var i=0;i<search_data.length;i++){
-            if(search_data[i]['category']==current_group)
-              searchjson.push(search_data[i]);
-          }
-        } else {
-          searchjson = search_data;
-        }
-        displaySearch(searchjson);
-        search_stat(searchjson);
-      }, 1000);
+      // setTimeout(function () {
+      //   searchjson = [];
+      //   if(dataID.length!=0) {
+      //     for(var i=0;i<search_data.length;i++){
+      //       if(search_data[i]['category']==current_group)
+      //         searchjson.push(search_data[i]);
+      //     }
+      //   } else {
+      //     searchjson = search_data;
+      //   }
+      //   displaySearch(searchjson);
+      //   search_stat(searchjson);
+      // }, 1000);
     },
     error: function (xhr) {
       const response = xhr.responseJSON;

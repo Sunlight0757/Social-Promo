@@ -128,8 +128,8 @@ function saveSearchParam()
     } else {
         $searchId = $currentSearchKeywordsCount++;
         $rss = htmlspecialchars($_POST["search_rss"], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $category = htmlspecialchars($_POST["search_category"], ENT_QUOTES | ENT_HTML5, 'UTF-8');
         if($rss == "") {
-            $category = htmlspecialchars($_POST["search_category"], ENT_QUOTES | ENT_HTML5, 'UTF-8');
             $type = htmlspecialchars($_POST["search_type"], ENT_QUOTES | ENT_HTML5, 'UTF-8');
             $network = htmlspecialchars($_POST["search_network"], ENT_QUOTES | ENT_HTML5, 'UTF-8');
             $keyword = htmlspecialchars($_POST["search_keyword"], ENT_QUOTES | ENT_HTML5, 'UTF-8');
