@@ -275,6 +275,7 @@ h5.search-url-table-notes-label{
 const domain = '<?=domain?>';
 const nbquestion = <?=$nbq?>;
 var search_data = <?=json_encode($search_data)?>;
+var template_data = <?=json_encode($data)?>;
 var data_groups = <?=json_encode($datagroups)?>;
 var categories = <?=json_encode($categories)?>;
 var template_groups = <?=json_encode($groups)?>;
@@ -4462,7 +4463,7 @@ Place <em>some</em> <u>text</u> <strong>here</strong>
         </div>
         <div class="modal-footer justify-content-between">
         <button type="button" id="closeSocialmodal" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="submit" id="editSocialsubmit" class="btn btn-primary ">Save changes
+        <button type="button" onclick="submitSearchEditForm()" class="btn btn-primary ">Save changes
           <span id="spinner" class="spinner-border text-light" style="width: 20px; height: 20px; display: none;" ; role="status">
           </span>
         </button>

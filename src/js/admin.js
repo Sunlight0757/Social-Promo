@@ -68,26 +68,19 @@ $(document).ready(function () {
     search_stat(searchjson);
   }, 1000);
   
-  $.ajax({
-    url: domain + "gettemplate.php",
-    dataType: "json",
-    success: function (data) {
-      templates = [];
-      if(dataID.length!=0) {
-        for(var i=0;i<data.length;i++){
-          if(data[i]['group']==current_group)
-            templates.push(data[i]);
-        }
-      } else {
-        templates = data;
+  setTimeout(function () {
+    templates = [];
+    if(dataID.length!=0) {
+      for(var i=0;i<template_data.length;i++){
+        if(template_data[i]['group']==current_group)
+          templates.push(template_data[i]);
       }
-      setTimeout(function () {
-        displayTemplate(templates);
-        message_stats();
-      }, 1000);
-
+    } else {
+      templates = template_data;
     }
-  });
+    message_stats(templates);
+    displayTemplate(templates);
+  }, 1000);
 
   $.ajax({
     url: domain + "getquestion.php",
@@ -104,8 +97,6 @@ $(document).ready(function () {
       }, 1000);
     }
   });
-
-  setInterval(updateTemplate, 6000)
 });
 
 
@@ -996,28 +987,31 @@ function formatUrl(url) {
 /////////// --------------------- TEMPLATES -------------------- ///////////
 
 function updateTemplate() {
+  console.log("first")
   $.ajax({
     url: domain + "gettemplate.php",
     dataType: "json",
     success: function (data) {
-      templates = [];
-      if(dataID.length!=0) {
-        for(var i=0;i<data.length;i++){
-          if(data[i]['group']==current_group)
-            templates.push(data[i]);
-        }
-      } else {
-        templates = data;
-      }
+      template_data = data;
+      
       setTimeout(function () {
+        templates = [];
+        if(dataID.length!=0) {
+          for(var i=0;i<template_data.length;i++){
+            if(template_data[i]['group']==current_group)
+              templates.push(template_data[i]);
+          }
+        } else {
+          templates = template_data;
+        }
+        message_stats(templates);
         displayTemplate(templates);
-        message_stats();
       }, 1000);
     }
   });
 }
 
-setInterval(updateTemplate, 6000)
+setInterval(()=>{updateTemplate()}, 6000);
 
 
 //uniq id : 
@@ -1146,16 +1140,8 @@ function deleteTemplate(id) {
           deleteTemplate: JSON.stringify(data)
         },
         success: function () {
-
-          setTimeout(displayTemplate(templates), 1000);
-          
-          setTimeout(function () {
-            message_stats();
-          }, 1000);
-              
+          updateTemplate();
           updateSelectOptions();
-
-
         },
         error: function () {
           console.error('Error issue');
@@ -1271,12 +1257,9 @@ editTemplatesubmit.addEventListener('click', function (event) {
       },
       success: function () {
         // console.log('Data saved');
-        setTimeout(displayTemplate(templates), 1000);
+        updateTemplate();
         updateSelectOptions();
 
-        setTimeout(function () {
-          message_stats();
-        }, 1000);
         Swal.fire({
           icon: 'success',
           title: 'Congratulation',
@@ -1430,14 +1413,8 @@ deleteTemplatebtn.addEventListener('click', function (event) {
           deleteTemplate: JSON.stringify(data)
         },
         success: function () {
-          templates = deleted;
-          setTimeout(displayTemplate(templates), 1000);
+          updateTemplate()
           updateSelectOptions();
-
-          setTimeout(function () {
-            message_stats();
-          }, 1000);
-
         },
         error: function () {
           console.error('Error issue');
@@ -1610,7 +1587,7 @@ $.ajax({
     }, 2000);
 
     setTimeout(function () {
-      message_stats();
+      message_stats(template_data);
     }, 1000);
   }
 });
@@ -1627,7 +1604,7 @@ function updateCampaign() {
       }, 1000);
 
       setTimeout(function () {
-        message_stats();
+        message_stats(template_data);
       }, 1000);
     }
   });
@@ -1805,7 +1782,7 @@ function deleteCampaign(id) {
           setTimeout(displayCampaign(campaigns), 1000);
 
           setTimeout(function () {
-            message_stats();
+            message_stats(template_data);
           }, 1000);
 
         },
@@ -1948,7 +1925,7 @@ editCampaignsubmit.addEventListener('click', function (event) {
         setTimeout(displayCampaign(campaigns), 1000);
 
         setTimeout(function () {
-          message_stats();
+          message_stats(template_data);
         }, 1000);
         Swal.fire({
           icon: 'success',
@@ -2162,7 +2139,7 @@ deleteCampaignbtn.addEventListener('click', function (event) {
           setTimeout(displayCampaign(campaigns), 1000);
 
           setTimeout(function () {
-            message_stats();
+            message_stats(template_data);
           }, 1000);
 
         },
@@ -2598,7 +2575,7 @@ function leads_stat(json) {
   leads_stat.innerHTML = li;
 }
 
-function message_stats() {
+function message_stats(templates) {
   const firstStatusg = templatests[0];
   const secondStatusg = templatests[1];
   const thirdStatusg = templatests[2];
@@ -2633,11 +2610,11 @@ function message_stats() {
   $("#template_approved_stat").text(total_second);
   $("#template_rejected_stat").text(total_third);
   $("#template_published_stat").text(total_forth);
-
+  
   $("#templates_approved").text(total_second);
   $("#templates_rejected").text(total_third);
   $("#templates_published").text(total_forth);
-  
+
   var templates_stat = document.getElementById('templates_stat');
   templates_stat.textContent = templates.length;
 
@@ -2760,7 +2737,7 @@ function search_stat(json) {
 
   li += '<li class="list-group-item">' + secondStatusKey + ' <span class="float-right badge bg-info" id="total_search_contacted_status">' + total_first + '</span></li>';
 
-  li += ' <li class="list-group-item">' + thirdStatusKey + ' <span class="float-right badge bg-info" id="total_search_replied_status">' + total_second + '</span></li>';
+  li += ' <li class="list-group-item">' + thirdStatusKey + ' <span class="float-right badge bg-info" id="total_search_replied_status">' + total_third + '</span></li>';
   search_stat.innerHTML = li;
 }
 /*
@@ -2953,7 +2930,7 @@ function displaySearch(json) {
         const statusKey = Object.keys(statusObj)[0];
         const statusValue = statusObj[statusKey];
         StatusArr[statusKey] = statusValue;
-        a += '<a class="dropdown-item bg-' + statusValue + '" onclick="togglesearchstatut(' + Element.id + ', \'' + statusKey + '\')">'+statusKey+'</a>';
+        a += '<a class="dropdown-item bg-' + statusValue + '" onclick="togglesearchstatut(\'' + Element.id + '\', \'' + statusKey + '\')">'+statusKey+'</a>';
       }
 
       StatusBtnVal = StatusArr[Element.status];
@@ -2967,7 +2944,7 @@ function displaySearch(json) {
           '</td>';
     }
 
-    if(dataID.length==0||dataID.includes('5')) tr += '<td><a href="javascript:void(0);" class="m-1 btn btn-block btn-success btn-sm search-url-table-link" onClick="popupSocial(' + Element.link + ')"><i class="fas fa-envelope"></i> Contact</a><button onclick="openSearchEditForm(event)" class="m-1 btn btn-block btn btn-info btn-sm"><i class="fas fa-pencil-alt"></i> Edit</button><button onclick="deleteSearchItem(event)" class="m-1 btn btn-block btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button><button data-toggle="modal" data-target="#modal-switch" class="m-1 btn btn-block btn btn-primary btn-sm add-search-item"><i class="fas fa-add"></i> Add</button></td>';
+    if(dataID.length==0||dataID.includes('5')) tr += '<td><a href="javascript:void(0);" class="m-1 btn btn-block btn-success btn-sm search-url-table-link" onClick="popupSocial(' + Element.link + ')"><i class="fas fa-envelope"></i> Contact</a><button onclick="openSearchEditForm(event)" class="m-1 btn btn-block btn btn-info btn-sm"><i class="fas fa-pencil-alt"></i> Edit</button><button onclick="deleteSearchItem(event)" class="m-1 btn btn-block btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button><button data-toggle="modal" data-target="#modal-switch" onclick="addSearchItem(event)" class="m-1 btn btn-block btn btn-primary btn-sm"><i class="fas fa-add"></i> Add</button></td>';
     tr += '</tr>';
     tr += '<tr class="expandable-body search-url-table-expandable"><td colspan="8"><p style="display: none;" class="search-url-table-description">' + Element.description + '</p><h5 class="search-url-table-notes-label" style="display: none;">Notes:</h5><p style="display: none;" class="search-url-table-notes text-muted">' + Element.notes + '</p></td></tr> ';
 
@@ -3114,6 +3091,20 @@ function deleteSearchItem(e) {
             search_data = xhr.searchData;
           }
 
+          setTimeout(function () {
+            searchjson = [];
+            if(dataID.length!=0) {
+              for(var i=0;i<search_data.length;i++){
+                if(search_data[i]['category']==current_group)
+                  searchjson.push(search_data[i]);
+              }
+            } else {
+              searchjson = search_data;
+            }
+            displaySearch(searchjson);
+            search_stat(searchjson);
+          }, 1000);
+
           toggleLoader("hide");
 
           Swal.fire({
@@ -3223,17 +3214,17 @@ function updateSpecificSearchItem(values) {
 
 // Search Item - Edit - Form Submission
 
-$(document).on("submit", ".search-url-modal", submitSearchEditForm);
+// $(document).on("submit", ".search-url-modal", submitSearchEditForm);
 
-function submitSearchEditForm(e) {
-  e.preventDefault();
+function submitSearchEditForm() {
+  // e.preventDefault();
 
-  const target = $(e.currentTarget);
-  const spinner = $(target).find(".spinner-border");
-  const submitBtn = $(target).find("#editSocialsubmit");
+  // const target = $(e.currentTarget);
+  // const spinner = $(target).find(".spinner-border");
+  // const submitBtn = $(target).find("#editSocialsubmit");
 
-  $(spinner).css("display", "inline-block");
-  $(submitBtn).attr("disabled", true);
+  $(".spinner-border").css("display", "inline-block");
+  $("#editSocialsubmit").attr("disabled", true);
   toggleLoader("show");
 
   const form = document.getElementsByClassName("search-url-modal")[0];
@@ -3260,8 +3251,8 @@ function submitSearchEditForm(e) {
 
       $(modalElement).modal('hide');
 
-      $(spinner).css("display", "none");
-      $(submitBtn).removeAttr("disabled");
+      $(".spinner-border").css("display", "none");
+      $("#editSocialsubmit").removeAttr("disabled");
       toggleLoader("hide");
 
       Swal.fire({
@@ -3286,8 +3277,8 @@ function submitSearchEditForm(e) {
         errorMessage = 'An unexpected error occurred.';
       }
 
-      $(spinner).css("display", "none");
-      $(submitBtn).removeAttr("disabled");
+      $(".spinner-border").css("display", "none");
+      $("#editSocialsubmit").removeAttr("disabled");
       toggleLoader("hide");
 
       Swal.fire({
@@ -3493,19 +3484,19 @@ function getSearchDataForCron() {
         search_data = xhr.data;
       }
 
-      // setTimeout(function () {
-      //   searchjson = [];
-      //   if(dataID.length!=0) {
-      //     for(var i=0;i<search_data.length;i++){
-      //       if(search_data[i]['category']==current_group)
-      //         searchjson.push(search_data[i]);
-      //     }
-      //   } else {
-      //     searchjson = search_data;
-      //   }
-      //   displaySearch(searchjson);
-      //   search_stat(searchjson);
-      // }, 1000);
+      setTimeout(function () {
+        searchjson = [];
+        if(dataID.length!=0) {
+          for(var i=0;i<search_data.length;i++){
+            if(search_data[i]['category']==current_group)
+              searchjson.push(search_data[i]);
+          }
+        } else {
+          searchjson = search_data;
+        }
+        displaySearch(searchjson);
+        search_stat(searchjson);
+      }, 1000);
     },
     error: function (xhr) {
       const response = xhr.responseJSON;
@@ -4186,9 +4177,6 @@ function deleteBooking(id) {
         },
         success: function () {
           setTimeout(displayBooking(userbookings), 1000);
-          setTimeout(function () {
-            message_stats();
-          }, 1000);
           //updateSelectOptions();
           
           var flag = false;
@@ -4345,10 +4333,6 @@ deleteBookingBtn.addEventListener('click', function (event) {
           bookings = deletedBookings;
           setTimeout(displayBooking(bookings), 1000);
           updateSelectOptions();
-
-          setTimeout(function () {
-            message_stats();
-          }, 1000);
         },
         error: function () {
           console.error('Error issue');
@@ -4770,8 +4754,10 @@ function saveTemplate() {
     contentType: false,
     success: function (xhr) {
       if (xhr.data) {
+  console.log(xhr.data);
         var searchData = xhr.data;
         var post = searchData.filter(item=>item.id===$("#post_id").val())[0];
+        console.log(post)
 
         const date = new Date();
         const formattedDate = date.toLocaleDateString() + ' / ' + date.getHours() + ':' + date.getMinutes();
@@ -4785,7 +4771,8 @@ function saveTemplate() {
           sendemail: false,
           sendsms: false,
           sendpush: false,
-          date: formattedDate
+          date: formattedDate,
+          status: "Pending"
         };
         
         $.ajax({

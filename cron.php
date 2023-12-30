@@ -41,7 +41,7 @@ function sendEmailToUser($user, $template,$campaign)
         }
     }
 
-     $task="Sending email to user " . $user['fullName'] . " with template: " . $template['id'] . "\n";
+     $task="<br>Sending email to user " . $user['fullName'] . " with template: " . $template['id'] . "<br>";
     echo $task;
 
     $replace = array("{NAME}", "{WEBSITE}", "{PHONE}", "{EMAIL}", "{LOCATION}", "{BOOKING}", "{UNSUBSCRIBE}");
@@ -88,7 +88,7 @@ function sendEmailToUser($user, $template,$campaign)
 
         if ($mail->send()) {
 
-            echo '/n/success'.$mail->ErrorInfo;
+            echo 'success'.$mail->ErrorInfo;
             
 
             //update campaign state
@@ -787,7 +787,7 @@ foreach ($campaigns as $key => $campaign) {
                         foreach ($users as $user) {
                             if(in_array($template_by_group[$i]['group'],$user['groups'])){
                                 sendEmailToUser($user, $template_by_group[$i],$campaign);
-                             }
+                            }
                         }
                         //update sendEmail attribut to true
                         $templateData;

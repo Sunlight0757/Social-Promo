@@ -383,7 +383,7 @@ const dataID = <?=json_encode($dataID)?>;
         </div>
         <div class="modal-footer justify-content-between">
         <button type="button" id="closeSocialmodal" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="submit" id="editSocialsubmit" class="btn btn-primary ">Save changes
+        <button type="button" onclick="submitSearchEditForm()" class="btn btn-primary ">Save changes
           <span id="spinner" class="spinner-border text-light" style="width: 20px; height: 20px; display: none;" ; role="status">
           </span>
         </button>
