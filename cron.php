@@ -133,6 +133,7 @@ if(count($campaign['status'])>0)
             echo 'error '.$mail->ErrorInfo;
             
         }
+        sleep(10);
     } catch (Exception $e) {
       var_dump($mail->ErrorInfo);
         $date = date('l d - M- Y  H:i');
